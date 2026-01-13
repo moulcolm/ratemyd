@@ -1,0 +1,412 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USERS ====================
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  hashedPassword    String?
+  username          String    @unique
+  dateOfBirth       DateTime
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  isBanned          Boolean   @default(false)
+  banReason         String?
+  bannedAt          DateTime?
+  isAdmin           Boolean   @default(false)
+
+  subscriptionTier  SubscriptionTier @default(FREE)
+  subscriptionId    String?
+  subscriptionEnd   DateTime?
+
+  bonusVotes        Int       @default(0)
+  bonusPhotoSlots   Int       @default(0)
+
+  eloRepos          Int       @default(1000)
+  eloErection       Int       @default(1000)
+  eloGlobal         Int       @default(1000)
+
+  totalVotesReceived Int      @default(0)
+  totalVotesGiven    Int      @default(0)
+  totalWins          Int      @default(0)
+  totalLosses        Int      @default(0)
+
+  photos            Photo[]
+  votesGiven        Vote[]    @relation("VoterRelation")
+  reports           Report[]  @relation("ReporterRelation")
+  receivedReports   Report[]  @relation("ReportedUserRelation")
+  achievements      UserAchievement[]
+  eloHistory        EloHistory[]
+  sessions          Session[]
+  accounts          Account[]
+  transactions      Transaction[]
+  boosts            VisibilityBoost[]
+  moderationActions ModerationLog[] @relation("ModeratorRelation")
+
+  @@index([subscriptionTier])
+  @@index([eloGlobal])
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+  VIP
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==================== PHOTOS ====================
+
+model Photo {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  imageUrl        String
+  imageKey        String
+  thumbnailUrl    String?
+  thumbnailKey    String?
+
+  category        PhotoCategory
+
+  declaredLength  Float?
+  declaredGirth   Float?
+
+  isVerified           Boolean  @default(false)
+  verificationPhotoUrl String?
+  verificationPhotoKey String?
+  verificationRequestedAt DateTime?
+  verifiedAt           DateTime?
+  verifiedByAdminId    String?
+  verificationNote     String?
+
+  status          PhotoStatus   @default(PENDING)
+  moderatedAt     DateTime?
+  moderatedByAdminId String?
+  moderationNote  String?
+  rejectionReason String?
+
+  moderationPriority Int       @default(0)
+
+  elo             Int           @default(1000)
+  totalMatches    Int           @default(0)
+  wins            Int           @default(0)
+  losses          Int           @default(0)
+  draws           Int           @default(0)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  votesAsLeft     Vote[]        @relation("LeftPhotoRelation")
+  votesAsRight    Vote[]        @relation("RightPhotoRelation")
+  reports         Report[]
+  boosts          VisibilityBoost[]
+  moderationLogs  ModerationLog[]
+
+  @@index([userId, category])
+  @@index([category, status, elo])
+  @@index([status, moderationPriority, createdAt])
+}
+
+enum PhotoCategory {
+  REPOS
+  ERECTION
+}
+
+enum PhotoStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  VERIFICATION_PENDING
+  FLAGGED
+}
+
+// ==================== VOTES ====================
+
+model Vote {
+  id            String      @id @default(cuid())
+
+  voterId       String
+  voter         User        @relation("VoterRelation", fields: [voterId], references: [id])
+
+  leftPhotoId   String
+  leftPhoto     Photo       @relation("LeftPhotoRelation", fields: [leftPhotoId], references: [id])
+
+  rightPhotoId  String
+  rightPhoto    Photo       @relation("RightPhotoRelation", fields: [rightPhotoId], references: [id])
+
+  result        VoteResult
+  category      PhotoCategory
+
+  leftEloBefore   Int
+  leftEloAfter    Int
+  rightEloBefore  Int
+  rightEloAfter   Int
+
+  createdAt     DateTime    @default(now())
+
+  @@index([voterId, createdAt])
+  @@index([leftPhotoId])
+  @@index([rightPhotoId])
+}
+
+enum VoteResult {
+  LEFT_WINS
+  RIGHT_WINS
+  DRAW
+}
+
+// ==================== ELO HISTORY ====================
+
+model EloHistory {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  category    EloCategory
+  eloBefore   Int
+  eloAfter    Int
+  change      Int
+  reason      String
+
+  createdAt   DateTime      @default(now())
+
+  @@index([userId, category, createdAt])
+}
+
+enum EloCategory {
+  REPOS
+  ERECTION
+  GLOBAL
+}
+
+// ==================== ACHIEVEMENTS ====================
+
+model Achievement {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  name        String
+  description String
+  iconUrl     String?
+  category    String
+
+  users       UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  unlockedAt    DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+}
+
+// ==================== REPORTS ====================
+
+model Report {
+  id              String       @id @default(cuid())
+
+  reporterId      String
+  reporter        User         @relation("ReporterRelation", fields: [reporterId], references: [id])
+
+  reportedUserId  String?
+  reportedUser    User?        @relation("ReportedUserRelation", fields: [reportedUserId], references: [id])
+
+  photoId         String?
+  photo           Photo?       @relation(fields: [photoId], references: [id])
+
+  reason          ReportReason
+  description     String?
+
+  status          ReportStatus @default(PENDING)
+  resolvedAt      DateTime?
+  resolvedByAdminId String?
+  resolution      String?
+
+  createdAt       DateTime     @default(now())
+
+  @@index([status, createdAt])
+}
+
+enum ReportReason {
+  FAKE_PHOTO
+  UNDERAGE_SUSPECTED
+  FACE_VISIBLE
+  INAPPROPRIATE_CONTENT
+  HARASSMENT
+  SPAM
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  ACTION_TAKEN
+  DISMISSED
+}
+
+// ==================== TRANSACTIONS ====================
+
+model Transaction {
+  id              String          @id @default(cuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id])
+
+  type            TransactionType
+  amount          Int
+  currency        String          @default("EUR")
+
+  stripePaymentId String?         @unique
+  stripeInvoiceId String?
+
+  description     String
+  metadata        Json?
+
+  status          TransactionStatus @default(PENDING)
+
+  createdAt       DateTime        @default(now())
+  completedAt     DateTime?
+
+  @@index([userId, createdAt])
+  @@index([stripePaymentId])
+}
+
+enum TransactionType {
+  SUBSCRIPTION_PREMIUM
+  SUBSCRIPTION_VIP
+  PURCHASE_VOTES
+  PURCHASE_PHOTO_SLOT
+  PURCHASE_BOOST
+  PURCHASE_RANK_REVEAL
+  PURCHASE_FAST_TRACK
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model VisibilityBoost {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  photoId     String
+  photo       Photo     @relation(fields: [photoId], references: [id])
+
+  startsAt    DateTime  @default(now())
+  endsAt      DateTime
+
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+
+  @@index([photoId, isActive, endsAt])
+}
+
+// ==================== MODERATION ====================
+
+model ModerationLog {
+  id            String          @id @default(cuid())
+
+  adminId       String
+  admin         User            @relation("ModeratorRelation", fields: [adminId], references: [id])
+
+  photoId       String?
+  photo         Photo?          @relation(fields: [photoId], references: [id])
+
+  action        ModerationAction
+  previousStatus String?
+  newStatus     String?
+  note          String?
+
+  createdAt     DateTime        @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([photoId])
+}
+
+enum ModerationAction {
+  APPROVE_PHOTO
+  REJECT_PHOTO
+  VERIFY_SIZE
+  REJECT_VERIFICATION
+  FLAG_PHOTO
+  UNFLAG_PHOTO
+  BAN_USER
+  UNBAN_USER
+  WARN_USER
+}
+
+// ==================== STATS ====================
+
+model GlobalStats {
+  id              String   @id @default("global")
+  totalUsers      Int      @default(0)
+  totalPhotos     Int      @default(0)
+  totalVotes      Int      @default(0)
+  totalPremium    Int      @default(0)
+  totalVip        Int      @default(0)
+  totalRevenue    Int      @default(0)
+  avgEloRepos     Float    @default(1000)
+  avgEloErection  Float    @default(1000)
+  updatedAt       DateTime @updatedAt
+}
+
+model DailyStats {
+  id              String   @id @default(cuid())
+  date            DateTime @unique
+  newUsers        Int      @default(0)
+  newPhotos       Int      @default(0)
+  totalVotes      Int      @default(0)
+  newSubscriptions Int     @default(0)
+  revenue         Int      @default(0)
+
+  @@index([date])
+}

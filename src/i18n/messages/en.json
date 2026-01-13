@@ -1,0 +1,570 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "noResults": "No results found",
+    "seeMore": "See more",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "compare": "Compare",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile",
+    "subscription": "Subscription",
+    "admin": "Admin",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Sign in to access your account",
+      "backToHome": "Back to home",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "loginError": "Login error",
+      "loginSuccess": "Login successful",
+      "welcome": "Welcome!",
+      "errorOccurred": "An error occurred"
+    },
+    "register": {
+      "title": "Sign Up",
+      "subtitleStep1": "Create your account in a few steps",
+      "subtitleStep2": "Finalize your profile",
+      "backToHome": "Back to home",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "emailRequired": "Email required",
+      "emailInvalid": "Invalid email",
+      "password": "Password",
+      "passwordPlaceholder": "Minimum 8 characters",
+      "passwordRequired": "Password required",
+      "passwordHelper": "Min. 8 characters, 1 uppercase, 1 lowercase, 1 number",
+      "passwordNeedsUppercase": "Password must contain an uppercase letter",
+      "passwordNeedsLowercase": "Password must contain a lowercase letter",
+      "passwordNeedsNumber": "Password must contain a number",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "usernameHelper": "Visible in the leaderboard",
+      "usernameRequired": "Username required",
+      "usernameTooShort": "Username must be at least 3 characters",
+      "usernameInvalidChars": "Username can only contain letters, numbers and underscores",
+      "dateOfBirth": "Date of birth",
+      "dateOfBirthRequired": "Date of birth required",
+      "dateOfBirthHelper": "You must be at least 18 years old",
+      "mustBe18": "You must be at least 18 years old",
+      "termsAgreement": "By signing up, you confirm that you are at least 18 years old and agree to the terms of service.",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "registerSuccess": "Registration successful",
+      "welcomeMessage": "Welcome to RateMyD!",
+      "errorOccurred": "An error occurred"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "This email is already in use",
+      "usernameExists": "This username is already taken",
+      "weakPassword": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+  "home": {
+    "hero": {
+      "title1": "Compare",
+      "and": "and",
+      "title2": "Rank",
+      "subtitle": "Anonymous ranking system with ELO score. Vote, compare and climb the leaderboard.",
+      "cta": "Start for free",
+      "viewLeaderboard": "View leaderboard",
+      "ageRestriction": "Restricted to adults (18+)"
+    },
+    "features": {
+      "title": "How does it work?",
+      "subtitle": "A fair ranking system based on the ELO algorithm",
+      "vote": {
+        "title": "Vote",
+        "description": "Compare two photos and choose your favorite. Every vote counts in the ranking."
+      },
+      "elo": {
+        "title": "ELO Ranking",
+        "description": "Points system similar to chess. The more you win against strong opponents, the higher you climb."
+      },
+      "moderation": {
+        "title": "Moderation",
+        "description": "All photos are manually verified to ensure community safety."
+      }
+    },
+    "categories": {
+      "title": "Two categories, one ranking",
+      "subtitle": "Participate in both categories for a complete ranking",
+      "flaccid": {
+        "title": "Flaccid Category",
+        "description": "Ranking based on flaccid photos. Discover who dominates this category."
+      },
+      "erect": {
+        "title": "Erect Category",
+        "description": "Ranking based on erect photos. Show your best potential."
+      },
+      "grower": {
+        "title": "Grower Ranking",
+        "description": "Special ranking based on the ratio between your flaccid and erect scores. The bigger the difference, the more you are a \"grower\"!"
+      },
+      "features": {
+        "dedicated": "Dedicated ranking",
+        "separateElo": "Separate ELO score",
+        "fairComparisons": "Fair comparisons"
+      }
+    },
+    "pricing": {
+      "title": "Plans and pricing",
+      "subtitle": "Start for free, go premium for more benefits",
+      "popular": "Popular",
+      "perMonth": "/month",
+      "free": {
+        "name": "Free",
+        "feature1": "20 votes/day",
+        "feature2": "1 photo/category",
+        "feature3": "Top 100",
+        "cta": "Get started"
+      },
+      "premium": {
+        "name": "Premium",
+        "feature1": "Unlimited votes",
+        "feature2": "3 photos/category",
+        "feature3": "Full leaderboard",
+        "feature4": "Detailed stats",
+        "feature5": "No ads",
+        "cta": "Go Premium"
+      },
+      "vip": {
+        "name": "VIP",
+        "feature1": "All Premium +",
+        "feature2": "5 photos/category",
+        "feature3": "Priority moderation",
+        "feature4": "+10% ELO bonus",
+        "feature5": "VIP badge",
+        "cta": "Go VIP"
+      }
+    },
+    "cta": {
+      "title": "Ready to join the competition?",
+      "subtitle": "Sign up for free and start climbing the rankings today.",
+      "button": "Create my account"
+    }
+  },
+  "compare": {
+    "title": "Vote",
+    "subtitle": "Compare two photos and vote for your favorite",
+    "or": "OR",
+    "skip": "Skip",
+    "votesRemaining": "votes remaining",
+    "unlimitedVotes": "Unlimited votes",
+    "noPhotos": "No photos available",
+    "noPhotosDescription": "Check back later for new comparisons",
+    "mixed": "Mixed",
+    "loadingPhotos": "Loading photos...",
+    "tryDisableVerified": "Try disabling the verified filter",
+    "notEnoughPhotos": "Not enough photos in this category",
+    "retry": "Retry",
+    "category": "Category",
+    "leftPhoto": "Left photo",
+    "rightPhoto": "Right photo",
+    "pressKey": "Press {key} or {arrow}",
+    "draw": "Draw",
+    "keyboardHint": "Use arrow keys or 1, 2, 3 to vote quickly"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Top rated photos by the community",
+    "categories": {
+      "global": "Global",
+      "repos": "Flaccid",
+      "erection": "Erect",
+      "grower": "Grower",
+      "verified": "Verified"
+    },
+    "empty": {
+      "title": "No rankings yet",
+      "description": "The first photos will appear soon"
+    },
+    "repos": {
+      "title": "Flaccid Leaderboard",
+      "subtitle": "Top rated flaccid photos"
+    },
+    "erection": {
+      "title": "Erect Leaderboard",
+      "subtitle": "Top rated erect photos"
+    },
+    "grower": {
+      "title": "Grower Leaderboard",
+      "subtitle": "Users with the best flaccid to erect progression",
+      "info": "The \"Grower\" score compares your erect ELO to your flaccid ELO. The bigger the difference, the better your ranking!",
+      "progression": "progression"
+    },
+    "verified": {
+      "title": "Verified Leaderboard",
+      "subtitle": "Photos with size verified by our moderators",
+      "info": "This leaderboard only includes photos with manually verified measurements. The displayed size is guaranteed accurate.",
+      "empty": "No verified photos yet",
+      "emptyDescription": "Request verification for your photos to appear here"
+    },
+    "stats": {
+      "wins": "wins",
+      "verified": "Verified"
+    },
+    "viewMore": "Showing top 50. Improve your ranking by getting more votes!"
+  },
+  "profile": {
+    "title": "Profile",
+    "loadingProfile": "Loading profile...",
+    "memberSince": "Member since {date}",
+    "upgradeToPremium": "Upgrade to Premium",
+    "manageSubscription": "Manage subscription",
+    "activePhotos": "Active photos",
+    "wins": "Wins",
+    "winRate": "Win rate",
+    "bestElo": "Best ELO",
+    "yourSubscription": "Your subscription",
+    "unlimitedVotes": "Unlimited votes",
+    "votesPerDay": "{count} votes/day",
+    "photosMax": "{count} photos max",
+    "noAds": "No ads",
+    "activeBonus": "Active bonuses",
+    "bonusVotes": "Bonus votes",
+    "bonusPhotoSlots": "Bonus photo slots",
+    "noActiveBonus": "No active bonus",
+    "recentActivity": "Recent activity",
+    "viewAll": "View all",
+    "votesReceived": "{count} votes received",
+    "onAllPhotos": "On all your photos",
+    "avgElo": "Average ELO: {elo}",
+    "globalPerformance": "Global performance",
+    "achievementsCount": "{count} achievements",
+    "unlocked": "Unlocked",
+    "menu": {
+      "profile": "Profile",
+      "photos": "My Photos",
+      "stats": "Statistics",
+      "achievements": "Achievements",
+      "settings": "Settings"
+    },
+    "stats": {
+      "title": "Statistics",
+      "subtitle": "Analyze your performance",
+      "totalVotes": "Total votes received",
+      "votesReceived": "Votes received",
+      "wins": "Wins",
+      "draws": "Draws",
+      "losses": "Losses",
+      "winRate": "Win rate",
+      "avgElo": "Average ELO",
+      "bestElo": "Best ELO",
+      "rank": "Global rank",
+      "loadingStats": "Loading statistics...",
+      "eloHistory": "Recent ELO history",
+      "noHistory": "No history yet",
+      "voteWin": "Win",
+      "voteLoss": "Loss",
+      "voteDraw": "Draw"
+    },
+    "photos": {
+      "title": "My Photos",
+      "subtitle": "Manage your photos and visibility",
+      "upload": "Upload a photo",
+      "addPhoto": "Add a photo",
+      "noPhotos": "No photos",
+      "noPhotosDescription": "Upload your first photo to start competing",
+      "loadingPhotos": "Loading photos...",
+      "flaccid": "Flaccid",
+      "erect": "Erect",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "boosted": "Boosted",
+      "votes": "votes",
+      "declaredSize": "Declared size: {size} cm",
+      "verifiedSize": "Verified: {size} cm",
+      "boost": "Boost",
+      "delete": "Delete",
+      "deletePhoto": "Delete photo",
+      "deleteConfirm": "Are you sure?",
+      "deleteWarning": "This action is irreversible. Your ELO history will be lost.",
+      "deleteCancel": "Cancel",
+      "deleteButton": "Delete",
+      "photoDeleted": "Photo deleted",
+      "deleteError": "Unable to delete photo",
+      "boostPhoto": "Boost this photo",
+      "boostConfirm": "Activate boost?",
+      "boostDescription": "Your photo will be prioritized in comparisons for 24h.",
+      "boostCost": "Boost cost:",
+      "boostCancel": "Cancel",
+      "boostBuy": "Buy boost",
+      "boostActivated": "Boost activated!",
+      "boostSuccess": "Your photo will be featured for 24h"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "subtitle": "Unlock rewards by playing",
+      "progress": "Progress",
+      "unlockedCount": "{count} / {total} unlocked",
+      "loadingAchievements": "Loading achievements...",
+      "unlockedSection": "Unlocked ({count})",
+      "lockedSection": "To unlock ({count})",
+      "unlockedOn": "Unlocked on {date}",
+      "noAchievements": "No achievements",
+      "startPlaying": "Start playing to unlock achievements",
+      "rarity": {
+        "common": "Common",
+        "rare": "Rare",
+        "epic": "Epic",
+        "legendary": "Legendary"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account",
+      "profileInfo": "Profile information",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "email": "Email",
+      "saveChanges": "Save changes",
+      "profileUpdated": "Profile updated",
+      "changePassword": "Change password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "newPasswordHelper": "Minimum 8 characters",
+      "confirmPassword": "Confirm new password",
+      "changePasswordButton": "Change password",
+      "passwordChanged": "Password changed",
+      "passwordMismatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "session": "Session",
+      "sessionDescription": "Sign out of your account on this device.",
+      "signOut": "Sign out",
+      "dangerZone": "Danger zone",
+      "dangerDescription": "Deleting your account is irreversible. All your photos, statistics and data will be permanently erased.",
+      "deleteAccount": "Delete my account",
+      "deleteAccountTitle": "Delete account",
+      "deleteConfirmTitle": "Are you absolutely sure?",
+      "deleteConfirmSubtitle": "This action cannot be undone.",
+      "deleteWarning": "This will permanently delete your account and all associated data, including your photos, votes, statistics and achievements.",
+      "typeToConfirm": "Type \"{username}\" to confirm",
+      "deleteCancel": "Cancel",
+      "deleteButton": "Delete permanently",
+      "deleteAccountError": "Unable to delete account",
+      "notifications": "Notifications",
+      "loading": "Loading..."
+    }
+  },
+  "subscription": {
+    "title": "Choose your subscription",
+    "subtitle": "Unlock more features and enhance your experience",
+    "currentPlan": "You are currently on",
+    "managePlan": "Manage subscription",
+    "mostPopular": "Most popular",
+    "free": "Free",
+    "perMonth": "/month",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "Discover the platform",
+        "features": {
+          "votes": "20 votes per day",
+          "photos": "1 photo maximum",
+          "leaderboard": "Leaderboard access",
+          "ads": "Ads displayed"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "For regular users",
+        "features": {
+          "votes": "100 votes per day",
+          "photos": "5 photos maximum",
+          "eloBonus": "+5% ELO bonus",
+          "noAds": "No ads",
+          "badge": "Premium badge"
+        }
+      },
+      "vip": {
+        "name": "VIP",
+        "description": "The ultimate experience",
+        "features": {
+          "votes": "Unlimited votes",
+          "photos": "10 photos maximum",
+          "eloBonus": "+10% ELO bonus",
+          "noAds": "No ads",
+          "badge": "Exclusive VIP badge",
+          "support": "Priority support"
+        }
+      }
+    },
+    "cta": {
+      "current": "Current plan",
+      "choose": "Choose {plan}",
+      "upgrade": "Upgrade to VIP",
+      "downgrade": "Downgrade via portal"
+    },
+    "purchases": {
+      "title": "One-time purchases",
+      "votes50": "50 votes pack",
+      "votes150": "150 votes pack",
+      "photoSlot": "+1 photo slot",
+      "boost": "24h boost",
+      "buy": "Buy"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "cancel": {
+        "question": "Can I cancel anytime?",
+        "answer": "Yes, you can cancel your subscription at any time from the management portal. Premium access remains active until the end of the billing period."
+      },
+      "eloBonus": {
+        "question": "How does the ELO bonus work?",
+        "answer": "The ELO bonus increases points earned on wins. +5% for Premium, +10% for VIP."
+      },
+      "cancelEffect": {
+        "question": "What happens if I cancel?",
+        "answer": "Your photos and statistics are kept. You simply go back to the free plan with its limitations."
+      }
+    }
+  },
+  "upload": {
+    "title": "Upload a photo",
+    "subtitle": "Add a new photo to compete in the rankings",
+    "photoSlots": "Photo slots",
+    "used": "used",
+    "full": "Full",
+    "limitReachedInfo": "You have reached your photo limit. Delete a photo or upgrade your subscription to add more.",
+    "category": "Category",
+    "flaccid": "Flaccid",
+    "flaccidDesc": "Resting state",
+    "erect": "Erect",
+    "erectDesc": "Aroused state",
+    "declaredLength": "Declared length",
+    "optional": "optional",
+    "lengthPlaceholder": "e.g. 15",
+    "verificationLater": "You can request verification later",
+    "dropzone": "Drag and drop or click to select",
+    "dropHere": "Drop your photo here",
+    "requirements": "JPG, PNG or WEBP. Max 10MB.",
+    "preview": "Preview",
+    "rulesToFollow": "Rules to follow",
+    "rule1": "Photo must be clear and well-lit",
+    "rule2": "Only one person visible in the photo",
+    "rule3": "No face or identifying features visible",
+    "rule4": "Photo must be recent and authentic",
+    "ruleWarning": "Photos not following these rules will be rejected",
+    "acceptRulesLabel": "I accept the rules and certify that this photo is mine",
+    "submit": "Upload",
+    "moderationInfo": "Photos are reviewed within 24 hours",
+    "limitReached": "Photo limit reached",
+    "limitReachedDesc": "You have reached the maximum number of photos allowed on your current plan.",
+    "managePhotos": "Manage my photos",
+    "upgradePremium": "Upgrade to Premium",
+    "fileTooLarge": "File too large",
+    "maxSize": "Maximum file size is 10MB",
+    "noFileSelected": "No file selected",
+    "selectPhoto": "Please select a photo",
+    "mustAcceptRules": "You must accept the rules to continue",
+    "success": "Photo uploaded successfully",
+    "pendingModeration": "Your photo will be reviewed before being published"
+  },
+  "admin": {
+    "title": "Administration",
+    "panelTitle": "Admin Panel",
+    "backToSite": "Back to site",
+    "nav": {
+      "dashboard": "Dashboard",
+      "photos": "Photos",
+      "users": "Users",
+      "reports": "Reports",
+      "stats": "Statistics"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Platform overview",
+      "loading": "Loading dashboard...",
+      "today": "today",
+      "users": "Users",
+      "photos": "Photos",
+      "pending": "pending",
+      "votesToday": "Votes today",
+      "reports": "Reports",
+      "toHandle": "to handle",
+      "activeSubscriptions": "Active subscriptions",
+      "totalPaying": "Total paying",
+      "quickActions": "Quick actions",
+      "pendingPhotos": "Pending photos",
+      "reportsToHandle": "Reports to handle",
+      "recentActivity": "Recent activity",
+      "activity": {
+        "photoApproved": "Photo approved",
+        "justNow": "Just now",
+        "newUser": "New user registered",
+        "fiveMinutesAgo": "5 minutes ago",
+        "newPremium": "New Premium subscription",
+        "fifteenMinutesAgo": "15 minutes ago"
+      }
+    },
+    "photos": {
+      "title": "Photo Moderation",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All",
+      "approve": "Approve",
+      "reject": "Reject",
+      "verifySize": "Verify size",
+      "verifiedLength": "Verified length (cm)"
+    },
+    "users": {
+      "title": "User Management",
+      "search": "Search users...",
+      "ban": "Ban",
+      "unban": "Unban",
+      "banReason": "Ban reason"
+    },
+    "reports": {
+      "title": "Reports",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "dismiss": "Dismiss",
+      "takeAction": "Take action"
+    }
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access denied",
+    "serverError": "Server error",
+    "networkError": "Network error"
+  },
+  "footer": {
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact",
+    "copyright": "All rights reserved"
+  }
+}
