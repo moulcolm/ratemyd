@@ -9,6 +9,20 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
+    // Vérifier le token secret (protection minimale)
+    const authHeader = req.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+
+    // Le token doit être défini dans les variables d'environnement Vercel
+    const expectedToken = process.env.INIT_SEED_TOKEN || 'init-seed-secret-2026';
+
+    if (token !== expectedToken) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Provide valid token in Authorization header.' },
+        { status: 401 }
+      );
+    }
+
     // Vérifier si des utilisateurs existent déjà
     const existingUsers = await prisma.user.count();
 
