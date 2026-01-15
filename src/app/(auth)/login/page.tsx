@@ -32,17 +32,23 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
+      // Try simple-login first
+      const response = await fetch('/api/auth/simple-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
-      if (result?.error) {
+      const data = await response.json();
+
+      if (!response.ok) {
         addToast({
           type: 'error',
           title: t('loginError'),
-          message: tErrors('invalidCredentials'),
+          message: data.error || tErrors('invalidCredentials'),
         });
       } else {
         addToast({
@@ -50,10 +56,11 @@ export default function LoginPage() {
           title: t('loginSuccess'),
           message: t('welcome'),
         });
-        router.push(callbackUrl);
-        router.refresh();
+        // Refresh the page to update the session
+        window.location.href = callbackUrl;
       }
-    } catch {
+    } catch (error) {
+      console.error('Login error:', error);
       addToast({
         type: 'error',
         title: tCommon('error'),
