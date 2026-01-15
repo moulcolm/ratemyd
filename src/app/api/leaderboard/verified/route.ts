@@ -10,13 +10,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    // Everyone can see full leaderboard now
-    if (!limits.canFilterVerified) {
-      return NextResponse.json(
-        { error: 'Le classement vérifiés est réservé aux abonnés Premium et VIP' },
-        { status: 403 }
-      );
-    }
+    // Everyone can see verified leaderboard now
 
     const searchParams = req.nextUrl.searchParams;
     const page = parseInt(searchParams.get('page') || '1');
