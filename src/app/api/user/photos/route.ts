@@ -24,7 +24,6 @@ export async function GET() {
         isVerified: true,
         declaredLength: true,
         declaredGirth: true,
-        verifiedLength: true,
         elo: true,
         totalMatches: true,
         wins: true,
@@ -46,6 +45,7 @@ export async function GET() {
       ...photo,
       totalVotes: photo.totalMatches,
       boostActive: photo.boostEndsAt ? new Date(photo.boostEndsAt) > new Date() : false,
+      verifiedLength: null, // Field doesn't exist in schema yet
     }));
 
     return NextResponse.json({ success: true, data: formattedPhotos });
