@@ -4,12 +4,9 @@ import type { NextAuthConfig } from 'next-auth';
 // This file should NOT import Prisma, bcrypt, or any Node.js-only modules
 
 export const authConfig: NextAuthConfig = {
-    debug: true, // Enable debug mode
     pages: {
         signIn: '/login',
-        error: '/login',
     },
-    basePath: '/api/auth',
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;

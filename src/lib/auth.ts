@@ -7,6 +7,7 @@ import { authConfig } from './auth.config';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   // Note: Adapter is commented out for Credentials provider
   // PrismaAdapter causes issues with Credentials provider in NextAuth v5
   // adapter: PrismaAdapter(prisma),
