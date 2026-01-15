@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
@@ -43,6 +44,8 @@ export default function ProfileSettingsPage() {
     { href: '/profile/settings', icon: Settings, label: tMenu('settings'), active: true },
   ];
 
+  const router = useRouter();
+  const { signOut } = useAuth();
   const queryClient = useQueryClient();
   const { addToast } = useToast();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -117,8 +120,9 @@ export default function ProfileSettingsPage() {
       if (!res.ok) throw new Error('Erreur');
       return res.json();
     },
-    onSuccess: () => {
-      signOut({ callbackUrl: '/' });
+    onSuccess: async () => {
+      await signOut();
+      router.push('/');
     },
     onError: () => {
       addToast({ type: 'error', title: tCommon('error'), message: t('deleteAccountError') });
@@ -276,7 +280,10 @@ export default function ProfileSettingsPage() {
 
               <Button
                 variant="outline"
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={async () => {
+                  await signOut();
+                  router.push('/');
+                }}
                 leftIcon={<LogOut className="w-4 h-4" />}
               >
                 {t('signOut')}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
@@ -26,7 +26,7 @@ export default function AdminLayout({
 }) {
   const t = useTranslations('admin');
   const tCommon = useTranslations('common');
-  const { data: session, status } = useSession();
+  const { data: session, status } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
