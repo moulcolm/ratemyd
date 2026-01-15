@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     const userData = await prisma.user.findUnique({
       where: { id: user.id },
       select: {
-        subscriptionTier: true,
         bonusPhotoSlots: true,
         _count: {
           select: {
@@ -31,9 +30,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Utilisateur non trouvé' }, { status: 404 });
     }
 
-    const limits = TIER_LIMITS[userData.subscriptionTier];
+    const limits = getUserLimits(userData.bonusPhotoSlots);
     // photosPerCategory est par catégorie (REPOS, ERECTION), donc on multiplie par 2
-    const totalSlots = (limits.photosPerCategory * 2) + userData.bonusPhotoSlots;
+    const totalSlots = limits.effectivePhotosPerCategory * 2;
     const usedSlots = userData._count.photos;
     const availableSlots = Math.max(0, totalSlots - usedSlots);
 

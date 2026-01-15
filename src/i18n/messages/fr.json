@@ -21,7 +21,6 @@
     "compare": "Comparer",
     "leaderboard": "Classement",
     "profile": "Profil",
-    "subscription": "Abonnement",
     "admin": "Admin",
     "login": "Connexion",
     "register": "Inscription",
@@ -136,36 +135,14 @@
         "fairComparisons": "Comparaisons équitables"
       }
     },
-    "pricing": {
-      "title": "Plans et tarifs",
-      "subtitle": "Commencez gratuitement, passez premium pour plus d'avantages",
-      "popular": "Populaire",
-      "perMonth": "/mois",
-      "free": {
-        "name": "Gratuit",
-        "feature1": "20 votes/jour",
-        "feature2": "1 photo/catégorie",
-        "feature3": "Top 100",
-        "cta": "Commencer"
-      },
-      "premium": {
-        "name": "Premium",
-        "feature1": "Votes illimités",
-        "feature2": "3 photos/catégorie",
-        "feature3": "Classement complet",
-        "feature4": "Stats détaillées",
-        "feature5": "Sans publicité",
-        "cta": "Passer Premium"
-      },
-      "vip": {
-        "name": "VIP",
-        "feature1": "Tout Premium +",
-        "feature2": "5 photos/catégorie",
-        "feature3": "Modération prioritaire",
-        "feature4": "Bonus ELO +10%",
-        "feature5": "Badge VIP",
-        "cta": "Passer VIP"
-      }
+    "features_list": {
+      "title": "Fonctionnalités",
+      "subtitle": "Tout est gratuit, pour tous",
+      "feature1": "Votes illimités",
+      "feature2": "2 photos par catégorie (4 max)",
+      "feature3": "Classement complet",
+      "feature4": "Stats détaillées",
+      "feature5": "Sans publicité"
     },
     "cta": {
       "title": "Prêt à rejoindre la compétition ?",
@@ -239,19 +216,14 @@
     "title": "Profil",
     "loadingProfile": "Chargement du profil...",
     "memberSince": "Membre depuis {date}",
-    "upgradeToPremium": "Passer Premium",
-    "manageSubscription": "Gérer abonnement",
     "activePhotos": "Photos actives",
     "wins": "Victoires",
     "winRate": "Taux de victoire",
     "bestElo": "Meilleur ELO",
-    "yourSubscription": "Votre abonnement",
+    "yourAccount": "Votre compte",
     "unlimitedVotes": "Votes illimités",
-    "votesPerDay": "{count} votes/jour",
     "photosMax": "{count} photos max",
-    "noAds": "Sans publicité",
     "activeBonus": "Bonus actifs",
-    "bonusVotes": "Votes bonus",
     "bonusPhotoSlots": "Slots photos bonus",
     "noActiveBonus": "Aucun bonus actif",
     "recentActivity": "Activité récente",
@@ -377,86 +349,13 @@
       "loading": "Chargement..."
     }
   },
-  "subscription": {
-    "title": "Choisissez votre abonnement",
-    "subtitle": "Débloquez plus de fonctionnalités et améliorez votre expérience",
-    "currentPlan": "Vous êtes actuellement",
-    "managePlan": "Gérer l'abonnement",
-    "mostPopular": "Plus populaire",
-    "free": "Gratuit",
-    "perMonth": "/mois",
-    "plans": {
-      "free": {
-        "name": "Gratuit",
-        "description": "Pour découvrir la plateforme",
-        "features": {
-          "votes": "20 votes par jour",
-          "photos": "1 photo maximum",
-          "leaderboard": "Accès au classement",
-          "ads": "Publicités affichées"
-        }
-      },
-      "premium": {
-        "name": "Premium",
-        "description": "Pour les utilisateurs réguliers",
-        "features": {
-          "votes": "100 votes par jour",
-          "photos": "5 photos maximum",
-          "eloBonus": "Bonus ELO +5%",
-          "noAds": "Sans publicité",
-          "badge": "Badge Premium"
-        }
-      },
-      "vip": {
-        "name": "VIP",
-        "description": "L'expérience ultime",
-        "features": {
-          "votes": "Votes illimités",
-          "photos": "10 photos maximum",
-          "eloBonus": "Bonus ELO +10%",
-          "noAds": "Sans publicité",
-          "badge": "Badge VIP exclusif",
-          "support": "Support prioritaire"
-        }
-      }
-    },
-    "cta": {
-      "current": "Plan actuel",
-      "choose": "Choisir {plan}",
-      "upgrade": "Passer VIP",
-      "downgrade": "Downgrade via portail"
-    },
-    "purchases": {
-      "title": "Achats ponctuels",
-      "votes50": "Pack 50 votes",
-      "votes150": "Pack 150 votes",
-      "photoSlot": "+1 slot photo",
-      "boost": "Boost 24h",
-      "buy": "Acheter"
-    },
-    "faq": {
-      "title": "Questions fréquentes",
-      "cancel": {
-        "question": "Puis-je annuler à tout moment ?",
-        "answer": "Oui, vous pouvez annuler votre abonnement à tout moment depuis le portail de gestion. L'accès premium reste actif jusqu'à la fin de la période facturée."
-      },
-      "eloBonus": {
-        "question": "Comment fonctionne le bonus ELO ?",
-        "answer": "Le bonus ELO augmente les points gagnés lors d'une victoire. +5% pour Premium, +10% pour VIP."
-      },
-      "cancelEffect": {
-        "question": "Que se passe-t-il si j'annule ?",
-        "answer": "Vos photos et statistiques sont conservées. Vous repassez simplement au plan gratuit avec ses limitations."
-      }
-    }
-  },
   "upload": {
     "title": "Uploader une photo",
     "subtitle": "Ajoutez une nouvelle photo pour participer au classement",
     "photoSlots": "Emplacements photo",
     "used": "utilisé(s)",
     "full": "Complet",
-    "limitReachedInfo": "Vous avez atteint votre limite de photos. Supprimez une photo ou améliorez votre abonnement pour en ajouter.",
+    "limitReachedInfo": "Vous avez atteint votre limite de 4 photos (2 par catégorie). Supprimez une photo pour en ajouter une nouvelle.",
     "category": "Catégorie",
     "flaccid": "Repos",
     "flaccidDesc": "État de repos",
@@ -480,9 +379,8 @@
     "submit": "Uploader",
     "moderationInfo": "Les photos sont examinées sous 24 heures",
     "limitReached": "Limite de photos atteinte",
-    "limitReachedDesc": "Vous avez atteint le nombre maximum de photos autorisées avec votre abonnement actuel.",
+    "limitReachedDesc": "Vous avez atteint le nombre maximum de 4 photos (2 par catégorie).",
     "managePhotos": "Gérer mes photos",
-    "upgradePremium": "Passer à Premium",
     "fileTooLarge": "Fichier trop volumineux",
     "maxSize": "La taille maximale est de 10Mo",
     "noFileSelected": "Aucun fichier sélectionné",
@@ -513,8 +411,6 @@
       "votesToday": "Votes aujourd'hui",
       "reports": "Signalements",
       "toHandle": "à traiter",
-      "activeSubscriptions": "Abonnements actifs",
-      "totalPaying": "Total payants",
       "quickActions": "Actions rapides",
       "pendingPhotos": "Photos en attente",
       "reportsToHandle": "Signalements à traiter",

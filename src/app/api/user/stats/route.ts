@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
 import { calculateGrowerScore } from '@/lib/elo';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 
 export async function GET() {
   try {
@@ -25,7 +25,7 @@ export async function GET() {
     });
 
     // Calculate rankings
-    const limits = TIER_LIMITS[user.subscriptionTier];
+    const limits = getUserLimits(0);
 
     let rankRepos = null;
     let rankErection = null;

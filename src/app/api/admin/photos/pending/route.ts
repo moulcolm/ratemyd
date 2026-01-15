@@ -44,7 +44,6 @@ export async function GET(req: NextRequest) {
               id: true,
               username: true,
               email: true,
-              subscriptionTier: true,
               createdAt: true,
               isBanned: true,
               _count: {

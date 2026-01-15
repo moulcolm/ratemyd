@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 import { calculateGrowerScore } from '@/lib/elo';
 
 export async function GET(req: NextRequest) {
@@ -15,16 +15,8 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    const limits = TIER_LIMITS[user.subscriptionTier];
-    const maxResults = limits.canSeeFullLeaderboard ? limit : Math.min(limit, 100);
-    const maxPage = limits.canSeeFullLeaderboard ? undefined : Math.ceil(100 / limit);
-
-    if (maxPage && page > maxPage) {
-      return NextResponse.json(
-        { error: 'Passez Premium pour voir le classement complet' },
-        { status: 403 }
-      );
-    }
+    // Everyone can see full leaderboard now
+    const maxResults = limit;
 
     // Get users with photos in BOTH categories
     const users = await prisma.user.findMany({
@@ -54,7 +46,6 @@ export async function GET(req: NextRequest) {
         username: true,
         eloRepos: true,
         eloErection: true,
-        subscriptionTier: true,
         totalWins: true,
         totalLosses: true,
         photos: {
@@ -91,7 +82,7 @@ export async function GET(req: NextRequest) {
       growerScore: u.growerScore,
       eloRepos: u.eloRepos,
       eloErection: u.eloErection,
-      subscriptionTier: u.subscriptionTier,
+      
       isVerified: u.photos.some((p) => p.isVerified),
       winRate: u.totalWins + u.totalLosses > 0
         ? Math.round((u.totalWins / (u.totalWins + u.totalLosses)) * 100)
@@ -104,12 +95,10 @@ export async function GET(req: NextRequest) {
       success: true,
       data: {
         leaderboard,
-        total: limits.canSeeFullLeaderboard ? total : Math.min(total, 100),
+        total,
         page,
         limit: maxResults,
-        hasMore: limits.canSeeFullLeaderboard
-          ? skip + maxResults < total
-          : skip + maxResults < 100 && skip + maxResults < total,
+        hasMore: skip + maxResults < total,
       },
     });
   } catch (error) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const limits = TIER_LIMITS[user.subscriptionTier];
+    // Everyone can see full leaderboard now
     if (!limits.canFilterVerified) {
       return NextResponse.json(
         { error: 'Le classement vérifiés est réservé aux abonnés Premium et VIP' },
@@ -49,7 +49,6 @@ export async function GET(req: NextRequest) {
         eloGlobal: true,
         eloRepos: true,
         eloErection: true,
-        subscriptionTier: true,
         totalWins: true,
         totalLosses: true,
         photos: {
@@ -79,7 +78,7 @@ export async function GET(req: NextRequest) {
       id: u.id,
       username: u.username,
       elo: category === 'REPOS' ? u.eloRepos : category === 'ERECTION' ? u.eloErection : u.eloGlobal,
-      subscriptionTier: u.subscriptionTier,
+      
       isVerified: true,
       totalMatches: u.photos[0]?.totalMatches || 0,
       declaredLength: u.photos[0]?.declaredLength || null,

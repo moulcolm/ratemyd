@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
 import { getPhotoPair, canUserVote } from '@/lib/matchmaking';
 import { checkRateLimit } from '@/lib/rate-limit';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 
 export async function GET(req: NextRequest) {
   try {
@@ -37,14 +37,7 @@ export async function GET(req: NextRequest) {
     const category = (searchParams.get('category') || 'MIXED') as 'REPOS' | 'ERECTION' | 'MIXED';
     const verifiedOnly = searchParams.get('verifiedOnly') === 'true';
 
-    // Check if user can filter verified
-    const limits = TIER_LIMITS[user.subscriptionTier];
-    if (verifiedOnly && !limits.canFilterVerified) {
-      return NextResponse.json(
-        { error: 'Le filtre "vérifiés uniquement" est réservé aux abonnés Premium et VIP' },
-        { status: 403 }
-      );
-    }
+    // Everyone can filter verified now
 
     const pair = await getPhotoPair({
       category,

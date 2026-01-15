@@ -16,8 +16,6 @@ export async function GET() {
         id: true,
         email: true,
         username: true,
-        subscriptionTier: true,
-        subscriptionEnd: true,
         isAdmin: true,
         eloRepos: true,
         eloErection: true,
@@ -26,7 +24,6 @@ export async function GET() {
         totalVotesReceived: true,
         totalWins: true,
         totalLosses: true,
-        bonusVotes: true,
         bonusPhotoSlots: true,
         createdAt: true,
         _count: {

@@ -50,11 +50,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check user limits
-    const limits = getUserLimits(
-      user.subscriptionTier,
-      user.bonusPhotoSlots,
-      user.bonusVotes
-    );
+    const limits = getUserLimits(user.bonusPhotoSlots);
 
     const currentPhotosInCategory = await prisma.photo.count({
       where: {
@@ -67,7 +63,7 @@ export async function POST(req: NextRequest) {
     if (currentPhotosInCategory >= limits.effectivePhotosPerCategory) {
       return NextResponse.json(
         {
-          error: `Vous avez atteint la limite de ${limits.effectivePhotosPerCategory} photo(s) pour cette catégorie. Passez à un abonnement supérieur pour en ajouter plus.`,
+          error: `Vous avez atteint la limite de ${limits.effectivePhotosPerCategory} photo(s) pour cette catégorie.`,
         },
         { status: 403 }
       );
@@ -82,13 +78,8 @@ export async function POST(req: NextRequest) {
       'photo'
     );
 
-    // Calculate moderation priority
-    let moderationPriority = 0;
-    if (user.subscriptionTier === 'VIP') {
-      moderationPriority = 2;
-    } else if (user.subscriptionTier === 'PREMIUM') {
-      moderationPriority = 1;
-    }
+    // All users have same priority
+    const moderationPriority = 0;
 
     // Create photo record
     const photo = await prisma.photo.create({

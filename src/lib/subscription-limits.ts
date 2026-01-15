@@ -1,60 +1,28 @@
 import { TierLimits } from '@/types';
 
-export const TIER_LIMITS: Record<string, TierLimits> = {
-  FREE: {
-    dailyVotes: 20,
-    photosPerCategory: 1,
-    canSeeFullLeaderboard: false,
-    canSeeDetailedStats: false,
-    canSeeEloHistory: false,
-    canFilterVerified: false,
-    verificationBonus: 1.05,
-    hasAds: true,
-    moderationPriority: 0,
-  },
-  PREMIUM: {
-    dailyVotes: Infinity,
-    photosPerCategory: 3,
-    canSeeFullLeaderboard: true,
-    canSeeDetailedStats: true,
-    canSeeEloHistory: true,
-    canFilterVerified: true,
-    verificationBonus: 1.07,
-    hasAds: false,
-    moderationPriority: 1,
-  },
-  VIP: {
-    dailyVotes: Infinity,
-    photosPerCategory: 5,
-    canSeeFullLeaderboard: true,
-    canSeeDetailedStats: true,
-    canSeeEloHistory: true,
-    canFilterVerified: true,
-    verificationBonus: 1.10,
-    hasAds: false,
-    moderationPriority: 2,
-  },
+// Tout le monde a un compte gratuit avec les mêmes limites
+export const DEFAULT_LIMITS: TierLimits = {
+  dailyVotes: Infinity, // Votes illimités
+  photosPerCategory: 2, // 2 photos par catégorie = 4 photos au total
+  canSeeFullLeaderboard: true,
+  canSeeDetailedStats: true,
+  canSeeEloHistory: true,
+  canFilterVerified: true,
+  verificationBonus: 1.05,
+  hasAds: false,
+  moderationPriority: 0,
 };
 
-export function getUserLimits(
-  tier: string,
-  bonusPhotoSlots: number = 0,
-  bonusVotes: number = 0
-) {
-  const base = TIER_LIMITS[tier] || TIER_LIMITS.FREE;
-
+export function getUserLimits(bonusPhotoSlots: number = 0) {
   return {
-    ...base,
-    effectivePhotosPerCategory: base.photosPerCategory + bonusPhotoSlots,
-    effectiveDailyVotes: base.dailyVotes === Infinity
-      ? Infinity
-      : base.dailyVotes + bonusVotes,
+    ...DEFAULT_LIMITS,
+    effectivePhotosPerCategory: DEFAULT_LIMITS.photosPerCategory + bonusPhotoSlots,
+    effectiveDailyVotes: DEFAULT_LIMITS.dailyVotes,
   };
 }
 
-export function canAccessFeature(tier: string, feature: keyof TierLimits): boolean {
-  const limits = TIER_LIMITS[tier] || TIER_LIMITS.FREE;
-  const value = limits[feature];
+export function canAccessFeature(feature: keyof TierLimits): boolean {
+  const value = DEFAULT_LIMITS[feature];
 
   if (typeof value === 'boolean') {
     return value;

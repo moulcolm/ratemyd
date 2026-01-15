@@ -24,11 +24,6 @@ model User {
   bannedAt          DateTime?
   isAdmin           Boolean   @default(false)
 
-  subscriptionTier  SubscriptionTier @default(FREE)
-  subscriptionId    String?
-  subscriptionEnd   DateTime?
-
-  bonusVotes        Int       @default(0)
   bonusPhotoSlots   Int       @default(0)
 
   eloRepos          Int       @default(1000)
@@ -52,14 +47,7 @@ model User {
   boosts            VisibilityBoost[]
   moderationActions ModerationLog[] @relation("ModeratorRelation")
 
-  @@index([subscriptionTier])
   @@index([eloGlobal])
-}
-
-enum SubscriptionTier {
-  FREE
-  PREMIUM
-  VIP
 }
 
 model Account {
@@ -317,9 +305,6 @@ model Transaction {
 }
 
 enum TransactionType {
-  SUBSCRIPTION_PREMIUM
-  SUBSCRIPTION_VIP
-  PURCHASE_VOTES
   PURCHASE_PHOTO_SLOT
   PURCHASE_BOOST
   PURCHASE_RANK_REVEAL
@@ -391,8 +376,6 @@ model GlobalStats {
   totalUsers      Int      @default(0)
   totalPhotos     Int      @default(0)
   totalVotes      Int      @default(0)
-  totalPremium    Int      @default(0)
-  totalVip        Int      @default(0)
   totalRevenue    Int      @default(0)
   avgEloRepos     Float    @default(1000)
   avgEloErection  Float    @default(1000)

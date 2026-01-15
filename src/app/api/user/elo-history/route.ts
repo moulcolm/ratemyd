@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Check subscription
-    const limits = TIER_LIMITS[user.subscriptionTier];
+    const limits = getUserLimits(0);
     if (!limits.canSeeEloHistory) {
       return NextResponse.json(
         { error: 'Fonctionnalité Premium requise' },

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { TIER_LIMITS } from '@/lib/subscription-limits';
+import { getUserLimits } from '@/lib/subscription-limits';
 import { calculateGrowerScore } from '@/lib/elo';
 
 export async function GET(req: NextRequest) {
@@ -13,8 +13,6 @@ export async function GET(req: NextRequest) {
 
     const searchParams = req.nextUrl.searchParams;
     const category = searchParams.get('category') as 'repos' | 'erection' | 'global' | 'grower' | null;
-
-    const limits = TIER_LIMITS[user.subscriptionTier];
 
     // Check if user has photos in the category
     const hasPhotos = await prisma.photo.findFirst({
@@ -117,20 +115,6 @@ export async function GET(req: NextRequest) {
           },
         })) + 1;
         elo = user.eloGlobal;
-    }
-
-    // For FREE users, hide exact rank if > 100
-    if (!limits.canSeeFullLeaderboard && rank > 100) {
-      return NextResponse.json({
-        success: true,
-        data: {
-          rank: null,
-          elo,
-          approximateRank: '100+',
-          message: 'Passez Premium pour voir votre rang exact',
-          ...additionalData,
-        },
-      });
     }
 
     return NextResponse.json({

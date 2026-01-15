@@ -47,11 +47,11 @@ export async function POST(req: NextRequest) {
     const [leftPhoto, rightPhoto] = await Promise.all([
       prisma.photo.findUnique({
         where: { id: leftPhotoId },
-        include: { user: { select: { id: true, subscriptionTier: true } } },
+        include: { user: { select: { id: true } } },
       }),
       prisma.photo.findUnique({
         where: { id: rightPhotoId },
-        include: { user: { select: { id: true, subscriptionTier: true } } },
+        include: { user: { select: { id: true } } },
       }),
     ]);
 
@@ -90,12 +90,10 @@ export async function POST(req: NextRequest) {
       {
         elo: leftPhoto.elo,
         isVerified: leftPhoto.isVerified,
-        userTier: leftPhoto.user.subscriptionTier,
       },
       {
         elo: rightPhoto.elo,
         isVerified: rightPhoto.isVerified,
-        userTier: rightPhoto.user.subscriptionTier,
       },
       result
     );

@@ -28,10 +28,6 @@ export async function GET(req: NextRequest) {
 
     if (filter === 'banned') {
       whereClause.isBanned = true;
-    } else if (filter === 'premium') {
-      whereClause.subscriptionTier = 'PREMIUM';
-    } else if (filter === 'vip') {
-      whereClause.subscriptionTier = 'VIP';
     }
 
     const [users, total] = await Promise.all([
@@ -44,7 +40,6 @@ export async function GET(req: NextRequest) {
           id: true,
           email: true,
           username: true,
-          subscriptionTier: true,
           isAdmin: true,
           isBanned: true,
           banReason: true,

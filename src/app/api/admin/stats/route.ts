@@ -22,18 +22,12 @@ export async function GET(req: NextRequest) {
     // Users stats
     const [
       totalUsers,
-      freeUsers,
-      premiumUsers,
-      vipUsers,
       bannedUsers,
       newUsersToday,
       newUsersThisWeek,
       newUsersThisMonth,
     ] = await Promise.all([
       prisma.user.count(),
-      prisma.user.count({ where: { subscriptionTier: 'FREE' } }),
-      prisma.user.count({ where: { subscriptionTier: 'PREMIUM' } }),
-      prisma.user.count({ where: { subscriptionTier: 'VIP' } }),
       prisma.user.count({ where: { isBanned: true } }),
       prisma.user.count({ where: { createdAt: { gte: todayStart } } }),
       prisma.user.count({ where: { createdAt: { gte: weekStart } } }),
@@ -78,9 +72,6 @@ export async function GET(req: NextRequest) {
       data: {
         users: {
           total: totalUsers,
-          free: freeUsers,
-          premium: premiumUsers,
-          vip: vipUsers,
           banned: bannedUsers,
           newToday: newUsersToday,
           newThisWeek: newUsersThisWeek,
@@ -100,9 +91,8 @@ export async function GET(req: NextRequest) {
           thisMonth: votesThisMonth,
         },
         revenue: {
-          subscriptions: premiumUsers * 4.99 + vipUsers * 9.99,
           purchases: totalTransactions._sum.amount || 0,
-          total: (premiumUsers * 4.99 + vipUsers * 9.99) + (totalTransactions._sum.amount || 0),
+          total: totalTransactions._sum.amount || 0,
         },
       },
     });

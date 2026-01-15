@@ -10,11 +10,7 @@ const DEFAULT_CONFIG: EloConfig = {
   maxElo: 3000,
 };
 
-const VERIFICATION_BONUS: Record<string, number> = {
-  FREE: 1.05,
-  PREMIUM: 1.07,
-  VIP: 1.10,
-};
+const VERIFICATION_BONUS = 1.05;
 
 export function expectedScore(playerElo: number, opponentElo: number): number {
   return 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 400));
@@ -25,7 +21,6 @@ export function calculateNewElo(
   opponentElo: number,
   result: 'win' | 'loss' | 'draw',
   isVerified: boolean = false,
-  subscriptionTier: string = 'FREE',
   config: EloConfig = DEFAULT_CONFIG
 ): { newElo: number; change: number } {
   const expected = expectedScore(playerElo, opponentElo);
@@ -47,8 +42,7 @@ export function calculateNewElo(
 
   // Apply verification bonus only on wins
   if (isVerified && actualScore > expected) {
-    const bonus = VERIFICATION_BONUS[subscriptionTier] || VERIFICATION_BONUS.FREE;
-    kFactor *= bonus;
+    kFactor *= VERIFICATION_BONUS;
   }
 
   const change = Math.round(kFactor * (actualScore - expected));
@@ -61,8 +55,8 @@ export function calculateNewElo(
 }
 
 export function processVote(
-  leftPhoto: { elo: number; isVerified: boolean; userTier: string },
-  rightPhoto: { elo: number; isVerified: boolean; userTier: string },
+  leftPhoto: { elo: number; isVerified: boolean },
+  rightPhoto: { elo: number; isVerified: boolean },
   result: 'LEFT_WINS' | 'RIGHT_WINS' | 'DRAW'
 ) {
   let leftResult: 'win' | 'loss' | 'draw';
@@ -87,16 +81,14 @@ export function processVote(
     leftPhoto.elo,
     rightPhoto.elo,
     leftResult,
-    leftPhoto.isVerified,
-    leftPhoto.userTier
+    leftPhoto.isVerified
   );
 
   const rightCalc = calculateNewElo(
     rightPhoto.elo,
     leftPhoto.elo,
     rightResult,
-    rightPhoto.isVerified,
-    rightPhoto.userTier
+    rightPhoto.isVerified
   );
 
   return {
