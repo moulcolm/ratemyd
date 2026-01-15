@@ -1,12 +1,11 @@
-import { User, Photo, Vote, Achievement, Transaction, Report, SubscriptionTier, PhotoCategory, PhotoStatus, VoteResult } from '@prisma/client';
+import { User, Photo, Vote, Achievement, Transaction, Report, PhotoCategory, PhotoStatus, VoteResult } from '@prisma/client';
 
-export type { User, Photo, Vote, Achievement, Transaction, Report, SubscriptionTier, PhotoCategory, PhotoStatus, VoteResult };
+export type { User, Photo, Vote, Achievement, Transaction, Report, PhotoCategory, PhotoStatus, VoteResult };
 
 export interface SafeUser {
   id: string;
   email: string;
   username: string;
-  subscriptionTier: SubscriptionTier;
   isAdmin: boolean;
   eloRepos: number;
   eloErection: number;
@@ -15,14 +14,12 @@ export interface SafeUser {
   totalWins: number;
   totalLosses: number;
   createdAt: Date;
-  bonusVotes: number;
   bonusPhotoSlots: number;
 }
 
 export interface PhotoWithUser extends Photo {
   user: {
     username: string;
-    subscriptionTier: SubscriptionTier;
   };
 }
 
@@ -35,7 +32,7 @@ export interface PhotoPair {
     isVerified: boolean;
     declaredLength: number | null;
     user: {
-      subscriptionTier: SubscriptionTier;
+      id: string;
     };
   };
   rightPhoto: {
@@ -46,7 +43,7 @@ export interface PhotoPair {
     isVerified: boolean;
     declaredLength: number | null;
     user: {
-      subscriptionTier: SubscriptionTier;
+      id: string;
     };
   };
 }
@@ -57,7 +54,6 @@ export interface LeaderboardEntry {
   username: string;
   elo: number;
   isVerified: boolean;
-  subscriptionTier: SubscriptionTier;
   totalMatches: number;
   winRate: number;
   photoId: string;
@@ -117,8 +113,6 @@ export interface AdminDashboardStats {
   pendingModeration: number;
   pendingVerification: number;
   pendingReports: number;
-  totalPremium: number;
-  totalVip: number;
   totalRevenue: number;
   todayNewUsers: number;
   todayNewPhotos: number;
@@ -140,7 +134,6 @@ export interface ModerationItem {
     id: string;
     username: string;
     email: string;
-    subscriptionTier: SubscriptionTier;
     createdAt: Date;
   };
   verificationPhotoUrl?: string | null;
