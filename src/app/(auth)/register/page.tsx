@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Mail, Lock, User, Calendar, ArrowLeft, UserPlus } from 'lucide-react';
 import { Button, Input, Card } from '@/components/ui';
 import { useToast } from '@/components/ui/Toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function RegisterPage() {
   const t = useTranslations('auth.register');
@@ -16,6 +16,7 @@ export default function RegisterPage() {
   const tCommon = useTranslations('common');
   const router = useRouter();
   const { addToast } = useToast();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -122,14 +123,22 @@ export default function RegisterPage() {
         return;
       }
 
-      // Auto-login after registration
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
+      // Auto-login after registration using JWT
+      const loginResponse = await fetch('/api/auth/simple-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
-      if (result?.ok) {
+      const loginData = await loginResponse.json();
+
+      if (loginResponse.ok && loginData.success) {
+        // Update session cache
+        queryClient.setQueryData(['session'], { user: loginData.user });
+
         addToast({
           type: 'success',
           title: t('registerSuccess'),
@@ -137,6 +146,14 @@ export default function RegisterPage() {
         });
         router.push('/compare');
         router.refresh();
+      } else {
+        // Registration succeeded but login failed - redirect to login
+        addToast({
+          type: 'success',
+          title: t('registerSuccess'),
+          message: 'Please log in to continue',
+        });
+        router.push('/login');
       }
     } catch {
       addToast({
