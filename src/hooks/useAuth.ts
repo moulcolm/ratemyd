@@ -31,11 +31,18 @@ export function useAuth() {
   const signOut = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
+      // Clear the session cache
       queryClient.setQueryData(['session'], { user: null });
-      router.push('/');
-      router.refresh();
+      // Cancel any ongoing queries
+      await queryClient.cancelQueries({ queryKey: ['session'] });
+      // Clear all queries to avoid refetch issues
+      queryClient.removeQueries();
+      // Navigate to home
+      window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
+      // Force redirect even on error
+      window.location.href = '/';
     }
   };
 
