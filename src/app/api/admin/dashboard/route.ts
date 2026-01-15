@@ -35,8 +35,6 @@ export async function GET() {
         totalUsers: globalStats?.totalUsers || 0,
         totalPhotos: globalStats?.totalPhotos || 0,
         totalVotes: globalStats?.totalVotes || 0,
-        totalPremium: globalStats?.totalPremium || 0,
-        totalVip: globalStats?.totalVip || 0,
         totalRevenue: globalStats?.totalRevenue || 0,
         pendingModeration,
         pendingVerification,
