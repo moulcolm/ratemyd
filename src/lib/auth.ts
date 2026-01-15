@@ -1,13 +1,15 @@
 import { prisma } from './prisma';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@auth/prisma-adapter';
+// import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import { authConfig } from './auth.config';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
-  adapter: PrismaAdapter(prisma),
+  // Note: Adapter is commented out for Credentials provider
+  // PrismaAdapter causes issues with Credentials provider in NextAuth v5
+  // adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       name: 'credentials',

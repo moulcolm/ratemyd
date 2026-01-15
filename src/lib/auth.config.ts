@@ -13,29 +13,24 @@ export const authConfig: NextAuthConfig = {
             const isLoggedIn = !!auth?.user;
             const pathname = nextUrl.pathname;
 
-            // Public routes
+            // Public routes - always accessible
             const publicRoutes = ['/', '/login', '/register'];
-            const isPublicRoute = publicRoutes.includes(pathname);
-
-            // API routes that don't require auth
-            const publicApiRoutes = ['/api/auth', '/api/register'];
-            const isPublicApiRoute = publicApiRoutes.some(route => pathname.startsWith(route));
-
-            // Admin routes
-            const isAdminRoute = pathname.startsWith('/admin');
-            const isAdmin = auth?.user && (auth.user as { isAdmin?: boolean }).isAdmin;
-
-            // Protect admin routes
-            if (isAdminRoute && !isAdmin) {
-                return false;
-            }
-
-            // Public routes and API routes are always accessible
-            if (isPublicRoute || isPublicApiRoute) {
+            if (publicRoutes.includes(pathname)) {
                 return true;
             }
 
-            // Require login for all other routes
+            // API routes that don't require auth
+            if (pathname.startsWith('/api/auth') || pathname.startsWith('/api/register')) {
+                return true;
+            }
+
+            // Admin routes - require admin privileges
+            if (pathname.startsWith('/admin')) {
+                const isAdmin = auth?.user && (auth.user as { isAdmin?: boolean }).isAdmin;
+                return !!isAdmin;
+            }
+
+            // All other routes require authentication
             return isLoggedIn;
         },
         async jwt({ token, user }) {
