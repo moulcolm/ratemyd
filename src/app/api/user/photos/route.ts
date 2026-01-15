@@ -34,7 +34,17 @@ export async function GET() {
         rejectionReason: true,
         verificationRequestedAt: true,
         verifiedAt: true,
-        boostEndsAt: true,
+        boosts: {
+          select: {
+            endsAt: true,
+          },
+          where: {
+            endsAt: {
+              gt: new Date(),
+            },
+          },
+          take: 1,
+        },
       },
     });
 
@@ -44,7 +54,8 @@ export async function GET() {
     const formattedPhotos = photos.map(photo => ({
       ...photo,
       totalVotes: photo.totalMatches,
-      boostActive: photo.boostEndsAt ? new Date(photo.boostEndsAt) > new Date() : false,
+      boostActive: photo.boosts.length > 0,
+      boostEndsAt: photo.boosts[0]?.endsAt || null,
       verifiedLength: null, // Field doesn't exist in schema yet
     }));
 
