@@ -18,7 +18,7 @@ export const authConfig: NextAuthConfig = {
             const isPublicRoute = publicRoutes.includes(pathname);
 
             // API routes that don't require auth
-            const publicApiRoutes = ['/api/auth', '/api/register', '/api/admin/init-seed'];
+            const publicApiRoutes = ['/api/auth', '/api/register'];
             const isPublicApiRoute = publicApiRoutes.some(route => pathname.startsWith(route));
 
             // Admin routes
