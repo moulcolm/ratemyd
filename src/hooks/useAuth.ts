@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 interface User {
   id: string;
@@ -9,45 +10,38 @@ interface User {
   isAdmin: boolean;
 }
 
-interface AuthState {
+interface Session {
   user: User | null;
-  status: 'loading' | 'authenticated' | 'unauthenticated';
 }
 
 export function useAuth() {
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    status: 'loading',
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { data: session, isLoading } = useQuery<Session>({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const res = await fetch('/api/auth/session');
+      return res.json();
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
   });
 
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const response = await fetch('/api/auth/session');
-        const data = await response.json();
-
-        if (data.user) {
-          setAuthState({
-            user: data.user,
-            status: 'authenticated',
-          });
-        } else {
-          setAuthState({
-            user: null,
-            status: 'unauthenticated',
-          });
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setAuthState({
-          user: null,
-          status: 'unauthenticated',
-        });
-      }
+  const signOut = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      queryClient.setQueryData(['session'], { user: null });
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      console.error('Logout error:', error);
     }
+  };
 
-    checkAuth();
-  }, []);
-
-  return authState;
+  return {
+    data: session,
+    status: isLoading ? 'loading' : session?.user ? 'authenticated' : 'unauthenticated',
+    signOut,
+  };
 }

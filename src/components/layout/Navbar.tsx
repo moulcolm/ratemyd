@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -23,7 +23,7 @@ import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session, status, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const t = useTranslations('nav');
