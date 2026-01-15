@@ -1,5 +1,5 @@
 import { prisma } from './prisma';
-import { TIER_LIMITS } from './subscription-limits';
+import { getUserLimits } from './subscription-limits';
 import { PhotoCategory } from '@prisma/client';
 
 interface MatchmakingOptions {
@@ -145,12 +145,12 @@ export async function getPhotoPair(options: MatchmakingOptions) {
 export async function getRemainingVotes(userId: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { subscriptionTier: true, bonusVotes: true },
+    select: { bonusPhotoSlots: true },
   });
 
   if (!user) return { remaining: 0, limit: 0, isUnlimited: false };
 
-  const limits = TIER_LIMITS[user.subscriptionTier];
+  const limits = getUserLimits(user.bonusPhotoSlots);
 
   if (limits.dailyVotes === Infinity) {
     return { remaining: Infinity, limit: Infinity, isUnlimited: true };
@@ -163,7 +163,7 @@ export async function getRemainingVotes(userId: string) {
     where: { voterId: userId, createdAt: { gte: today } },
   });
 
-  const totalLimit = limits.dailyVotes + user.bonusVotes;
+  const totalLimit = limits.effectiveDailyVotes;
   const remaining = Math.max(0, totalLimit - votesToday);
 
   return { remaining, limit: totalLimit, isUnlimited: false };
