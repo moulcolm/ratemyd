@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient, SubscriptionTier } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { requireAdmin } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
     // Vérifier l'authentification et les droits admin
-    const session = await getServerSession(authOptions);
+    const adminUser = await requireAdmin();
 
-    if (!session?.user?.isAdmin) {
+    if (!adminUser) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
