@@ -27,7 +27,7 @@ export default function HomePage() {
               <span className="gradient-text">{t('hero.title1')}</span> {t('hero.and')}{' '}
               <span className="gradient-text">{t('hero.title2')}</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-10">
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
               {t('hero.subtitle')}
             </p>
           </motion.div>
@@ -54,7 +54,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 text-sm text-gray-500"
+            className="mt-6 text-sm text-gray-500 dark:text-gray-500"
           >
             {t('hero.ageRestriction')}
           </motion.p>
@@ -62,7 +62,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-gray-900/50">
+      <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -70,10 +70,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
               {t('features.title')}
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               {t('features.subtitle')}
             </p>
           </motion.div>
@@ -102,13 +102,13 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gray-900 rounded-2xl p-8 border border-gray-800 card-hover"
+                className="bg-white dark:bg-gray-900 rounded-2xl p-8 border border-gray-200 dark:border-gray-800 card-hover shadow-sm"
               >
-                <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6">
-                  <feature.icon className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-500/20 rounded-xl flex items-center justify-center mb-6">
+                  <feature.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -124,10 +124,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
               {t('categories.title')}
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               {t('categories.subtitle')}
             </p>
           </motion.div>
@@ -137,17 +137,17 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl p-8 border border-blue-500/30"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-500/10 dark:to-purple-500/10 rounded-2xl p-8 border border-blue-200 dark:border-blue-500/30 shadow-sm"
             >
-              <h3 className="text-2xl font-bold mb-4">{t('categories.flaccid.title')}</h3>
-              <p className="text-gray-400 mb-6">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.flaccid.title')}</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 {t('categories.flaccid.description')}
               </p>
               <ul className="space-y-3">
                 {[t('categories.features.dedicated'), t('categories.features.separateElo'), t('categories.features.fairComparisons')].map(
                   (item) => (
-                    <li key={item} className="flex items-center gap-2 text-gray-300">
-                      <CheckCircle className="w-5 h-5 text-blue-400" />
+                    <li key={item} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       {item}
                     </li>
                   )
@@ -159,17 +159,17 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-pink-500/10 to-purple-500/10 rounded-2xl p-8 border border-pink-500/30"
+              className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-500/10 dark:to-purple-500/10 rounded-2xl p-8 border border-pink-200 dark:border-pink-500/30 shadow-sm"
             >
-              <h3 className="text-2xl font-bold mb-4">{t('categories.erect.title')}</h3>
-              <p className="text-gray-400 mb-6">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.erect.title')}</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 {t('categories.erect.description')}
               </p>
               <ul className="space-y-3">
                 {[t('categories.features.dedicated'), t('categories.features.separateElo'), t('categories.features.fairComparisons')].map(
                   (item) => (
-                    <li key={item} className="flex items-center gap-2 text-gray-300">
-                      <CheckCircle className="w-5 h-5 text-pink-400" />
+                    <li key={item} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <CheckCircle className="w-5 h-5 text-pink-600 dark:text-pink-400" />
                       {item}
                     </li>
                   )
@@ -182,11 +182,11 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-8 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-8 border border-purple-500/30 text-center"
+            className="mt-8 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-purple-500/10 dark:to-pink-500/10 rounded-2xl p-8 border border-amber-200 dark:border-purple-500/30 text-center shadow-sm"
           >
-            <Sparkles className="w-10 h-10 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-4">{t('categories.grower.title')}</h3>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <Sparkles className="w-10 h-10 text-yellow-600 dark:text-yellow-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.grower.title')}</h3>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               {t('categories.grower.description')}
             </p>
           </motion.div>
@@ -194,7 +194,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing Preview */}
-      <section className="py-20 px-4 bg-gray-900/50">
+      <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -202,10 +202,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
               {t('pricing.title')}
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               {t('pricing.subtitle')}
             </p>
           </motion.div>
@@ -256,26 +256,26 @@ export default function HomePage() {
                 transition={{ delay: index * 0.1 }}
                 className={`rounded-2xl p-8 border ${
                   plan.popular
-                    ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-500'
-                    : 'bg-gray-900 border-gray-800'
+                    ? 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-300 dark:border-blue-500 shadow-lg'
+                    : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-sm'
                 } relative`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-sm font-medium px-3 py-1 rounded-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow-sm">
                     {t('pricing.popular')}
                   </div>
                 )}
-                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{plan.name}</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
                   {plan.period && (
-                    <span className="text-gray-400">{plan.period}</span>
+                    <span className="text-gray-600 dark:text-gray-400">{plan.period}</span>
                   )}
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-gray-300">
-                      <CheckCircle className="w-5 h-5 text-green-400" />
+                    <li key={feature} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                       {feature}
                     </li>
                   ))}
@@ -302,10 +302,10 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
               {t('cta.title')}
             </h2>
-            <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto">
               {t('cta.subtitle')}
             </p>
             <Link href="/register">

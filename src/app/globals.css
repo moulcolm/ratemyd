@@ -1,52 +1,102 @@
 @import "tailwindcss";
 
-:root {
+/* Variables de thème clair */
+:root,
+.light {
+  --background: #ffffff;
+  --foreground: #111827;
+  --card-bg: #ffffff;
+  --border: #e5e7eb;
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-light: #dbeafe;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --scrollbar-track: #f3f4f6;
+  --scrollbar-thumb: #d1d5db;
+  --scrollbar-thumb-hover: #9ca3af;
+  --selection-bg: rgba(59, 130, 246, 0.2);
+  --selection-color: #111827;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Variables de thème sombre */
+.dark {
   --background: #030712;
   --foreground: #f9fafb;
+  --card-bg: #111827;
+  --border: #374151;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-light: #1e3a8a;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --scrollbar-track: #1f2937;
+  --scrollbar-thumb: #4b5563;
+  --scrollbar-thumb-hover: #6b7280;
+  --selection-bg: rgba(59, 130, 246, 0.3);
+  --selection-color: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Style moderne et épuré */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: var(--scrollbar-track);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 4px;
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+  border: 2px solid var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Custom selection */
 ::selection {
-  background: rgba(168, 85, 247, 0.4);
-  color: white;
+  background: var(--selection-bg);
+  color: var(--selection-color);
 }
 
-/* Gradient text utility */
+/* Gradient text utility - Bleu moderne */
 .gradient-text {
-  background: linear-gradient(to right, #a855f7, #ec4899);
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Focus ring utility */
+/* Focus ring utility - Bleu moderne */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-950;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-950;
 }
 
 /* Animation utilities */
@@ -62,7 +112,7 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes slideIn {
@@ -77,22 +127,95 @@ body {
 }
 
 .animate-slideIn {
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.4s ease-out;
 }
 
-/* Card hover effect */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Card hover effect - Ombres douces et subtiles */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px -10px rgba(168, 85, 247, 0.2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
 }
 
-/* Glass effect */
+.light .card-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1),
+              0 8px 10px -6px rgba(59, 130, 246, 0.05);
+}
+
+/* Glass effect - Adaptatif clair/sombre */
 .glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.dark .glass {
   background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Ombre légère pour cards */
+.card-shadow {
+  box-shadow: var(--shadow);
+}
+
+.card-shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Bordures subtiles */
+.border-subtle {
+  border-color: var(--border);
+}
+
+/* Texte muted */
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+/* Background muted */
+.bg-muted {
+  background-color: var(--muted);
+}
+
+/* Bouton accent */
+.btn-accent {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Transition globale pour le changement de thème */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Exception pour les animations et transformations */
+*:is(.animate-fadeIn, .animate-slideIn, .animate-slideUp, .card-hover, [class*="transition-transform"]) {
+  transition-property: all;
 }

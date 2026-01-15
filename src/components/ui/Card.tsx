@@ -14,21 +14,21 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     const baseStyles = 'rounded-xl transition-all duration-200';
 
     const variants = {
-      default: 'bg-gray-900',
-      bordered: 'bg-gray-900 border border-gray-800',
-      elevated: 'bg-gray-900 shadow-lg shadow-black/20',
-      gradient: 'bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700',
+      default: 'bg-white dark:bg-gray-900',
+      bordered: 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800',
+      elevated: 'bg-white dark:bg-gray-900 shadow-lg',
+      gradient: 'bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border border-gray-200 dark:border-gray-700',
     };
 
     const paddings = {
       none: '',
-      sm: 'p-3',
-      md: 'p-5',
+      sm: 'p-4',
+      md: 'p-6',
       lg: 'p-8',
     };
 
     const hoverStyles = hoverable
-      ? 'hover:bg-gray-800/80 hover:border-gray-700 cursor-pointer transform hover:-translate-y-0.5'
+      ? 'hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-700 cursor-pointer transform hover:-translate-y-1 card-hover'
       : '';
 
     return (
@@ -59,7 +59,7 @@ interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
 const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn('text-xl font-bold text-white', className)} {...props} />
+    <h3 ref={ref} className={cn('text-xl font-bold text-gray-900 dark:text-white', className)} {...props} />
   )
 );
 
@@ -69,7 +69,7 @@ interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}
 
 const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-gray-400 text-sm mt-1', className)} {...props} />
+    <p ref={ref} className={cn('text-gray-600 dark:text-gray-400 text-sm mt-1', className)} {...props} />
   )
 );
 
@@ -89,7 +89,7 @@ interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('mt-4 pt-4 border-t border-gray-800', className)} {...props} />
+    <div ref={ref} className={cn('mt-4 pt-4 border-t border-gray-200 dark:border-gray-800', className)} {...props} />
   )
 );
 
