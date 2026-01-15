@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Mail, Lock, ArrowLeft, LogIn } from 'lucide-react';
 import { Button, Input, Card } from '@/components/ui';
 import { useToast } from '@/components/ui/Toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function LoginPage() {
   const t = useTranslations('auth.login');
@@ -17,6 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { addToast } = useToast();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -32,7 +33,6 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Try simple-login first
       const response = await fetch('/api/auth/simple-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,13 +51,17 @@ export default function LoginPage() {
           message: data.error || tErrors('invalidCredentials'),
         });
       } else {
+        // Update session cache
+        queryClient.setQueryData(['session'], { user: data.user });
+        
         addToast({
           type: 'success',
           title: t('loginSuccess'),
           message: t('welcome'),
         });
-        // Refresh the page to update the session
-        window.location.href = callbackUrl;
+        
+        router.push(callbackUrl);
+        router.refresh();
       }
     } catch (error) {
       console.error('Login error:', error);

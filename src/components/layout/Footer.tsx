@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <span className="text-2xl font-bold gradient-text">
@@ -33,30 +33,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/subscription" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Abonnements
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-gray-900 dark:text-white font-semibold mb-4">Légal</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/legal/terms" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  CGU
-                </Link>
-              </li>
-              <li>
-                <Link href="/legal/privacy" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Confidentialité
-                </Link>
-              </li>
-              <li>
-                <Link href="/legal/cookies" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Cookies
+                <Link href="/profile" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
+                  Profil
                 </Link>
               </li>
             </ul>
