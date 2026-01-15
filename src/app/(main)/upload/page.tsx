@@ -326,14 +326,9 @@ export default function UploadPage() {
             <p className="text-gray-400 mb-6">
               {t('limitReachedDesc')}
             </p>
-            <div className="flex justify-center gap-4">
-              <Button variant="outline" onClick={() => router.push('/profile/photos')}>
-                {t('managePhotos')}
-              </Button>
-              <Button onClick={() => router.push('/subscription')}>
-                {t('upgradePremium')}
-              </Button>
-            </div>
+            <Button variant="outline" onClick={() => router.push('/profile/photos')}>
+              {t('managePhotos')}
+            </Button>
           </Card>
         )}
       </div>

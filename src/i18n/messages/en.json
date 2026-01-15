@@ -21,7 +21,6 @@
     "compare": "Compare",
     "leaderboard": "Leaderboard",
     "profile": "Profile",
-    "subscription": "Subscription",
     "admin": "Admin",
     "login": "Login",
     "register": "Register",
@@ -136,37 +135,6 @@
         "fairComparisons": "Fair comparisons"
       }
     },
-    "pricing": {
-      "title": "Plans and pricing",
-      "subtitle": "Start for free, go premium for more benefits",
-      "popular": "Popular",
-      "perMonth": "/month",
-      "free": {
-        "name": "Free",
-        "feature1": "20 votes/day",
-        "feature2": "1 photo/category",
-        "feature3": "Top 100",
-        "cta": "Get started"
-      },
-      "premium": {
-        "name": "Premium",
-        "feature1": "Unlimited votes",
-        "feature2": "3 photos/category",
-        "feature3": "Full leaderboard",
-        "feature4": "Detailed stats",
-        "feature5": "No ads",
-        "cta": "Go Premium"
-      },
-      "vip": {
-        "name": "VIP",
-        "feature1": "All Premium +",
-        "feature2": "5 photos/category",
-        "feature3": "Priority moderation",
-        "feature4": "+10% ELO bonus",
-        "feature5": "VIP badge",
-        "cta": "Go VIP"
-      }
-    },
     "cta": {
       "title": "Ready to join the competition?",
       "subtitle": "Sign up for free and start climbing the rankings today.",
@@ -239,19 +207,14 @@
     "title": "Profile",
     "loadingProfile": "Loading profile...",
     "memberSince": "Member since {date}",
-    "upgradeToPremium": "Upgrade to Premium",
-    "manageSubscription": "Manage subscription",
     "activePhotos": "Active photos",
     "wins": "Wins",
     "winRate": "Win rate",
     "bestElo": "Best ELO",
-    "yourSubscription": "Your subscription",
+    "yourAccount": "Your account",
     "unlimitedVotes": "Unlimited votes",
-    "votesPerDay": "{count} votes/day",
-    "photosMax": "{count} photos max",
-    "noAds": "No ads",
+    "photosMax": "{count} photos max (2 per category)",
     "activeBonus": "Active bonuses",
-    "bonusVotes": "Bonus votes",
     "bonusPhotoSlots": "Bonus photo slots",
     "noActiveBonus": "No active bonus",
     "recentActivity": "Recent activity",
@@ -377,86 +340,13 @@
       "loading": "Loading..."
     }
   },
-  "subscription": {
-    "title": "Choose your subscription",
-    "subtitle": "Unlock more features and enhance your experience",
-    "currentPlan": "You are currently on",
-    "managePlan": "Manage subscription",
-    "mostPopular": "Most popular",
-    "free": "Free",
-    "perMonth": "/month",
-    "plans": {
-      "free": {
-        "name": "Free",
-        "description": "Discover the platform",
-        "features": {
-          "votes": "20 votes per day",
-          "photos": "1 photo maximum",
-          "leaderboard": "Leaderboard access",
-          "ads": "Ads displayed"
-        }
-      },
-      "premium": {
-        "name": "Premium",
-        "description": "For regular users",
-        "features": {
-          "votes": "100 votes per day",
-          "photos": "5 photos maximum",
-          "eloBonus": "+5% ELO bonus",
-          "noAds": "No ads",
-          "badge": "Premium badge"
-        }
-      },
-      "vip": {
-        "name": "VIP",
-        "description": "The ultimate experience",
-        "features": {
-          "votes": "Unlimited votes",
-          "photos": "10 photos maximum",
-          "eloBonus": "+10% ELO bonus",
-          "noAds": "No ads",
-          "badge": "Exclusive VIP badge",
-          "support": "Priority support"
-        }
-      }
-    },
-    "cta": {
-      "current": "Current plan",
-      "choose": "Choose {plan}",
-      "upgrade": "Upgrade to VIP",
-      "downgrade": "Downgrade via portal"
-    },
-    "purchases": {
-      "title": "One-time purchases",
-      "votes50": "50 votes pack",
-      "votes150": "150 votes pack",
-      "photoSlot": "+1 photo slot",
-      "boost": "24h boost",
-      "buy": "Buy"
-    },
-    "faq": {
-      "title": "Frequently asked questions",
-      "cancel": {
-        "question": "Can I cancel anytime?",
-        "answer": "Yes, you can cancel your subscription at any time from the management portal. Premium access remains active until the end of the billing period."
-      },
-      "eloBonus": {
-        "question": "How does the ELO bonus work?",
-        "answer": "The ELO bonus increases points earned on wins. +5% for Premium, +10% for VIP."
-      },
-      "cancelEffect": {
-        "question": "What happens if I cancel?",
-        "answer": "Your photos and statistics are kept. You simply go back to the free plan with its limitations."
-      }
-    }
-  },
   "upload": {
     "title": "Upload a photo",
     "subtitle": "Add a new photo to compete in the rankings",
     "photoSlots": "Photo slots",
     "used": "used",
     "full": "Full",
-    "limitReachedInfo": "You have reached your photo limit. Delete a photo or upgrade your subscription to add more.",
+    "limitReachedInfo": "You have reached your photo limit. Delete an existing photo to add a new one.",
     "category": "Category",
     "flaccid": "Flaccid",
     "flaccidDesc": "Resting state",
@@ -480,9 +370,8 @@
     "submit": "Upload",
     "moderationInfo": "Photos are reviewed within 24 hours",
     "limitReached": "Photo limit reached",
-    "limitReachedDesc": "You have reached the maximum number of photos allowed on your current plan.",
+    "limitReachedDesc": "You have reached the maximum number of photos (4 photos: 2 per category). Delete an existing photo to add a new one.",
     "managePhotos": "Manage my photos",
-    "upgradePremium": "Upgrade to Premium",
     "fileTooLarge": "File too large",
     "maxSize": "Maximum file size is 10MB",
     "noFileSelected": "No file selected",
@@ -513,8 +402,6 @@
       "votesToday": "Votes today",
       "reports": "Reports",
       "toHandle": "to handle",
-      "activeSubscriptions": "Active subscriptions",
-      "totalPaying": "Total paying",
       "quickActions": "Quick actions",
       "pendingPhotos": "Pending photos",
       "reportsToHandle": "Reports to handle",
@@ -523,9 +410,7 @@
         "photoApproved": "Photo approved",
         "justNow": "Just now",
         "newUser": "New user registered",
-        "fiveMinutesAgo": "5 minutes ago",
-        "newPremium": "New Premium subscription",
-        "fifteenMinutesAgo": "15 minutes ago"
+        "fiveMinutesAgo": "5 minutes ago"
       }
     },
     "photos": {

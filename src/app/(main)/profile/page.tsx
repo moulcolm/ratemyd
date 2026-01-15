@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -46,7 +45,6 @@ interface UserStats {
 
 export default function ProfilePage() {
   const t = useTranslations('profile');
-  const { data: session } = useSession();
 
   const menuItems = [
     { href: '/profile', icon: User, label: t('menu.profile'), active: true },
