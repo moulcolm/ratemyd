@@ -49,7 +49,7 @@ export async function getPhotoPair(options: MatchmakingOptions) {
       elo: true,
       isVerified: true,
       declaredLength: true,
-      user: { select: { subscriptionTier: true } },
+      user: { select: { id: true } },
     },
     take: 10,
   });
@@ -75,7 +75,7 @@ export async function getPhotoPair(options: MatchmakingOptions) {
         elo: true,
         isVerified: true,
         declaredLength: true,
-        user: { select: { subscriptionTier: true } },
+        user: { select: { id: true } },
       },
     });
   }
@@ -107,7 +107,7 @@ export async function getPhotoPair(options: MatchmakingOptions) {
         elo: true,
         isVerified: true,
         declaredLength: true,
-        user: { select: { subscriptionTier: true } },
+        user: { select: { id: true } },
       },
     });
   } else {
@@ -127,7 +127,7 @@ export async function getPhotoPair(options: MatchmakingOptions) {
         elo: true,
         isVerified: true,
         declaredLength: true,
-        user: { select: { subscriptionTier: true } },
+        user: { select: { id: true } },
       },
     });
   }
