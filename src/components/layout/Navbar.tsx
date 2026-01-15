@@ -18,7 +18,6 @@ import {
   Shield,
 } from 'lucide-react';
 import { Button, Badge } from '@/components/ui';
-import { PremiumBadge } from '@/components/shared/PremiumBadge';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -40,7 +39,6 @@ export function Navbar() {
     { href: '/profile', label: t('profile'), icon: User },
     { href: '/profile/photos', label: 'My Photos', icon: Upload },
     { href: '/profile/stats', label: 'Statistics', icon: BarChart3 },
-    { href: '/subscription', label: t('subscription'), icon: CreditCard },
     { href: '/profile/settings', label: 'Settings', icon: Settings },
   ];
 

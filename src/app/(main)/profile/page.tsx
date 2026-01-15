@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { Card, Badge, Button } from '@/components/ui';
 import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
-import { PremiumBadge } from '@/components/shared/PremiumBadge';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { EloDisplay } from '@/components/shared/EloDisplay';
 import { cn } from '@/lib/utils';
@@ -27,9 +26,7 @@ interface UserProfile {
   id: string;
   username: string;
   email: string;
-  subscriptionTier: string;
   isAdmin: boolean;
-  bonusVotes: number;
   bonusPhotoSlots: number;
   createdAt: string;
 }
@@ -126,9 +123,6 @@ export default function ProfilePage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-2xl font-bold">{profile?.username}</h1>
-                    {profile?.subscriptionTier !== 'FREE' && (
-                      <PremiumBadge tier={profile?.subscriptionTier as 'PREMIUM' | 'VIP'} />
-                    )}
                     {profile?.isAdmin && (
                       <Badge variant="danger">Admin</Badge>
                     )}
@@ -141,12 +135,6 @@ export default function ProfilePage() {
                     })})}
                   </p>
                 </div>
-
-                <Link href="/subscription">
-                  <Button variant={profile?.subscriptionTier === 'FREE' ? 'primary' : 'outline'}>
-                    {profile?.subscriptionTier === 'FREE' ? t('upgradeToPremium') : t('manageSubscription')}
-                  </Button>
-                </Link>
               </div>
             </Card>
 
@@ -177,65 +165,38 @@ export default function ProfilePage() {
               </Card>
             </div>
 
-            {/* Subscription info */}
+            {/* Account info */}
             <Card variant="bordered" className="p-6">
-              <h3 className="text-lg font-bold mb-4">{t('yourSubscription')}</h3>
+              <h3 className="text-lg font-bold mb-4">{t('yourAccount')}</h3>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Crown className={cn(
-                      'w-6 h-6',
-                      profile?.subscriptionTier === 'VIP' ? 'text-yellow-400' :
-                      profile?.subscriptionTier === 'PREMIUM' ? 'text-purple-400' :
-                      'text-gray-500'
-                    )} />
-                    <span className="font-medium">
-                      {profile?.subscriptionTier === 'VIP' ? 'VIP' :
-                       profile?.subscriptionTier === 'PREMIUM' ? 'Premium' :
-                       'Free'}
-                    </span>
+                    <CheckCircle className="w-6 h-6 text-green-400" />
+                    <span className="font-medium">Compte gratuit</span>
                   </div>
 
                   <ul className="space-y-2 text-sm">
                     <li className="flex items-center gap-2 text-gray-400">
                       <CheckCircle className="w-4 h-4 text-green-400" />
-                      {profile?.subscriptionTier === 'VIP' ? t('unlimitedVotes') :
-                       profile?.subscriptionTier === 'PREMIUM' ? t('votesPerDay', { count: 100 }) :
-                       t('votesPerDay', { count: 20 })}
+                      {t('unlimitedVotes')}
                     </li>
                     <li className="flex items-center gap-2 text-gray-400">
                       <CheckCircle className="w-4 h-4 text-green-400" />
-                      {profile?.subscriptionTier === 'VIP' ? t('photosMax', { count: 10 }) :
-                       profile?.subscriptionTier === 'PREMIUM' ? t('photosMax', { count: 5 }) :
-                       t('photosMax', { count: 1 })}
+                      {t('photosMax', { count: 4 })}
                     </li>
-                    {profile?.subscriptionTier !== 'FREE' && (
-                      <li className="flex items-center gap-2 text-gray-400">
-                        <CheckCircle className="w-4 h-4 text-green-400" />
-                        {t('noAds')}
-                      </li>
-                    )}
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="font-medium mb-3">{t('activeBonus')}</h4>
                   <div className="space-y-2">
-                    {profile?.bonusVotes && profile.bonusVotes > 0 ? (
-                      <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">{t('bonusVotes')}</span>
-                        <span className="font-bold text-green-400">+{profile.bonusVotes}</span>
-                      </div>
-                    ) : null}
                     {profile?.bonusPhotoSlots && profile.bonusPhotoSlots > 0 ? (
                       <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
                         <span className="text-gray-400">{t('bonusPhotoSlots')}</span>
                         <span className="font-bold text-green-400">+{profile.bonusPhotoSlots}</span>
                       </div>
-                    ) : null}
-                    {(!profile?.bonusVotes || profile.bonusVotes === 0) &&
-                     (!profile?.bonusPhotoSlots || profile.bonusPhotoSlots === 0) && (
+                    ) : (
                       <p className="text-gray-500 text-sm">{t('noActiveBonus')}</p>
                     )}
                   </div>

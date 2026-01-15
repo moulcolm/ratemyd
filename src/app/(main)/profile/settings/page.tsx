@@ -27,7 +27,6 @@ interface UserProfile {
   id: string;
   username: string;
   email: string;
-  subscriptionTier: string;
   createdAt: string;
 }
 
