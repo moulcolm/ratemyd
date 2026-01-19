@@ -52,11 +52,11 @@ export default function AdminUsersPage() {
   });
 
   const banMutation = useMutation({
-    mutationFn: async ({ userId, banned, reason }: { userId: string; banned: boolean; reason?: string }) => {
+    mutationFn: async ({ userId, action, reason }: { userId: string; action: 'BAN' | 'UNBAN'; reason?: string }) => {
       const res = await fetch(`/api/admin/users/${userId}/ban`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ banned, reason }),
+        body: JSON.stringify({ action, reason }),
       });
       if (!res.ok) throw new Error('Error');
       return res.json();
@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
       queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
       addToast({
         type: 'success',
-        title: variables.banned ? 'Utilisateur banni' : 'Utilisateur débanni',
+        title: variables.action === 'BAN' ? 'Utilisateur banni' : 'Utilisateur débanni',
       });
       setShowBanModal(false);
       setSelectedUser(null);
@@ -82,7 +82,7 @@ export default function AdminUsersPage() {
     if (!selectedUser) return;
     banMutation.mutate({
       userId: selectedUser.id,
-      banned: !selectedUser.isBanned,
+      action: selectedUser.isBanned ? 'UNBAN' : 'BAN',
       reason: banReason,
     });
   };
