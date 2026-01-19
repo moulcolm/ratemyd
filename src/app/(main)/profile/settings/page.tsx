@@ -153,22 +153,22 @@ export default function ProfileSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gray-950 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <Card variant="bordered" className="p-4">
+            <Card variant="bordered" className="p-4 bg-gray-800/50 border-gray-700/50">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium',
                       item.active
-                        ? 'bg-purple-500/20 text-purple-400'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                        : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -183,14 +183,18 @@ export default function ProfileSettingsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">Settings</h1>
-              <p className="text-gray-400">Manage your account settings and preferences</p>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Settings
+              </h1>
+              <p className="text-gray-300 mt-1">Manage your account settings and preferences</p>
             </div>
 
             {/* Profile settings */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <User className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <User className="w-4 h-4 text-purple-400" />
+                </div>
                 Profile Information
               </h3>
 
@@ -220,9 +224,11 @@ export default function ProfileSettingsPage() {
             </Card>
 
             {/* Password settings */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Lock className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <Lock className="w-4 h-4 text-purple-400" />
+                </div>
                 Change Password
               </h3>
 
@@ -263,13 +269,15 @@ export default function ProfileSettingsPage() {
             </Card>
 
             {/* Session */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <LogOut className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                  <LogOut className="w-4 h-4 text-blue-400" />
+                </div>
                 Session
               </h3>
 
-              <p className="text-gray-400 mb-4">
+              <p className="text-gray-300 mb-4">
                 Sign out from your account on this device
               </p>
 
@@ -286,13 +294,15 @@ export default function ProfileSettingsPage() {
             </Card>
 
             {/* Danger zone */}
-            <Card variant="bordered" className="p-6 border-red-500/30">
+            <Card variant="bordered" className="p-6 bg-red-500/5 border-red-500/30">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-red-400">
-                <AlertTriangle className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
+                  <AlertTriangle className="w-4 h-4 text-red-400" />
+                </div>
                 Danger Zone
               </h3>
 
-              <p className="text-gray-400 mb-4">
+              <p className="text-gray-300 mb-4">
                 Permanently delete your account and all associated data
               </p>
 

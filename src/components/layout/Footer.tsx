@@ -4,50 +4,29 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
-          <div className="col-span-1 md:col-span-2">
-            <span className="text-2xl font-bold gradient-text">
-              RateMyD
-            </span>
-            <p className="mt-3 text-gray-600 dark:text-gray-400 text-sm max-w-md leading-relaxed">
-              Plateforme de classement anonyme et sécurisée. Toutes les photos sont modérées
-              manuellement pour garantir la sécurité de la communauté.
-            </p>
+    <footer className="py-10 px-4 border-t border-gray-800 bg-gray-950 mt-auto">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-gray-500 text-sm">
+            RateMyD © {new Date().getFullYear()}
           </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="text-gray-900 dark:text-white font-semibold mb-4">Navigation</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/compare" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Voter
-                </Link>
-              </li>
-              <li>
-                <Link href="/leaderboard" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Classement
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-                  Profil
-                </Link>
-              </li>
-            </ul>
+          <div className="flex items-center gap-6 text-sm text-gray-500 flex-wrap justify-center">
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms
+            </Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/contact" className="hover:text-white transition-colors">
+              Contact
+            </Link>
+            <Link href="/faq" className="hover:text-white transition-colors">
+              FAQ
+            </Link>
           </div>
         </div>
-
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 dark:text-gray-500 text-sm">
-            © {new Date().getFullYear()} RateMyD. Tous droits réservés. 18+ uniquement.
-          </p>
-          <p className="text-gray-500 dark:text-gray-500 text-sm">
-            En utilisant ce site, vous confirmez avoir au moins 18 ans.
-          </p>
+        <div className="text-center mt-6 text-xs text-gray-600">
+          Adults only (18+). All photos are manually moderated.
         </div>
       </div>
     </footer>

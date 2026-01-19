@@ -177,10 +177,12 @@ export default function RegisterPage() {
           Back to Home
         </Link>
 
-        <Card variant="bordered" padding="lg">
+        <Card variant="bordered" padding="lg" className="bg-gray-800/50 border-gray-700/50">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold gradient-text mb-2">Sign Up</h1>
-            <p className="text-gray-400">
+            <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+              Sign Up
+            </h1>
+            <p className="text-gray-300">
               {step === 1
                 ? 'Create your account'
                 : 'Complete your profile'}

@@ -32,7 +32,9 @@ export default function TermsPage() {
             className="space-y-8"
           >
             <div>
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">Terms of Service</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+                Terms of Service
+              </h1>
               <p className="text-gray-400">Last updated: January 19, 2026</p>
             </div>
 
@@ -145,9 +147,30 @@ export default function TermsPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800/50 py-8 px-4">
-        <div className="max-w-7xl mx-auto text-center text-gray-500">
-          <p>&copy; 2026 RateMyD. All rights reserved.</p>
+      <footer className="py-10 px-4 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-gray-500 text-sm">
+              RateMyD © {new Date().getFullYear()}
+            </div>
+            <div className="flex items-center gap-6 text-sm text-gray-500 flex-wrap justify-center">
+              <Link href="/terms" className="hover:text-white transition-colors">
+                Terms
+              </Link>
+              <Link href="/privacy" className="hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/contact" className="hover:text-white transition-colors">
+                Contact
+              </Link>
+              <Link href="/faq" className="hover:text-white transition-colors">
+                FAQ
+              </Link>
+            </div>
+          </div>
+          <div className="text-center mt-6 text-xs text-gray-600">
+            Adults only (18+). All photos are manually moderated.
+          </div>
         </div>
       </footer>
     </div>

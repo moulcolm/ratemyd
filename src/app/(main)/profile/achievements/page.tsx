@@ -103,22 +103,22 @@ export default function ProfileAchievementsPage() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gray-950 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <Card variant="bordered" className="p-4">
+            <Card variant="bordered" className="p-4 bg-gray-800/50 border-gray-700/50">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium',
                       item.active
-                        ? 'bg-purple-500/20 text-purple-400'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                        : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -133,14 +133,16 @@ export default function ProfileAchievementsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">{'Achievements'}</h1>
-              <p className="text-gray-400">
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                {'Achievements'}
+              </h1>
+              <p className="text-gray-300 mt-1">
                 {'Unlock achievements by completing challenges and milestones'}
               </p>
             </div>
 
             {/* Progress */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-bold">{'Progress'}</h3>
@@ -249,10 +251,12 @@ export default function ProfileAchievementsPage() {
             )}
 
             {unlocked.length === 0 && locked.length === 0 && (
-              <Card variant="bordered" className="text-center py-12">
-                <Trophy className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">{'No Achievements Yet'}</h3>
-                <p className="text-gray-400">
+              <Card variant="bordered" className="text-center py-16 bg-gray-800/50 border-gray-700/50">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <Trophy className="w-10 h-10 text-purple-400" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3">{'No Achievements Yet'}</h3>
+                <p className="text-gray-300">
                   {'Start playing to unlock achievements'}
                 </p>
               </Card>

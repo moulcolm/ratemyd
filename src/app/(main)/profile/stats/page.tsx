@@ -80,22 +80,22 @@ export default function ProfileStatsPage() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gray-950 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <Card variant="bordered" className="p-4">
+            <Card variant="bordered" className="p-4 bg-gray-800/50 border-gray-700/50">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium',
                       item.active
-                        ? 'bg-purple-500/20 text-purple-400'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                        : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -110,35 +110,37 @@ export default function ProfileStatsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">Statistics</h1>
-              <p className="text-gray-400">Analyze your performance</p>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Statistics
+              </h1>
+              <p className="text-gray-300 mt-1">Analyze your performance</p>
             </div>
 
             {/* Main stats */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card variant="bordered" className="p-4">
+              <Card variant="bordered" className="p-5 bg-gray-800/50 border-gray-700/50 hover:border-gray-600/50 transition-colors">
                 <div className="text-gray-400 text-sm mb-1">Votes Received</div>
                 <div className="text-3xl font-bold">{stats?.totalVotesReceived || 0}</div>
               </Card>
 
-              <Card variant="bordered" className="p-4">
+              <Card variant="bordered" className="p-5 bg-gray-800/50 border-gray-700/50 hover:border-green-500/50 transition-colors">
                 <div className="text-gray-400 text-sm mb-1">Wins</div>
                 <div className="text-3xl font-bold text-green-400">{stats?.totalWins || 0}</div>
               </Card>
 
-              <Card variant="bordered" className="p-4">
+              <Card variant="bordered" className="p-5 bg-gray-800/50 border-gray-700/50 hover:border-yellow-500/50 transition-colors">
                 <div className="text-gray-400 text-sm mb-1">Draws</div>
                 <div className="text-3xl font-bold text-yellow-400">{stats?.totalDraws || 0}</div>
               </Card>
 
-              <Card variant="bordered" className="p-4">
+              <Card variant="bordered" className="p-5 bg-gray-800/50 border-gray-700/50 hover:border-red-500/50 transition-colors">
                 <div className="text-gray-400 text-sm mb-1">Losses</div>
                 <div className="text-3xl font-bold text-red-400">{stats?.totalLosses || 0}</div>
               </Card>
             </div>
 
             {/* Win rate */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <h3 className="text-lg font-bold mb-4">Win Rate</h3>
 
               <div className="flex items-center gap-6">
@@ -217,17 +219,21 @@ export default function ProfileStatsPage() {
 
             {/* ELO stats */}
             <div className="grid sm:grid-cols-2 gap-4">
-              <Card variant="bordered" className="p-6">
+              <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50 hover:border-green-500/50 transition-colors">
                 <div className="flex items-center gap-3 mb-2">
-                  <TrendingUp className="w-6 h-6 text-green-400" />
+                  <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-green-400" />
+                  </div>
                   <span className="text-gray-400">Best ELO</span>
                 </div>
                 <div className="text-3xl font-bold">{stats?.bestElo || 1000}</div>
               </Card>
 
-              <Card variant="bordered" className="p-6">
+              <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50 hover:border-purple-500/50 transition-colors">
                 <div className="flex items-center gap-3 mb-2">
-                  <BarChart3 className="w-6 h-6 text-purple-400" />
+                  <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 text-purple-400" />
+                  </div>
                   <span className="text-gray-400">Average ELO</span>
                 </div>
                 <div className="text-3xl font-bold">{stats?.averageElo || 1000}</div>
@@ -235,7 +241,7 @@ export default function ProfileStatsPage() {
             </div>
 
             {/* ELO History */}
-            <Card variant="bordered" className="p-6">
+            <Card variant="bordered" className="p-6 bg-gray-800/50 border-gray-700/50">
               <h3 className="text-lg font-bold mb-4">Recent ELO History</h3>
 
               {history.length === 0 ? (

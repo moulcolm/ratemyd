@@ -94,25 +94,27 @@ export default function ReposLeaderboardPage() {
   const paginatedEntries = restOfLeaderboard.slice(startIndex, endIndex);
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gray-950 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Flaccid Leaderboard</h1>
-          <p className="text-gray-400">Top ranked flaccid photos</p>
+        <div className="text-center mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+            Flaccid Leaderboard
+          </h1>
+          <p className="text-lg text-gray-300">Top ranked flaccid photos</p>
         </div>
 
         {/* Category tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
           {categories.map((cat) => (
             <Link
               key={cat.id}
               href={cat.href}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors',
+                'flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-200',
                 cat.id === 'repos'
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                  ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                  : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50 border border-gray-700/50'
               )}
             >
               <cat.icon className="w-4 h-4" />
@@ -127,10 +129,12 @@ export default function ReposLeaderboardPage() {
             <LoadingSpinner size="lg" text="Loading..." />
           </div>
         ) : leaderboard.length === 0 ? (
-          <Card variant="bordered" className="text-center py-12">
-            <Medal className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">No Results</h3>
-            <p className="text-gray-400">No photos in this leaderboard yet</p>
+          <Card variant="bordered" className="text-center py-16 bg-gray-800/50 border-gray-700/50">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <Medal className="w-10 h-10 text-purple-400" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">No Results</h3>
+            <p className="text-gray-300">No photos in this leaderboard yet</p>
           </Card>
         ) : (
           <div className="space-y-3">
