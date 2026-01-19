@@ -58,7 +58,7 @@ export default function AdminUsersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ banned, reason }),
       });
-      if (!res.ok) throw new Error('Erreur');
+      if (!res.ok) throw new Error('Error');
       return res.json();
     },
     onSuccess: (_, variables) => {
@@ -72,7 +72,7 @@ export default function AdminUsersPage() {
       setBanReason('');
     },
     onError: () => {
-      addToast({ type: 'error', title: 'Erreur', message: 'Action impossible' });
+      addToast({ type: 'error', title: 'Error', message: 'Action impossible' });
     },
   });
 

@@ -62,7 +62,7 @@ export default function AdminPhotosPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, rejectionReason: reason }),
       });
-      if (!res.ok) throw new Error('Erreur');
+      if (!res.ok) throw new Error('Error');
       return res.json();
     },
     onSuccess: (_, variables) => {
@@ -70,14 +70,14 @@ export default function AdminPhotosPage() {
       queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
       addToast({
         type: 'success',
-        title: variables.action === 'APPROVE' ? 'Photo approuvée' : 'Photo rejetée',
+        title: variables.action === 'APPROVE' ? 'Photo approved' : 'Photo rejected',
       });
       setShowModerationModal(false);
       setSelectedPhoto(null);
       setRejectionReason('');
     },
     onError: () => {
-      addToast({ type: 'error', title: 'Erreur', message: 'Action impossible' });
+      addToast({ type: 'error', title: 'Error', message: 'Action failed' });
     },
   });
 
@@ -86,20 +86,23 @@ export default function AdminPhotosPage() {
       const res = await fetch(`/api/admin/photos/${photoId}/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ verifiedLength }),
+        body: JSON.stringify({ action: 'APPROVE', note: `Verified length: ${verifiedLength} cm` }),
       });
-      if (!res.ok) throw new Error('Erreur');
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Error');
+      }
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminPhotos'] });
-      addToast({ type: 'success', title: 'Photo vérifiée' });
+      addToast({ type: 'success', title: 'Photo verified' });
       setShowVerifyModal(false);
       setSelectedPhoto(null);
       setVerifiedLength('');
     },
-    onError: () => {
-      addToast({ type: 'error', title: 'Erreur', message: 'Vérification impossible' });
+    onError: (error: Error) => {
+      addToast({ type: 'error', title: 'Error', message: error.message || 'Verification failed' });
     },
   });
 
@@ -130,15 +133,15 @@ export default function AdminPhotosPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold mb-2">Modération des photos</h1>
-          <p className="text-gray-400">Examinez et approuvez les photos soumises</p>
+          <h1 className="text-2xl font-bold mb-2">Photo Moderation</h1>
+          <p className="text-gray-400">Review and approve submitted photos</p>
         </div>
         <Button
           variant="outline"
           onClick={() => refetch()}
           leftIcon={<RefreshCw className="w-4 h-4" />}
         >
-          Actualiser
+          Refresh
         </Button>
       </div>
 
@@ -154,9 +157,9 @@ export default function AdminPhotosPage() {
             {status === 'PENDING' && <Clock className="w-4 h-4 mr-1" />}
             {status === 'APPROVED' && <CheckCircle className="w-4 h-4 mr-1" />}
             {status === 'REJECTED' && <XCircle className="w-4 h-4 mr-1" />}
-            {status === 'PENDING' ? 'En attente' :
-             status === 'APPROVED' ? 'Approuvées' :
-             status === 'REJECTED' ? 'Rejetées' : 'Toutes'}
+            {status === 'PENDING' ? 'Pending' :
+             status === 'APPROVED' ? 'Approved' :
+             status === 'REJECTED' ? 'Rejected' : 'All'}
           </Button>
         ))}
       </div>
@@ -164,13 +167,13 @@ export default function AdminPhotosPage() {
       {/* Photos grid */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <LoadingSpinner size="lg" text="Chargement des photos..." />
+          <LoadingSpinner size="lg" text="Loading photos..." />
         </div>
       ) : photos.length === 0 ? (
         <Card variant="bordered" className="text-center py-12">
           <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold mb-2">Aucune photo en attente</h3>
-          <p className="text-gray-400">Toutes les photos ont été modérées</p>
+          <h3 className="text-xl font-bold mb-2">No pending photos</h3>
+          <p className="text-gray-400">All photos have been moderated</p>
         </Card>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -179,7 +182,7 @@ export default function AdminPhotosPage() {
               <div className="relative aspect-[3/4]">
                 <Image
                   src={photo.thumbnailUrl || photo.imageUrl}
-                  alt="Photo à modérer"
+                  alt="Photo to moderate"
                   fill
                   className="object-cover"
                 />
@@ -190,8 +193,8 @@ export default function AdminPhotosPage() {
                       photo.status === 'APPROVED' ? 'success' : 'danger'
                     }
                   >
-                    {photo.status === 'PENDING' ? 'En attente' :
-                     photo.status === 'APPROVED' ? 'Approuvée' : 'Rejetée'}
+                    {photo.status === 'PENDING' ? 'Pending' :
+                     photo.status === 'APPROVED' ? 'Approved' : 'Rejected'}
                   </Badge>
                 </div>
               </div>
@@ -200,18 +203,18 @@ export default function AdminPhotosPage() {
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-medium">{photo.user.username}</span>
                   <Badge variant={photo.category === 'REPOS' ? 'primary' : 'secondary'}>
-                    {photo.category === 'REPOS' ? 'Repos' : 'Érection'}
+                    {photo.category === 'REPOS' ? 'Flaccid' : 'Erect'}
                   </Badge>
                 </div>
 
                 {photo.declaredLength && (
                   <p className="text-sm text-gray-400 mb-3">
-                    Taille déclarée: {photo.declaredLength} cm
+                    Declared size: {photo.declaredLength} cm
                   </p>
                 )}
 
                 <p className="text-xs text-gray-500 mb-3">
-                  {new Date(photo.createdAt).toLocaleDateString('fr-FR')}
+                  {new Date(photo.createdAt).toLocaleDateString('en-US')}
                 </p>
 
                 {photo.status === 'PENDING' && (
@@ -261,7 +264,7 @@ export default function AdminPhotosPage() {
                     }}
                   >
                     <Ruler className="w-4 h-4 mr-2" />
-                    Vérifier taille
+                    Verify size
                   </Button>
                 )}
               </div>
@@ -277,7 +280,7 @@ export default function AdminPhotosPage() {
           setShowModerationModal(false);
           setRejectionReason('');
         }}
-        title="Rejeter la photo"
+        title="Reject Photo"
       >
         <div className="p-6">
           <div className="flex items-center gap-4 mb-4">
@@ -285,20 +288,20 @@ export default function AdminPhotosPage() {
               <AlertTriangle className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h4 className="font-medium">Motif du rejet</h4>
+              <h4 className="font-medium">Rejection Reason</h4>
               <p className="text-sm text-gray-400">
-                Ce motif sera envoyé à l'utilisateur
+                This reason will be sent to the user
               </p>
             </div>
           </div>
 
           <div className="space-y-2 mb-4">
             {[
-              'Contenu non conforme',
-              'Qualité insuffisante',
-              'Visage visible',
-              'Contenu inapproprié',
-              'Autre',
+              'Non-compliant content',
+              'Insufficient quality',
+              'Face visible',
+              'Inappropriate content',
+              'Other',
             ].map((reason) => (
               <button
                 key={reason}
@@ -317,7 +320,7 @@ export default function AdminPhotosPage() {
 
           <div className="flex gap-3 justify-end">
             <Button variant="ghost" onClick={() => setShowModerationModal(false)}>
-              Annuler
+              Cancel
             </Button>
             <Button
               variant="primary"
@@ -326,7 +329,7 @@ export default function AdminPhotosPage() {
               isLoading={moderateMutation.isPending}
               disabled={!rejectionReason}
             >
-              Rejeter
+              Reject
             </Button>
           </div>
         </div>
@@ -339,22 +342,22 @@ export default function AdminPhotosPage() {
           setShowVerifyModal(false);
           setVerifiedLength('');
         }}
-        title="Vérifier la taille"
+        title="Verify Size"
       >
         <div className="p-6">
           <p className="text-gray-400 mb-4">
-            Entrez la taille mesurée sur la photo. Cette valeur sera marquée comme vérifiée.
+            Enter the measured size from the photo. This value will be marked as verified.
           </p>
 
           {selectedPhoto?.declaredLength && (
             <div className="bg-gray-800 p-3 rounded-lg mb-4">
-              <span className="text-gray-400">Taille déclarée: </span>
+              <span className="text-gray-400">Declared size: </span>
               <span className="font-bold">{selectedPhoto.declaredLength} cm</span>
             </div>
           )}
 
           <Input
-            label="Taille vérifiée"
+            label="Verified size"
             type="number"
             step="0.1"
             value={verifiedLength}
@@ -365,7 +368,7 @@ export default function AdminPhotosPage() {
 
           <div className="flex gap-3 justify-end mt-6">
             <Button variant="ghost" onClick={() => setShowVerifyModal(false)}>
-              Annuler
+              Cancel
             </Button>
             <Button
               variant="primary"
@@ -373,7 +376,7 @@ export default function AdminPhotosPage() {
               isLoading={verifyMutation.isPending}
               disabled={!verifiedLength}
             >
-              Valider la vérification
+              Confirm Verification
             </Button>
           </div>
         </div>

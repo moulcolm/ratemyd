@@ -73,7 +73,7 @@ export default function AdminReportsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: action === 'resolve' ? 'RESOLVED' : 'DISMISSED' }),
       });
-      if (!res.ok) throw new Error('Erreur');
+      if (!res.ok) throw new Error('Error');
       return res.json();
     },
     onSuccess: (_, variables) => {
@@ -87,7 +87,7 @@ export default function AdminReportsPage() {
       setSelectedReport(null);
     },
     onError: () => {
-      addToast({ type: 'error', title: 'Erreur', message: 'Action impossible' });
+      addToast({ type: 'error', title: 'Error', message: 'Action impossible' });
     },
   });
 
