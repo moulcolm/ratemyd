@@ -13,9 +13,11 @@ import {
   RefreshCw,
   AlertTriangle,
   Ruler,
+  BadgeCheck,
 } from 'lucide-react';
 import { Card, Button, Badge, Modal, Input } from '@/components/ui';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 
@@ -25,12 +27,12 @@ interface PendingPhoto {
   thumbnailUrl: string;
   category: string;
   declaredLength: number | null;
+  isVerified: boolean;
   status: string;
   createdAt: string;
   user: {
     id: string;
     username: string;
-    subscriptionTier: string;
   };
 }
 
@@ -186,7 +188,10 @@ export default function AdminPhotosPage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute top-2 right-2">
+                <div className="absolute top-2 right-2 flex gap-2">
+                  {photo.isVerified && (
+                    <VerifiedBadge size="sm" />
+                  )}
                   <Badge
                     variant={
                       photo.status === 'PENDING' ? 'warning' :
@@ -208,9 +213,18 @@ export default function AdminPhotosPage() {
                 </div>
 
                 {photo.declaredLength && (
-                  <p className="text-sm text-gray-400 mb-3">
-                    Declared size: {photo.declaredLength} cm
-                  </p>
+                  <div className="text-sm mb-3">
+                    {photo.isVerified ? (
+                      <p className="text-green-400 flex items-center gap-1">
+                        <BadgeCheck className="w-4 h-4" />
+                        Verified: {photo.declaredLength} cm
+                      </p>
+                    ) : (
+                      <p className="text-gray-400">
+                        Declared: {photo.declaredLength} cm
+                      </p>
+                    )}
+                  </div>
                 )}
 
                 <p className="text-xs text-gray-500 mb-3">
@@ -252,19 +266,31 @@ export default function AdminPhotosPage() {
                   </div>
                 )}
 
-                {photo.status === 'APPROVED' && photo.declaredLength && (
+                {photo.status === 'APPROVED' && (
                   <Button
-                    variant="outline"
+                    variant={photo.isVerified ? 'outline' : 'primary'}
                     size="sm"
-                    className="w-full"
+                    className={cn(
+                      'w-full',
+                      photo.isVerified && 'border-green-500 text-green-400 hover:bg-green-500/10'
+                    )}
                     onClick={() => {
                       setSelectedPhoto(photo);
                       setVerifiedLength(photo.declaredLength?.toString() || '');
                       setShowVerifyModal(true);
                     }}
                   >
-                    <Ruler className="w-4 h-4 mr-2" />
-                    Verify size
+                    {photo.isVerified ? (
+                      <>
+                        <BadgeCheck className="w-4 h-4 mr-2" />
+                        Verified ({photo.declaredLength} cm)
+                      </>
+                    ) : (
+                      <>
+                        <Ruler className="w-4 h-4 mr-2" />
+                        Verify size
+                      </>
+                    )}
                   </Button>
                 )}
               </div>
