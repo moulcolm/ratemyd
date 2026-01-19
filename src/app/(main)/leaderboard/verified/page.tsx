@@ -72,7 +72,9 @@ export default function VerifiedLeaderboardPage() {
     .filter((entry) => entry.imageUrl)
     .map((entry) => ({
       url: entry.imageUrl,
-      label: `Rank #${entry.rank} - ${entry.verifiedLength} cm`,
+      label: entry.verifiedLength
+        ? `Rank #${entry.rank} - ${entry.verifiedLength} cm`
+        : `Rank #${entry.rank}`,
     }));
 
   const openLightbox = (index: number) => {
@@ -173,7 +175,7 @@ export default function VerifiedLeaderboardPage() {
 
                 <div className="text-right">
                   <div className="text-xl font-bold text-green-400">
-                    {entry.verifiedLength} cm
+                    {entry.verifiedLength ? `${entry.verifiedLength} cm` : 'N/A'}
                   </div>
                   <div className="text-xs text-green-500 flex items-center justify-end gap-1">
                     <CheckCircle className="w-3 h-3" />
