@@ -120,22 +120,22 @@ export default function ProfilePhotosPage() {
   const photos = data?.data || [];
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <Card variant="bordered" className="p-4">
+            <Card variant="bordered" className="p-4 bg-gradient-to-b from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium',
                       item.active
-                        ? 'bg-purple-500/20 text-purple-400'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                        : 'text-gray-400 hover:bg-gray-700/50 hover:text-white'
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -149,13 +149,15 @@ export default function ProfilePhotosPage() {
           {/* Main content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold">Mes photos</h1>
-                <p className="text-gray-400">Gérez vos photos et leur visibilité</p>
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  Mes photos
+                </h1>
+                <p className="text-gray-300 mt-1">Gérez vos photos et leur visibilité</p>
               </div>
               <Link href="/upload">
-                <Button leftIcon={<Plus className="w-4 h-4" />}>
+                <Button leftIcon={<Plus className="w-4 h-4" />} className="shadow-lg shadow-purple-500/30">
                   Ajouter une photo
                 </Button>
               </Link>
@@ -167,20 +169,22 @@ export default function ProfilePhotosPage() {
                 <LoadingSpinner size="lg" text="Chargement des photos..." />
               </div>
             ) : photos.length === 0 ? (
-              <Card variant="bordered" className="text-center py-12">
-                <Camera className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">Aucune photo</h3>
-                <p className="text-gray-400 mb-6">
+              <Card variant="bordered" className="text-center py-16 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <Camera className="w-10 h-10 text-purple-400" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3">Aucune photo</h3>
+                <p className="text-gray-300 mb-8 max-w-md mx-auto">
                   Uploadez votre première photo pour commencer
                 </p>
                 <Link href="/upload">
-                  <Button>Ajouter une photo</Button>
+                  <Button size="lg" className="shadow-lg shadow-purple-500/30">Ajouter une photo</Button>
                 </Link>
               </Card>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {photos.map((photo) => (
-                  <Card key={photo.id} variant="bordered" className="overflow-hidden">
+                  <Card key={photo.id} variant="bordered" className="overflow-hidden bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10">
                     <div className="relative aspect-[3/4]">
                       <Image
                         src={photo.thumbnailUrl || photo.imageUrl}
@@ -189,15 +193,17 @@ export default function ProfilePhotosPage() {
                         className="object-cover"
                       />
                       {photo.boostActive && (
-                        <div className="absolute top-2 left-2">
-                          <Badge variant="premium">
+                        <div className="absolute top-3 left-3">
+                          <Badge variant="premium" className="shadow-lg shadow-yellow-500/50 backdrop-blur-sm">
                             <Zap className="w-3 h-3 mr-1" /> Boosté
                           </Badge>
                         </div>
                       )}
                       {photo.isVerified && (
-                        <div className="absolute top-2 right-2">
-                          <VerifiedBadge />
+                        <div className="absolute top-3 right-3">
+                          <div className="backdrop-blur-sm bg-black/30 rounded-full p-1">
+                            <VerifiedBadge />
+                          </div>
                         </div>
                       )}
                     </div>
