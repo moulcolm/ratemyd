@@ -83,10 +83,10 @@ export default function AdminPhotosPage() {
 
   const verifyMutation = useMutation({
     mutationFn: async ({ photoId, verifiedLength }: { photoId: string; verifiedLength: number }) => {
-      const res = await fetch(`/api/admin/photos/${photoId}/verify`, {
+      const res = await fetch(`/api/admin/photos/${photoId}/set-verified`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'APPROVE', note: `Verified length: ${verifiedLength} cm` }),
+        body: JSON.stringify({ verifiedLength }),
       });
       if (!res.ok) {
         const data = await res.json();
