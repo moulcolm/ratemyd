@@ -30,16 +30,16 @@ interface UserProfile {
 }
 
 interface UserStats {
-  totalPhotos: number;
-  approvedPhotos: number;
-  verifiedPhotos: number;
+  totalPhotos?: number;
+  approvedPhotos?: number;
+  verifiedPhotos?: number;
   totalVotesReceived: number;
   totalWins: number;
-  totalDraws: number;
+  totalDraws?: number;
   winRate: number;
   bestElo: number;
   averageElo: number;
-  achievements: number;
+  achievements?: number;
 }
 
 export default function ProfilePage() {

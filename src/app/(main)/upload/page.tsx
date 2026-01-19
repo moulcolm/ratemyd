@@ -132,34 +132,39 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">{'Upload Photo'}</h1>
-          <p className="text-gray-400">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+            {'Upload Photo'}
+          </h1>
+          <p className="text-lg text-gray-300">
             {'Share your photos and get rated by the community'}
           </p>
         </div>
 
         {/* Slots info */}
         {slots && (
-          <Card variant="bordered" className="p-4 mb-6">
+          <Card variant="bordered" className="p-6 mb-6 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Camera className="w-5 h-5 text-purple-400" />
-                <span>{'Photo Slots'}</span>
+                <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <Camera className="w-5 h-5 text-purple-400" />
+                </div>
+                <span className="font-medium">{'Photo Slots'}</span>
               </div>
               <div className="text-right">
-                <span className="font-bold">{slots.used}</span>
-                <span className="text-gray-400">/{slots.total} {'used'}</span>
+                <span className="text-2xl font-bold">{slots.used}</span>
+                <span className="text-gray-400">/{slots.total}</span>
                 {slots.available === 0 && (
-                  <Badge variant="danger" className="ml-2">{'Full'}</Badge>
+                  <Badge variant="danger" className="ml-2 shadow-lg shadow-red-500/30">{'Full'}</Badge>
                 )}
               </div>
             </div>
             {slots.available === 0 && (
-              <p className="text-sm text-red-400 mt-2">
+              <p className="text-sm text-red-400 mt-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
                 {'You have reached your photo limit. Delete or manage existing photos to upload new ones.'}
               </p>
             )}
@@ -169,21 +174,23 @@ export default function UploadPage() {
         {slots && slots.available > 0 ? (
           <>
             {/* Upload zone */}
-            <Card variant="bordered" className="mb-6 overflow-hidden">
+            <Card variant="bordered" className="mb-6 overflow-hidden bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
               {!preview ? (
                 <div
                   {...getRootProps()}
                   className={cn(
-                    'p-12 border-2 border-dashed rounded-lg cursor-pointer transition-colors',
+                    'p-12 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300',
                     isDragActive
-                      ? 'border-purple-500 bg-purple-500/10'
-                      : 'border-gray-600 hover:border-gray-500'
+                      ? 'border-purple-500 bg-purple-500/20 shadow-lg shadow-purple-500/30'
+                      : 'border-gray-600 hover:border-purple-500/50 hover:bg-gray-700/30'
                   )}
                 >
                   <input {...getInputProps()} />
                   <div className="text-center">
-                    <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                    <p className="text-lg font-medium mb-2">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                      <Upload className="w-8 h-8 text-white" />
+                    </div>
+                    <p className="text-xl font-bold mb-2">
                       {isDragActive ? 'Drop here' : 'Drag and drop a photo, or click to select'}
                     </p>
                     <p className="text-sm text-gray-400">
@@ -203,7 +210,7 @@ export default function UploadPage() {
                   </div>
                   <button
                     onClick={clearFile}
-                    className="absolute top-4 right-4 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
+                    className="absolute top-4 right-4 p-2 bg-black/70 backdrop-blur-sm rounded-full hover:bg-black/90 transition-all hover:scale-110 shadow-lg"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -212,41 +219,43 @@ export default function UploadPage() {
             </Card>
 
             {/* Category selection */}
-            <Card variant="bordered" className="p-6 mb-6">
-              <h3 className="font-bold mb-4">{'Category'}</h3>
+            <Card variant="bordered" className="p-6 mb-6 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
+              <h3 className="text-lg font-bold mb-4">{'Category'}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setCategory('REPOS')}
                   className={cn(
-                    'p-4 rounded-lg border-2 transition-all',
+                    'p-5 rounded-xl border-2 transition-all duration-200',
                     category === 'REPOS'
-                      ? 'border-purple-500 bg-purple-500/10'
-                      : 'border-gray-700 hover:border-gray-600'
+                      ? 'border-purple-500 bg-gradient-to-br from-purple-500/20 to-purple-600/10 shadow-lg shadow-purple-500/30'
+                      : 'border-gray-700 hover:border-gray-600 hover:bg-gray-700/30'
                   )}
                 >
-                  <div className="text-lg font-bold mb-1">{'Flaccid'}</div>
+                  <div className="text-xl font-bold mb-1">{'Flaccid'}</div>
                   <div className="text-sm text-gray-400">{'Resting state'}</div>
                 </button>
                 <button
                   onClick={() => setCategory('ERECTION')}
                   className={cn(
-                    'p-4 rounded-lg border-2 transition-all',
+                    'p-5 rounded-xl border-2 transition-all duration-200',
                     category === 'ERECTION'
-                      ? 'border-purple-500 bg-purple-500/10'
-                      : 'border-gray-700 hover:border-gray-600'
+                      ? 'border-purple-500 bg-gradient-to-br from-purple-500/20 to-purple-600/10 shadow-lg shadow-purple-500/30'
+                      : 'border-gray-700 hover:border-gray-600 hover:bg-gray-700/30'
                   )}
                 >
-                  <div className="text-lg font-bold mb-1">{'Erect'}</div>
+                  <div className="text-xl font-bold mb-1">{'Erect'}</div>
                   <div className="text-sm text-gray-400">{'Full erection'}</div>
                 </button>
               </div>
             </Card>
 
             {/* Declared length */}
-            <Card variant="bordered" className="p-6 mb-6">
-              <h3 className="font-bold mb-4 flex items-center gap-2">
-                <Ruler className="w-5 h-5" />
-                {'Declared Length'} ({'Optional'})
+            <Card variant="bordered" className="p-6 mb-6 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <Ruler className="w-4 h-4 text-purple-400" />
+                </div>
+                {'Declared Length'} <span className="text-gray-500 font-normal text-sm">({'Optional'})</span>
               </h3>
               <Input
                 type="number"
@@ -259,9 +268,11 @@ export default function UploadPage() {
             </Card>
 
             {/* Rules */}
-            <Card variant="bordered" className="p-6 mb-6">
-              <h3 className="font-bold mb-4 flex items-center gap-2">
-                <Info className="w-5 h-5" />
+            <Card variant="bordered" className="p-6 mb-6 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                  <Info className="w-4 h-4 text-blue-400" />
+                </div>
                 {'Rules to Follow'}
               </h3>
               <ul className="space-y-2 text-sm text-gray-400 mb-4">
@@ -317,13 +328,15 @@ export default function UploadPage() {
             </p>
           </>
         ) : (
-          <Card variant="bordered" className="text-center py-12">
-            <AlertTriangle className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">{'Limit Reached'}</h3>
-            <p className="text-gray-400 mb-6">
+          <Card variant="bordered" className="text-center py-16 bg-gradient-to-br from-gray-800/50 to-gray-800/30 backdrop-blur-sm border-gray-700/50">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
+              <AlertTriangle className="w-10 h-10 text-yellow-400" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">{'Limit Reached'}</h3>
+            <p className="text-gray-300 mb-8 max-w-md mx-auto">
               {'You have reached your maximum number of photos. Delete existing photos or upgrade your account to upload more.'}
             </p>
-            <Button variant="outline" onClick={() => router.push('/profile/photos')}>
+            <Button size="lg" variant="outline" onClick={() => router.push('/profile/photos')}>
               {'Manage Photos'}
             </Button>
           </Card>

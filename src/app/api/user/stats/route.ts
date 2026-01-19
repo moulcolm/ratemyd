@@ -24,6 +24,17 @@ export async function GET() {
       where: { userId: user.id, isVerified: true },
     });
 
+    // Get best ELO and average ELO from user's photos
+    const photos = await prisma.photo.findMany({
+      where: { userId: user.id, status: 'APPROVED' },
+      select: { elo: true },
+    });
+
+    const bestElo = photos.length > 0 ? Math.max(...photos.map(p => p.elo)) : 1000;
+    const averageElo = photos.length > 0
+      ? Math.round(photos.reduce((sum, p) => sum + p.elo, 0) / photos.length)
+      : 1000;
+
     // Calculate rankings
     const limits = getUserLimits(0);
 
@@ -82,6 +93,8 @@ export async function GET() {
         photosRepos,
         photosErection,
         verifiedPhotos,
+        bestElo,
+        averageElo,
       },
     });
   } catch (error) {
