@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import {
   User,
   Camera,
@@ -44,11 +43,11 @@ interface EloHistoryEntry {
 }
 
 const menuItems = [
-  { href: '/profile', icon: User, label: 'Profil' },
-  { href: '/profile/photos', icon: Camera, label: 'Mes photos' },
-  { href: '/profile/stats', icon: BarChart3, label: 'Statistiques', active: true },
+  { href: '/profile', icon: User, label: 'Profile' },
+  { href: '/profile/photos', icon: Camera, label: 'My Photos' },
+  { href: '/profile/stats', icon: BarChart3, label: 'Statistics', active: true },
   { href: '/profile/achievements', icon: Trophy, label: 'Achievements' },
-  { href: '/profile/settings', icon: Settings, label: 'Paramètres' },
+  { href: '/profile/settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function ProfileStatsPage() {
@@ -75,7 +74,7 @@ export default function ProfileStatsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text="Chargement des statistiques..." />
+        <LoadingSpinner size="lg" text="Loading statistics..." />
       </div>
     );
   }
@@ -111,36 +110,36 @@ export default function ProfileStatsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">Statistiques</h1>
-              <p className="text-gray-400">Analysez vos performances</p>
+              <h1 className="text-2xl font-bold">Statistics</h1>
+              <p className="text-gray-400">Analyze your performance</p>
             </div>
 
             {/* Main stats */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card variant="bordered" className="p-4">
-                <div className="text-gray-400 text-sm mb-1">Votes reçus</div>
+                <div className="text-gray-400 text-sm mb-1">Votes Received</div>
                 <div className="text-3xl font-bold">{stats?.totalVotesReceived || 0}</div>
               </Card>
 
               <Card variant="bordered" className="p-4">
-                <div className="text-gray-400 text-sm mb-1">Victoires</div>
+                <div className="text-gray-400 text-sm mb-1">Wins</div>
                 <div className="text-3xl font-bold text-green-400">{stats?.totalWins || 0}</div>
               </Card>
 
               <Card variant="bordered" className="p-4">
-                <div className="text-gray-400 text-sm mb-1">Égalités</div>
+                <div className="text-gray-400 text-sm mb-1">Draws</div>
                 <div className="text-3xl font-bold text-yellow-400">{stats?.totalDraws || 0}</div>
               </Card>
 
               <Card variant="bordered" className="p-4">
-                <div className="text-gray-400 text-sm mb-1">Défaites</div>
+                <div className="text-gray-400 text-sm mb-1">Losses</div>
                 <div className="text-3xl font-bold text-red-400">{stats?.totalLosses || 0}</div>
               </Card>
             </div>
 
             {/* Win rate */}
             <Card variant="bordered" className="p-6">
-              <h3 className="text-lg font-bold mb-4">Taux de victoire</h3>
+              <h3 className="text-lg font-bold mb-4">Win Rate</h3>
 
               <div className="flex items-center gap-6">
                 <div className="relative w-32 h-32">
@@ -172,7 +171,7 @@ export default function ProfileStatsPage() {
                 <div className="flex-1 space-y-3">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-400">Victoires</span>
+                      <span className="text-gray-400">Wins</span>
                       <span className="text-green-400">{stats?.totalWins || 0}</span>
                     </div>
                     <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
@@ -185,7 +184,7 @@ export default function ProfileStatsPage() {
 
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-400">Égalités</span>
+                      <span className="text-gray-400">Draws</span>
                       <span className="text-yellow-400">{stats?.totalDraws || 0}</span>
                     </div>
                     <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
@@ -200,7 +199,7 @@ export default function ProfileStatsPage() {
 
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-400">Défaites</span>
+                      <span className="text-gray-400">Losses</span>
                       <span className="text-red-400">{stats?.totalLosses || 0}</span>
                     </div>
                     <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
@@ -221,7 +220,7 @@ export default function ProfileStatsPage() {
               <Card variant="bordered" className="p-6">
                 <div className="flex items-center gap-3 mb-2">
                   <TrendingUp className="w-6 h-6 text-green-400" />
-                  <span className="text-gray-400">Meilleur ELO</span>
+                  <span className="text-gray-400">Best ELO</span>
                 </div>
                 <div className="text-3xl font-bold">{stats?.bestElo || 1000}</div>
               </Card>
@@ -229,7 +228,7 @@ export default function ProfileStatsPage() {
               <Card variant="bordered" className="p-6">
                 <div className="flex items-center gap-3 mb-2">
                   <BarChart3 className="w-6 h-6 text-purple-400" />
-                  <span className="text-gray-400">ELO moyen</span>
+                  <span className="text-gray-400">Average ELO</span>
                 </div>
                 <div className="text-3xl font-bold">{stats?.averageElo || 1000}</div>
               </Card>
@@ -237,11 +236,11 @@ export default function ProfileStatsPage() {
 
             {/* ELO History */}
             <Card variant="bordered" className="p-6">
-              <h3 className="text-lg font-bold mb-4">Historique ELO récent</h3>
+              <h3 className="text-lg font-bold mb-4">Recent ELO History</h3>
 
               {history.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">
-                  Aucun historique pour le moment
+                  No history yet
                 </p>
               ) : (
                 <div className="space-y-3">
@@ -280,16 +279,16 @@ export default function ProfileStatsPage() {
                           </span>
                         </div>
                         <div className="text-sm text-gray-400">
-                          {entry.reason === 'VOTE_WIN' ? 'Victoire' :
-                           entry.reason === 'VOTE_LOSS' ? 'Défaite' :
-                           entry.reason === 'VOTE_DRAW' ? 'Égalité' :
+                          {entry.reason === 'VOTE_WIN' ? 'Win' :
+                           entry.reason === 'VOTE_LOSS' ? 'Loss' :
+                           entry.reason === 'VOTE_DRAW' ? 'Draw' :
                            entry.reason}
                         </div>
                       </div>
 
                       <div className="text-sm text-gray-500 flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {new Date(entry.createdAt).toLocaleDateString('fr-FR')}
+                        {new Date(entry.createdAt).toLocaleDateString('en-US')}
                       </div>
                     </div>
                   ))}

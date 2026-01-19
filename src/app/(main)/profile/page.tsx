@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -44,14 +43,12 @@ interface UserStats {
 }
 
 export default function ProfilePage() {
-  const t = useTranslations('profile');
-
   const menuItems = [
-    { href: '/profile', icon: User, label: t('menu.profile'), active: true },
-    { href: '/profile/photos', icon: Camera, label: t('menu.photos') },
-    { href: '/profile/stats', icon: BarChart3, label: t('menu.stats') },
-    { href: '/profile/achievements', icon: Trophy, label: t('menu.achievements') },
-    { href: '/profile/settings', icon: Settings, label: t('menu.settings') },
+    { href: '/profile', icon: User, label: 'Profile', active: true },
+    { href: '/profile/photos', icon: Camera, label: 'My Photos' },
+    { href: '/profile/stats', icon: BarChart3, label: 'Statistics' },
+    { href: '/profile/achievements', icon: Trophy, label: 'Achievements' },
+    { href: '/profile/settings', icon: Settings, label: 'Settings' },
   ];
 
   const { data: profileData, isLoading: profileLoading } = useQuery<{ data: UserProfile }>({
@@ -77,7 +74,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text={t('loadingProfile')} />
+        <LoadingSpinner size="lg" text="Loading profile..." />
       </div>
     );
   }
@@ -127,10 +124,10 @@ export default function ProfilePage() {
                   </div>
                   <p className="text-gray-400">{profile?.email}</p>
                   <p className="text-sm text-gray-500 mt-1">
-                    {t('memberSince', { date: new Date(profile?.createdAt || '').toLocaleDateString('fr-FR', {
+                    Member since {new Date(profile?.createdAt || '').toLocaleDateString('en-US', {
                       month: 'long',
                       year: 'numeric',
-                    })})}
+                    })}
                   </p>
                 </div>
               </div>
@@ -141,61 +138,61 @@ export default function ProfilePage() {
               <Card variant="bordered" className="p-4 text-center">
                 <Camera className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold">{stats?.approvedPhotos || 0}</div>
-                <div className="text-sm text-gray-400">{t('activePhotos')}</div>
+                <div className="text-sm text-gray-400">Active Photos</div>
               </Card>
 
               <Card variant="bordered" className="p-4 text-center">
                 <Trophy className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold">{stats?.totalWins || 0}</div>
-                <div className="text-sm text-gray-400">{t('wins')}</div>
+                <div className="text-sm text-gray-400">Wins</div>
               </Card>
 
               <Card variant="bordered" className="p-4 text-center">
                 <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold">{stats?.winRate?.toFixed(0) || 0}%</div>
-                <div className="text-sm text-gray-400">{t('winRate')}</div>
+                <div className="text-sm text-gray-400">Win Rate</div>
               </Card>
 
               <Card variant="bordered" className="p-4 text-center">
                 <Star className="w-8 h-8 text-pink-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold">{stats?.bestElo || 1000}</div>
-                <div className="text-sm text-gray-400">{t('bestElo')}</div>
+                <div className="text-sm text-gray-400">Best ELO</div>
               </Card>
             </div>
 
             {/* Account info */}
             <Card variant="bordered" className="p-6">
-              <h3 className="text-lg font-bold mb-4">{t('yourAccount')}</h3>
+              <h3 className="text-lg font-bold mb-4">Your Account</h3>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle className="w-6 h-6 text-green-400" />
-                    <span className="font-medium">Compte gratuit</span>
+                    <span className="font-medium">Free Account</span>
                   </div>
 
                   <ul className="space-y-2 text-sm">
                     <li className="flex items-center gap-2 text-gray-400">
                       <CheckCircle className="w-4 h-4 text-green-400" />
-                      {t('unlimitedVotes')}
+                      Unlimited votes
                     </li>
                     <li className="flex items-center gap-2 text-gray-400">
                       <CheckCircle className="w-4 h-4 text-green-400" />
-                      {t('photosMax', { count: 4 })}
+                      Up to 4 photos
                     </li>
                   </ul>
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">{t('activeBonus')}</h4>
+                  <h4 className="font-medium mb-3">Active Bonuses</h4>
                   <div className="space-y-2">
                     {profile?.bonusPhotoSlots && profile.bonusPhotoSlots > 0 ? (
                       <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">{t('bonusPhotoSlots')}</span>
+                        <span className="text-gray-400">Bonus photo slots</span>
                         <span className="font-bold text-green-400">+{profile.bonusPhotoSlots}</span>
                       </div>
                     ) : (
-                      <p className="text-gray-500 text-sm">{t('noActiveBonus')}</p>
+                      <p className="text-gray-500 text-sm">No active bonuses</p>
                     )}
                   </div>
                 </div>
@@ -205,9 +202,9 @@ export default function ProfilePage() {
             {/* Recent activity */}
             <Card variant="bordered" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold">{t('recentActivity')}</h3>
+                <h3 className="text-lg font-bold">Recent Activity</h3>
                 <Link href="/profile/stats" className="text-purple-400 text-sm hover:underline">
-                  {t('viewAll')}
+                  View All
                 </Link>
               </div>
 
@@ -217,8 +214,8 @@ export default function ProfilePage() {
                     <Trophy className="w-5 h-5 text-green-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">{t('votesReceived', { count: stats?.totalVotesReceived || 0 })}</p>
-                    <p className="text-sm text-gray-400">{t('onAllPhotos')}</p>
+                    <p className="font-medium">{stats?.totalVotesReceived || 0} votes received</p>
+                    <p className="text-sm text-gray-400">On all photos</p>
                   </div>
                 </div>
 
@@ -227,8 +224,8 @@ export default function ProfilePage() {
                     <BarChart3 className="w-5 h-5 text-purple-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">{t('avgElo', { elo: stats?.averageElo || 1000 })}</p>
-                    <p className="text-sm text-gray-400">{t('globalPerformance')}</p>
+                    <p className="font-medium">Average ELO: {stats?.averageElo || 1000}</p>
+                    <p className="text-sm text-gray-400">Overall performance</p>
                   </div>
                 </div>
 
@@ -237,8 +234,8 @@ export default function ProfilePage() {
                     <Star className="w-5 h-5 text-yellow-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">{t('achievementsCount', { count: stats?.achievements || 0 })}</p>
-                    <p className="text-sm text-gray-400">{t('unlocked')}</p>
+                    <p className="font-medium">{stats?.achievements || 0} achievements</p>
+                    <p className="text-sm text-gray-400">Unlocked</p>
                   </div>
                 </div>
               </div>

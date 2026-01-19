@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -46,21 +45,21 @@ interface Photo {
 }
 
 const menuItems = [
-  { href: '/profile', icon: User, label: 'Profil' },
-  { href: '/profile/photos', icon: Camera, label: 'Mes photos', active: true },
-  { href: '/profile/stats', icon: BarChart3, label: 'Statistiques' },
+  { href: '/profile', icon: User, label: 'Profile' },
+  { href: '/profile/photos', icon: Camera, label: 'My Photos', active: true },
+  { href: '/profile/stats', icon: BarChart3, label: 'Statistics' },
   { href: '/profile/achievements', icon: Trophy, label: 'Achievements' },
-  { href: '/profile/settings', icon: Settings, label: 'Paramètres' },
+  { href: '/profile/settings', icon: Settings, label: 'Settings' },
 ];
 
 function getStatusBadge(status: string) {
   switch (status) {
     case 'APPROVED':
-      return <Badge variant="success"><CheckCircle className="w-3 h-3 mr-1" /> Approuvée</Badge>;
+      return <Badge variant="success"><CheckCircle className="w-3 h-3 mr-1" /> Approved</Badge>;
     case 'PENDING':
-      return <Badge variant="warning"><Clock className="w-3 h-3 mr-1" /> En attente</Badge>;
+      return <Badge variant="warning"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
     case 'REJECTED':
-      return <Badge variant="danger"><XCircle className="w-3 h-3 mr-1" /> Rejetée</Badge>;
+      return <Badge variant="danger"><XCircle className="w-3 h-3 mr-1" /> Rejected</Badge>;
     default:
       return <Badge variant="secondary">{status}</Badge>;
   }
@@ -84,12 +83,12 @@ export default function ProfilePhotosPage() {
   const deleteMutation = useMutation({
     mutationFn: async (photoId: string) => {
       const res = await fetch(`/api/photos/${photoId}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Erreur lors de la suppression');
+      if (!res.ok) throw new Error('Error deleting photo');
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userPhotos'] });
-      addToast({ type: 'success', title: 'Photo supprimée' });
+      addToast({ type: 'success', title: 'Photo deleted' });
       setShowDeleteModal(false);
       setSelectedPhoto(null);
     },
