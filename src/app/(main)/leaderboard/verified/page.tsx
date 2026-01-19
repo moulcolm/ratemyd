@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -48,17 +47,15 @@ function getRankBg(rank: number) {
 }
 
 export default function VerifiedLeaderboardPage() {
-  const t = useTranslations('leaderboard');
-  const tCommon = useTranslations('common');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
 
   const categories = [
-    { id: 'global', label: t('categories.global'), href: '/leaderboard', icon: Trophy },
-    { id: 'repos', label: t('categories.repos'), href: '/leaderboard/repos', icon: Medal },
-    { id: 'erection', label: t('categories.erection'), href: '/leaderboard/erection', icon: Flame },
-    { id: 'grower', label: t('categories.grower'), href: '/leaderboard/grower', icon: TrendingUp },
-    { id: 'verified', label: t('categories.verified'), href: '/leaderboard/verified', icon: CheckCircle },
+    { id: 'global', label: 'Global', href: '/leaderboard', icon: Trophy },
+    { id: 'repos', label: 'Flaccid', href: '/leaderboard/repos', icon: Medal },
+    { id: 'erection', label: 'Erect', href: '/leaderboard/erection', icon: Flame },
+    { id: 'grower', label: 'Grower', href: '/leaderboard/grower', icon: TrendingUp },
+    { id: 'verified', label: 'Verified', href: '/leaderboard/verified', icon: CheckCircle },
   ];
 
   const { data, isLoading } = useQuery<{ data: { leaderboard: VerifiedEntry[] } }>({
@@ -88,8 +85,8 @@ export default function VerifiedLeaderboardPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t('verified.title')}</h1>
-          <p className="text-gray-400">{t('verified.subtitle')}</p>
+          <h1 className="text-3xl font-bold mb-2">Verified Leaderboard</h1>
+          <p className="text-gray-400">Top ranked verified photos</p>
         </div>
 
         {/* Category tabs */}
@@ -116,8 +113,8 @@ export default function VerifiedLeaderboardPage() {
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
             <div>
-              <h4 className="font-medium mb-1">{t('verified.title')}</h4>
-              <p className="text-sm text-gray-400">{t('verified.info')}</p>
+              <h4 className="font-medium mb-1">Verified Leaderboard</h4>
+              <p className="text-sm text-gray-400">Only photos with verified measurements</p>
             </div>
           </div>
         </Card>
@@ -125,13 +122,13 @@ export default function VerifiedLeaderboardPage() {
         {/* Leaderboard */}
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" text={tCommon('loading')} />
+            <LoadingSpinner size="lg" text="Loading..." />
           </div>
         ) : leaderboard.length === 0 ? (
           <Card variant="bordered" className="text-center py-12">
             <CheckCircle className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">{t('verified.empty')}</h3>
-            <p className="text-gray-400">{t('verified.emptyDescription')}</p>
+            <h3 className="text-xl font-bold mb-2">No Verified Photos</h3>
+            <p className="text-gray-400">No verified photos in the leaderboard yet</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -166,11 +163,11 @@ export default function VerifiedLeaderboardPage() {
                   <div className="flex items-center gap-2">
                     <EloDisplay elo={entry.elo} />
                     <Badge variant="secondary" className="text-xs">
-                      {entry.category === 'REPOS' ? t('categories.repos') : t('categories.erection')}
+                      {entry.category === 'REPOS' ? 'Flaccid' : 'Erect'}
                     </Badge>
                   </div>
                   <div className="text-sm text-gray-400 mt-1">
-                    {entry.wins}/{entry.totalVotes} {t('stats.wins')} ({entry.winRate.toFixed(0)}%)
+                    {entry.wins}/{entry.totalVotes} wins ({entry.winRate.toFixed(0)}%)
                   </div>
                 </div>
 
@@ -180,7 +177,7 @@ export default function VerifiedLeaderboardPage() {
                   </div>
                   <div className="text-xs text-green-500 flex items-center justify-end gap-1">
                     <CheckCircle className="w-3 h-3" />
-                    {t('stats.verified')}
+                    Verified
                   </div>
                 </div>
               </div>

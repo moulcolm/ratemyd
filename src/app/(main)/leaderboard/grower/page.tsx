@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -45,18 +44,16 @@ function getRankBg(rank: number) {
 }
 
 export default function GrowerLeaderboardPage() {
-  const t = useTranslations('leaderboard');
-  const tCommon = useTranslations('common');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxPhotos, setLightboxPhotos] = useState<{ url: string; label?: string }[]>([]);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
 
   const categories = [
-    { id: 'global', label: t('categories.global'), href: '/leaderboard', icon: Trophy },
-    { id: 'repos', label: t('categories.repos'), href: '/leaderboard/repos', icon: Medal },
-    { id: 'erection', label: t('categories.erection'), href: '/leaderboard/erection', icon: Flame },
-    { id: 'grower', label: t('categories.grower'), href: '/leaderboard/grower', icon: TrendingUp },
-    { id: 'verified', label: t('categories.verified'), href: '/leaderboard/verified', icon: CheckCircle },
+    { id: 'global', label: 'Global', href: '/leaderboard', icon: Trophy },
+    { id: 'repos', label: 'Flaccid', href: '/leaderboard/repos', icon: Medal },
+    { id: 'erection', label: 'Erect', href: '/leaderboard/erection', icon: Flame },
+    { id: 'grower', label: 'Grower', href: '/leaderboard/grower', icon: TrendingUp },
+    { id: 'verified', label: 'Verified', href: '/leaderboard/verified', icon: CheckCircle },
   ];
 
   const { data, isLoading } = useQuery<{ data: { leaderboard: GrowerEntry[] } }>({
@@ -72,10 +69,10 @@ export default function GrowerLeaderboardPage() {
   const openLightbox = (entry: GrowerEntry, type: 'repos' | 'erection') => {
     const photos: { url: string; label?: string }[] = [];
     if (entry.reposThumbnail) {
-      photos.push({ url: entry.reposThumbnail, label: `${entry.username} - ${t('categories.repos')} (ELO ${entry.eloRepos})` });
+      photos.push({ url: entry.reposThumbnail, label: `${entry.username} - Flaccid (ELO ${entry.eloRepos})` });
     }
     if (entry.erectionThumbnail) {
-      photos.push({ url: entry.erectionThumbnail, label: `${entry.username} - ${t('categories.erection')} (ELO ${entry.eloErection})` });
+      photos.push({ url: entry.erectionThumbnail, label: `${entry.username} - Erect (ELO ${entry.eloErection})` });
     }
     setLightboxPhotos(photos);
     setSelectedPhotoIndex(type === 'repos' ? 0 : (entry.reposThumbnail ? 1 : 0));
@@ -87,8 +84,8 @@ export default function GrowerLeaderboardPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t('grower.title')}</h1>
-          <p className="text-gray-400">{t('grower.subtitle')}</p>
+          <h1 className="text-3xl font-bold mb-2">Grower Leaderboard</h1>
+          <p className="text-gray-400">Top growers by ELO progression</p>
         </div>
 
         {/* Category tabs */}
@@ -115,8 +112,8 @@ export default function GrowerLeaderboardPage() {
           <div className="flex items-start gap-3">
             <TrendingUp className="w-5 h-5 text-purple-400 mt-0.5" />
             <div>
-              <h4 className="font-medium mb-1">{t('grower.title')}</h4>
-              <p className="text-sm text-gray-400">{t('grower.info')}</p>
+              <h4 className="font-medium mb-1">Grower Leaderboard</h4>
+              <p className="text-sm text-gray-400">Ranked by ELO growth from flaccid to erect</p>
             </div>
           </div>
         </Card>
@@ -124,13 +121,13 @@ export default function GrowerLeaderboardPage() {
         {/* Leaderboard */}
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" text={tCommon('loading')} />
+            <LoadingSpinner size="lg" text="Loading..." />
           </div>
         ) : leaderboard.length === 0 ? (
           <Card variant="bordered" className="text-center py-12">
             <TrendingUp className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">{t('empty.title')}</h3>
-            <p className="text-gray-400">{t('empty.description')}</p>
+            <h3 className="text-xl font-bold mb-2">No Results</h3>
+            <p className="text-gray-400">No growers in the leaderboard yet</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -154,12 +151,12 @@ export default function GrowerLeaderboardPage() {
                     >
                       <Image
                         src={entry.reposThumbnail}
-                        alt={t('categories.repos')}
+                        alt="Flaccid"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center py-0.5">
-                        {t('categories.repos')}
+                        Flaccid
                       </div>
                     </button>
                   )}
@@ -170,12 +167,12 @@ export default function GrowerLeaderboardPage() {
                     >
                       <Image
                         src={entry.erectionThumbnail}
-                        alt={t('categories.erection')}
+                        alt="Erect"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center py-0.5">
-                        {t('categories.erection')}
+                        Erect
                       </div>
                     </button>
                   )}
@@ -187,7 +184,7 @@ export default function GrowerLeaderboardPage() {
                     {entry.isVerified && <VerifiedBadge size="sm" />}
                   </div>
                   <div className="text-sm text-gray-400 mt-1">
-                    {t('categories.repos')}: {entry.eloRepos} → {t('categories.erection')}: {entry.eloErection}
+                    Flaccid: {entry.eloRepos} → Erect: {entry.eloErection}
                   </div>
                 </div>
 
@@ -195,7 +192,7 @@ export default function GrowerLeaderboardPage() {
                   <div className="text-xl font-bold text-green-400">
                     +{entry.growerScore.toFixed(0)}%
                   </div>
-                  <div className="text-xs text-gray-500">{t('grower.progression')}</div>
+                  <div className="text-xs text-gray-500">Growth</div>
                 </div>
               </div>
             ))}

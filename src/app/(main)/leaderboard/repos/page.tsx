@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -50,17 +49,15 @@ function getRankBg(rank: number) {
 }
 
 export default function ReposLeaderboardPage() {
-  const t = useTranslations('leaderboard');
-  const tCommon = useTranslations('common');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
 
   const categories = [
-    { id: 'global', label: t('categories.global'), href: '/leaderboard', icon: Trophy },
-    { id: 'repos', label: t('categories.repos'), href: '/leaderboard/repos', icon: Medal },
-    { id: 'erection', label: t('categories.erection'), href: '/leaderboard/erection', icon: Flame },
-    { id: 'grower', label: t('categories.grower'), href: '/leaderboard/grower', icon: TrendingUp },
-    { id: 'verified', label: t('categories.verified'), href: '/leaderboard/verified', icon: CheckCircle },
+    { id: 'global', label: 'Global', href: '/leaderboard', icon: Trophy },
+    { id: 'repos', label: 'Flaccid', href: '/leaderboard/repos', icon: Medal },
+    { id: 'erection', label: 'Erect', href: '/leaderboard/erection', icon: Flame },
+    { id: 'grower', label: 'Grower', href: '/leaderboard/grower', icon: TrendingUp },
+    { id: 'verified', label: 'Verified', href: '/leaderboard/verified', icon: CheckCircle },
   ];
 
   const { data, isLoading } = useQuery<{ data: { leaderboard: LeaderboardEntry[] } }>({
@@ -90,8 +87,8 @@ export default function ReposLeaderboardPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t('repos.title')}</h1>
-          <p className="text-gray-400">{t('repos.subtitle')}</p>
+          <h1 className="text-3xl font-bold mb-2">Flaccid Leaderboard</h1>
+          <p className="text-gray-400">Top ranked flaccid photos</p>
         </div>
 
         {/* Category tabs */}
@@ -116,13 +113,13 @@ export default function ReposLeaderboardPage() {
         {/* Leaderboard */}
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" text={tCommon('loading')} />
+            <LoadingSpinner size="lg" text="Loading..." />
           </div>
         ) : leaderboard.length === 0 ? (
           <Card variant="bordered" className="text-center py-12">
             <Medal className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">{t('empty.title')}</h3>
-            <p className="text-gray-400">{t('empty.description')}</p>
+            <h3 className="text-xl font-bold mb-2">No Results</h3>
+            <p className="text-gray-400">No photos in this leaderboard yet</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -160,7 +157,7 @@ export default function ReposLeaderboardPage() {
                     <EloDisplay elo={entry.elo} />
                   </div>
                   <div className="text-sm text-gray-400 mt-1">
-                    {entry.wins}/{entry.totalVotes} {t('stats.wins')} ({entry.winRate.toFixed(0)}%)
+                    {entry.wins}/{entry.totalVotes} wins ({entry.winRate.toFixed(0)}%)
                   </div>
                 </div>
 
