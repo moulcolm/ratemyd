@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import {
   LayoutDashboard,
   Camera,
@@ -24,18 +23,16 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const t = useTranslations('admin');
-  const tCommon = useTranslations('common');
   const { data: session, status } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   const menuItems = [
-    { href: '/admin', icon: LayoutDashboard, label: t('nav.dashboard') },
-    { href: '/admin/photos', icon: Camera, label: t('nav.photos') },
-    { href: '/admin/users', icon: Users, label: t('nav.users') },
-    { href: '/admin/reports', icon: Flag, label: t('nav.reports') },
-    { href: '/admin/stats', icon: BarChart3, label: t('nav.stats') },
+    { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/admin/photos', icon: Camera, label: 'Photos' },
+    { href: '/admin/users', icon: Users, label: 'Users' },
+    { href: '/admin/reports', icon: Flag, label: 'Reports' },
+    { href: '/admin/stats', icon: BarChart3, label: 'Stats' },
   ];
 
   useEffect(() => {
@@ -49,7 +46,7 @@ export default function AdminLayout({
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-950">
-        <LoadingSpinner size="lg" text={tCommon('loading')} />
+        <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
   }
@@ -68,7 +65,7 @@ export default function AdminLayout({
               <Shield className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h1 className="font-bold text-lg">{t('panelTitle')}</h1>
+              <h1 className="font-bold text-lg">Admin Panel</h1>
               <p className="text-xs text-gray-500">RateMyD</p>
             </div>
           </Link>
@@ -101,7 +98,7 @@ export default function AdminLayout({
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
           >
             <LogOut className="w-5 h-5" />
-            {t('backToSite')}
+            Back to Site
           </Link>
         </div>
       </aside>

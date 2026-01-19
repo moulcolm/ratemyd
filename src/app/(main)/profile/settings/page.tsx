@@ -5,7 +5,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import {
   User,
   Camera,
@@ -32,16 +31,12 @@ interface UserProfile {
 }
 
 export default function ProfileSettingsPage() {
-  const t = useTranslations('profile.settings');
-  const tMenu = useTranslations('profile.menu');
-  const tCommon = useTranslations('common');
-
   const menuItems = [
-    { href: '/profile', icon: User, label: tMenu('profile') },
-    { href: '/profile/photos', icon: Camera, label: tMenu('photos') },
-    { href: '/profile/stats', icon: BarChart3, label: tMenu('stats') },
-    { href: '/profile/achievements', icon: Trophy, label: tMenu('achievements') },
-    { href: '/profile/settings', icon: Settings, label: tMenu('settings'), active: true },
+    { href: '/profile', icon: User, label: 'Profile' },
+    { href: '/profile/photos', icon: Camera, label: 'Photos' },
+    { href: '/profile/stats', icon: BarChart3, label: 'Stats' },
+    { href: '/profile/achievements', icon: Trophy, label: 'Achievements' },
+    { href: '/profile/settings', icon: Settings, label: 'Settings', active: true },
   ];
 
   const router = useRouter();
@@ -83,10 +78,10 @@ export default function ProfileSettingsPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
-      addToast({ type: 'success', title: t('profileUpdated') });
+      addToast({ type: 'success', title: 'Profile updated successfully' });
     },
     onError: (error: Error) => {
-      addToast({ type: 'error', title: tCommon('error'), message: error.message });
+      addToast({ type: 'error', title: 'Error', message: error.message });
     },
   });
 
@@ -107,17 +102,17 @@ export default function ProfileSettingsPage() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-      addToast({ type: 'success', title: t('passwordChanged') });
+      addToast({ type: 'success', title: 'Password changed successfully' });
     },
     onError: (error: Error) => {
-      addToast({ type: 'error', title: tCommon('error'), message: error.message });
+      addToast({ type: 'error', title: 'Error', message: error.message });
     },
   });
 
   const deleteAccountMutation = useMutation({
     mutationFn: async () => {
       const res = await fetch('/api/user/profile', { method: 'DELETE' });
-      if (!res.ok) throw new Error('Erreur');
+      if (!res.ok) throw new Error('Error');
       return res.json();
     },
     onSuccess: async () => {
@@ -125,7 +120,7 @@ export default function ProfileSettingsPage() {
       router.push('/');
     },
     onError: () => {
-      addToast({ type: 'error', title: tCommon('error'), message: t('deleteAccountError') });
+      addToast({ type: 'error', title: 'Error', message: 'Failed to delete account' });
     },
   });
 
@@ -139,11 +134,11 @@ export default function ProfileSettingsPage() {
 
   const handleChangePassword = () => {
     if (newPassword !== confirmPassword) {
-      addToast({ type: 'error', title: tCommon('error'), message: t('passwordMismatch') });
+      addToast({ type: 'error', title: 'Error', message: 'Passwords do not match' });
       return;
     }
     if (newPassword.length < 8) {
-      addToast({ type: 'error', title: tCommon('error'), message: t('passwordTooShort') });
+      addToast({ type: 'error', title: 'Error', message: 'Password must be at least 8 characters' });
       return;
     }
     changePasswordMutation.mutate({ currentPassword, newPassword });
@@ -152,7 +147,7 @@ export default function ProfileSettingsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text={t('loading')} />
+        <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
   }
@@ -188,27 +183,27 @@ export default function ProfileSettingsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">{t('title')}</h1>
-              <p className="text-gray-400">{t('subtitle')}</p>
+              <h1 className="text-2xl font-bold">Settings</h1>
+              <p className="text-gray-400">Manage your account settings and preferences</p>
             </div>
 
             {/* Profile settings */}
             <Card variant="bordered" className="p-6">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                 <User className="w-5 h-5" />
-                {t('profileInfo')}
+                Profile Information
               </h3>
 
               <div className="space-y-4">
                 <Input
-                  label={t('username')}
+                  label="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder={t('usernamePlaceholder')}
+                  placeholder="Enter your username"
                 />
 
                 <Input
-                  label={t('email')}
+                  label="Email"
                   value={profile?.email || ''}
                   disabled
                   leftIcon={<Mail className="w-4 h-4" />}
@@ -219,7 +214,7 @@ export default function ProfileSettingsPage() {
                   isLoading={updateProfileMutation.isPending}
                   disabled={username === profile?.username}
                 >
-                  {t('saveChanges')}
+                  Save Changes
                 </Button>
               </div>
             </Card>
@@ -228,12 +223,12 @@ export default function ProfileSettingsPage() {
             <Card variant="bordered" className="p-6">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                 <Lock className="w-5 h-5" />
-                {t('changePassword')}
+                Change Password
               </h3>
 
               <div className="space-y-4">
                 <Input
-                  label={t('currentPassword')}
+                  label="Current Password"
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
@@ -241,16 +236,16 @@ export default function ProfileSettingsPage() {
                 />
 
                 <Input
-                  label={t('newPassword')}
+                  label="New Password"
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••"
-                  helperText={t('newPasswordHelper')}
+                  helperText="Minimum 8 characters"
                 />
 
                 <Input
-                  label={t('confirmPassword')}
+                  label="Confirm Password"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -262,7 +257,7 @@ export default function ProfileSettingsPage() {
                   isLoading={changePasswordMutation.isPending}
                   disabled={!currentPassword || !newPassword || !confirmPassword}
                 >
-                  {t('changePasswordButton')}
+                  Change Password
                 </Button>
               </div>
             </Card>
@@ -271,11 +266,11 @@ export default function ProfileSettingsPage() {
             <Card variant="bordered" className="p-6">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                 <LogOut className="w-5 h-5" />
-                {t('session')}
+                Session
               </h3>
 
               <p className="text-gray-400 mb-4">
-                {t('sessionDescription')}
+                Sign out from your account on this device
               </p>
 
               <Button
@@ -286,7 +281,7 @@ export default function ProfileSettingsPage() {
                 }}
                 leftIcon={<LogOut className="w-4 h-4" />}
               >
-                {t('signOut')}
+                Sign Out
               </Button>
             </Card>
 
@@ -294,11 +289,11 @@ export default function ProfileSettingsPage() {
             <Card variant="bordered" className="p-6 border-red-500/30">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-red-400">
                 <AlertTriangle className="w-5 h-5" />
-                {t('dangerZone')}
+                Danger Zone
               </h3>
 
               <p className="text-gray-400 mb-4">
-                {t('dangerDescription')}
+                Permanently delete your account and all associated data
               </p>
 
               <Button
@@ -307,7 +302,7 @@ export default function ProfileSettingsPage() {
                 onClick={() => setShowDeleteModal(true)}
                 leftIcon={<Trash2 className="w-4 h-4" />}
               >
-                {t('deleteAccount')}
+                Delete Account
               </Button>
             </Card>
           </div>
@@ -321,7 +316,7 @@ export default function ProfileSettingsPage() {
           setShowDeleteModal(false);
           setDeleteConfirmation('');
         }}
-        title={t('deleteAccountTitle')}
+        title="Delete Account"
       >
         <div className="p-6">
           <div className="flex items-center gap-4 mb-4">
@@ -329,21 +324,21 @@ export default function ProfileSettingsPage() {
               <AlertTriangle className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h4 className="font-medium">{t('deleteConfirmTitle')}</h4>
+              <h4 className="font-medium">Are you absolutely sure?</h4>
               <p className="text-sm text-gray-400">
-                {t('deleteConfirmSubtitle')}
+                This action cannot be undone
               </p>
             </div>
           </div>
 
           <div className="mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
             <p className="text-sm text-red-400">
-              {t('deleteWarning')}
+              This will permanently delete your account, all your photos, votes, and statistics. This action is irreversible.
             </p>
           </div>
 
           <Input
-            label={t('typeToConfirm', { username: profile?.username || '' })}
+            label={`Type "${profile?.username || ''}" to confirm`}
             value={deleteConfirmation}
             onChange={(e) => setDeleteConfirmation(e.target.value)}
             placeholder={profile?.username}
@@ -357,7 +352,7 @@ export default function ProfileSettingsPage() {
                 setDeleteConfirmation('');
               }}
             >
-              {t('deleteCancel')}
+              Cancel
             </Button>
             <Button
               variant="primary"
@@ -366,7 +361,7 @@ export default function ProfileSettingsPage() {
               isLoading={deleteAccountMutation.isPending}
               disabled={deleteConfirmation !== profile?.username}
             >
-              {t('deleteButton')}
+              Delete Account
             </Button>
           </div>
         </div>

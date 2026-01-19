@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
+
 import Image from 'next/image';
 import {
   Minus,
@@ -41,9 +41,9 @@ interface RemainingVotes {
 }
 
 export default function ComparePage() {
-  const t = useTranslations('compare');
-  const tCommon = useTranslations('common');
-  const tLeaderboard = useTranslations('leaderboard');
+  
+  
+  
   const queryClient = useQueryClient();
   const { addToast } = useToast();
   const [category, setCategory] = useState<'REPOS' | 'ERECTION' | 'MIXED'>('MIXED');
@@ -65,7 +65,7 @@ export default function ComparePage() {
       );
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || tCommon('error'));
+        throw new Error(data.error || 'Error');
       }
       return res.json();
     },
@@ -112,7 +112,7 @@ export default function ComparePage() {
       setIsVoting(false);
       addToast({
         type: 'error',
-        title: tCommon('error'),
+        title: 'Error',
         message: error.message,
       });
     },
@@ -171,9 +171,9 @@ export default function ComparePage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
+            <h1 className="text-3xl font-bold mb-2">{'Compare Photos'}</h1>
             <p className="text-gray-400">
-              {t('subtitle')}
+              {'Vote for your favorite in head-to-head comparisons'}
             </p>
           </div>
 
@@ -182,11 +182,11 @@ export default function ComparePage() {
             {remaining && (
               <div className="text-sm text-gray-400">
                 {remaining.isUnlimited ? (
-                  <span className="text-green-400">{t('unlimitedVotes')}</span>
+                  <span className="text-green-400">{'Unlimited votes'}</span>
                 ) : (
                   <span>
                     <span className="text-white font-bold">{remaining.remaining}</span>
-                    /{remaining.limit} {t('votesRemaining')}
+                    /{remaining.limit} {'votes remaining'}
                   </span>
                 )}
               </div>
@@ -205,7 +205,7 @@ export default function ComparePage() {
                       : 'text-gray-400 hover:text-white'
                   )}
                 >
-                  {cat === 'MIXED' ? t('mixed') : cat === 'REPOS' ? tLeaderboard('categories.repos') : tLeaderboard('categories.erection')}
+                  {cat === 'MIXED' ? 'Mixed' : cat === 'REPOS' ? 'Flaccid' : 'Erect'}
                 </button>
               ))}
             </div>
@@ -217,7 +217,7 @@ export default function ComparePage() {
               onClick={() => setVerifiedOnly(!verifiedOnly)}
               leftIcon={<Filter className="w-4 h-4" />}
             >
-              {tLeaderboard('categories.verified')}
+              {'Verified Only'}
             </Button>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function ComparePage() {
         {/* Main content */}
         {isPairLoading ? (
           <div className="flex items-center justify-center py-20">
-            <LoadingSpinner size="lg" text={t('loadingPhotos')} />
+            <LoadingSpinner size="lg" text={'Loading photos...'} />
           </div>
         ) : pairError ? (
           <Card variant="bordered" className="text-center py-12">
@@ -235,17 +235,17 @@ export default function ComparePage() {
             </h3>
             <p className="text-gray-400 mb-6">
               {verifiedOnly
-                ? t('tryDisableVerified')
-                : t('notEnoughPhotos')}
+                ? 'Try disabling the verified filter'
+                : 'Not enough photos available'}
             </p>
-            <Button onClick={() => refetchPair()}>{t('retry')}</Button>
+            <Button onClick={() => refetchPair()}>{'Retry'}</Button>
           </Card>
         ) : pair ? (
           <>
             {/* Category badge */}
             <div className="flex justify-center mb-6">
               <Badge variant={pair.category === 'REPOS' ? 'primary' : 'premium'}>
-                {t('category')}: {pair.category === 'REPOS' ? tLeaderboard('categories.repos') : tLeaderboard('categories.erection')}
+                {'Category'}: {pair.category === 'REPOS' ? 'Flaccid' : 'Erect'}
               </Badge>
             </div>
 
@@ -266,7 +266,7 @@ export default function ComparePage() {
                 <div className="aspect-[3/4] relative bg-gray-900">
                   <Image
                     src={pair.leftPhoto.imageUrl}
-                    alt={t('leftPhoto')}
+                    alt={'Left photo'}
                     fill
                     className="object-cover"
                     priority
@@ -294,7 +294,7 @@ export default function ComparePage() {
                       )}
                     </div>
                     <span className="text-xs text-gray-400">
-                      {t('pressKey', { key: '1', arrow: '←' })}
+                      Press 1 or ←
                     </span>
                   </div>
                 </div>
@@ -315,7 +315,7 @@ export default function ComparePage() {
                 <div className="aspect-[3/4] relative bg-gray-900">
                   <Image
                     src={pair.rightPhoto.imageUrl}
-                    alt={t('rightPhoto')}
+                    alt={'Right photo'}
                     fill
                     className="object-cover"
                     priority
@@ -343,7 +343,7 @@ export default function ComparePage() {
                       )}
                     </div>
                     <span className="text-xs text-gray-400">
-                      {t('pressKey', { key: '2', arrow: '→' })}
+                      Press 2 or →
                     </span>
                   </div>
                 </div>
@@ -362,7 +362,7 @@ export default function ComparePage() {
                   selectedSide === 'draw' && 'border-yellow-500 text-yellow-400'
                 )}
               >
-                {t('draw')} (3 / ↓)
+                {'Draw'} (3 / ↓)
               </Button>
               <Button
                 variant="ghost"
@@ -371,13 +371,13 @@ export default function ComparePage() {
                 disabled={isVoting}
                 leftIcon={<RefreshCw className="w-5 h-5" />}
               >
-                {t('skip')} (R)
+                {'Skip'} (R)
               </Button>
             </div>
 
             {/* Keyboard hint */}
             <p className="text-center text-sm text-gray-500 mt-6">
-              {t('keyboardHint')}
+              {'Use keyboard shortcuts or click to vote'}
             </p>
           </>
         ) : null}

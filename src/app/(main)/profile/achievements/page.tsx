@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+
 import {
   User,
   Camera,
@@ -56,27 +56,27 @@ function getRarityColor(rarity: string) {
 }
 
 export default function ProfileAchievementsPage() {
-  const t = useTranslations('profile.achievements');
-  const tMenu = useTranslations('profile.menu');
+  
+  
 
   const menuItems = [
-    { href: '/profile', icon: User, label: tMenu('profile') },
-    { href: '/profile/photos', icon: Camera, label: tMenu('photos') },
-    { href: '/profile/stats', icon: BarChart3, label: tMenu('stats') },
-    { href: '/profile/achievements', icon: Trophy, label: tMenu('achievements'), active: true },
-    { href: '/profile/settings', icon: Settings, label: tMenu('settings') },
+    { href: '/profile', icon: User, label: 'Profile' },
+    { href: '/profile/photos', icon: Camera, label: 'Photos' },
+    { href: '/profile/stats', icon: BarChart3, label: 'Stats' },
+    { href: '/profile/achievements', icon: Trophy, label: 'Achievements', active: true },
+    { href: '/profile/settings', icon: Settings, label: 'Settings' },
   ];
 
   function getRarityBadge(rarity: string) {
     switch (rarity) {
       case 'COMMON':
-        return <Badge variant="secondary">{t('rarity.common')}</Badge>;
+        return <Badge variant="secondary">{'Common'}</Badge>;
       case 'RARE':
-        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">{t('rarity.rare')}</Badge>;
+        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">{'Rare'}</Badge>;
       case 'EPIC':
-        return <Badge variant="premium">{t('rarity.epic')}</Badge>;
+        return <Badge variant="premium">{'Epic'}</Badge>;
       case 'LEGENDARY':
-        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">{t('rarity.legendary')}</Badge>;
+        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">{'Legendary'}</Badge>;
       default:
         return <Badge variant="secondary">{rarity}</Badge>;
     }
@@ -97,7 +97,7 @@ export default function ProfileAchievementsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text={t('loadingAchievements')} />
+        <LoadingSpinner size="lg" text={'Loading achievements...'} />
       </div>
     );
   }
@@ -133,9 +133,9 @@ export default function ProfileAchievementsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-2xl font-bold">{t('title')}</h1>
+              <h1 className="text-2xl font-bold">{'Achievements'}</h1>
               <p className="text-gray-400">
-                {t('subtitle')}
+                {'Unlock achievements by completing challenges and milestones'}
               </p>
             </div>
 
@@ -143,9 +143,9 @@ export default function ProfileAchievementsPage() {
             <Card variant="bordered" className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="font-bold">{t('progress')}</h3>
+                  <h3 className="font-bold">{'Progress'}</h3>
                   <p className="text-sm text-gray-400">
-                    {t('unlockedCount', { count: unlocked.length, total: total })}
+                    {unlocked.length} of {total} unlocked
                   </p>
                 </div>
                 <div className="text-3xl font-bold text-purple-400">
@@ -165,7 +165,7 @@ export default function ProfileAchievementsPage() {
               <div>
                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-yellow-400" />
-                  {t('unlockedSection', { count: unlocked.length })}
+                  Unlocked ({unlocked.length})
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {unlocked.map((achievement) => {
@@ -202,7 +202,7 @@ export default function ProfileAchievementsPage() {
                             </p>
                             {achievement.unlockedAt && (
                               <p className="text-xs text-gray-500">
-                                {t('unlockedOn', { date: new Date(achievement.unlockedAt).toLocaleDateString('fr-FR') })}
+                                Unlocked on {new Date(achievement.unlockedAt).toLocaleDateString()}
                               </p>
                             )}
                           </div>
@@ -219,7 +219,7 @@ export default function ProfileAchievementsPage() {
               <div>
                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                   <Lock className="w-5 h-5 text-gray-500" />
-                  {t('lockedSection', { count: locked.length })}
+                  Locked ({locked.length})
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {locked.map((achievement) => (
@@ -251,9 +251,9 @@ export default function ProfileAchievementsPage() {
             {unlocked.length === 0 && locked.length === 0 && (
               <Card variant="bordered" className="text-center py-12">
                 <Trophy className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">{t('noAchievements')}</h3>
+                <h3 className="text-xl font-bold mb-2">{'No Achievements Yet'}</h3>
                 <p className="text-gray-400">
-                  {t('startPlaying')}
+                  {'Start playing to unlock achievements'}
                 </p>
               </Card>
             )}

@@ -3,7 +3,6 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import {
@@ -27,8 +26,6 @@ interface PhotoSlots {
 }
 
 export default function UploadPage() {
-  const t = useTranslations('upload');
-  const tCommon = useTranslations('common');
   const router = useRouter();
   const { addToast } = useToast();
 
@@ -53,7 +50,7 @@ export default function UploadPage() {
     const selectedFile = acceptedFiles[0];
     if (selectedFile) {
       if (selectedFile.size > 10 * 1024 * 1024) {
-        addToast({ type: 'error', title: t('fileTooLarge'), message: t('maxSize') });
+        addToast({ type: 'error', title: 'File too large', message: 'Maximum size is 10MB' });
         return;
       }
       setFile(selectedFile);
@@ -75,7 +72,7 @@ export default function UploadPage() {
 
   const uploadMutation = useMutation({
     mutationFn: async () => {
-      if (!file) throw new Error(t('noFileSelected'));
+      if (!file) throw new Error('No file selected');
 
       const formData = new FormData();
       formData.append('file', file);
@@ -99,23 +96,23 @@ export default function UploadPage() {
     onSuccess: () => {
       addToast({
         type: 'success',
-        title: t('success'),
-        message: t('pendingModeration'),
+        title: 'Success',
+        message: 'Photo uploaded successfully and pending moderation',
       });
       router.push('/profile/photos');
     },
     onError: (error: Error) => {
-      addToast({ type: 'error', title: tCommon('error'), message: error.message });
+      addToast({ type: 'error', title: 'Error', message: error.message });
     },
   });
 
   const handleSubmit = () => {
     if (!file) {
-      addToast({ type: 'error', title: tCommon('error'), message: t('selectPhoto') });
+      addToast({ type: 'error', title: 'Error', message: 'Please select a photo' });
       return;
     }
     if (!acceptedRules) {
-      addToast({ type: 'error', title: tCommon('error'), message: t('mustAcceptRules') });
+      addToast({ type: 'error', title: 'Error', message: 'You must accept the rules' });
       return;
     }
     uploadMutation.mutate();
@@ -139,9 +136,9 @@ export default function UploadPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
+          <h1 className="text-3xl font-bold mb-2">{'Upload Photo'}</h1>
           <p className="text-gray-400">
-            {t('subtitle')}
+            {'Share your photos and get rated by the community'}
           </p>
         </div>
 
@@ -151,19 +148,19 @@ export default function UploadPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Camera className="w-5 h-5 text-purple-400" />
-                <span>{t('photoSlots')}</span>
+                <span>{'Photo Slots'}</span>
               </div>
               <div className="text-right">
                 <span className="font-bold">{slots.used}</span>
-                <span className="text-gray-400">/{slots.total} {t('used')}</span>
+                <span className="text-gray-400">/{slots.total} {'used'}</span>
                 {slots.available === 0 && (
-                  <Badge variant="danger" className="ml-2">{t('full')}</Badge>
+                  <Badge variant="danger" className="ml-2">{'Full'}</Badge>
                 )}
               </div>
             </div>
             {slots.available === 0 && (
               <p className="text-sm text-red-400 mt-2">
-                {t('limitReachedInfo')}
+                {'You have reached your photo limit. Delete or manage existing photos to upload new ones.'}
               </p>
             )}
           </Card>
@@ -187,10 +184,10 @@ export default function UploadPage() {
                   <div className="text-center">
                     <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />
                     <p className="text-lg font-medium mb-2">
-                      {isDragActive ? t('dropHere') : t('dropzone')}
+                      {isDragActive ? 'Drop here' : 'Drag and drop a photo, or click to select'}
                     </p>
                     <p className="text-sm text-gray-400">
-                      {t('requirements')}
+                      {'JPG, PNG or WebP - Max 10MB'}
                     </p>
                   </div>
                 </div>
@@ -199,7 +196,7 @@ export default function UploadPage() {
                   <div className="aspect-[3/4] relative">
                     <Image
                       src={preview}
-                      alt={t('preview')}
+                      alt={'Preview'}
                       fill
                       className="object-cover"
                     />
@@ -216,7 +213,7 @@ export default function UploadPage() {
 
             {/* Category selection */}
             <Card variant="bordered" className="p-6 mb-6">
-              <h3 className="font-bold mb-4">{t('category')}</h3>
+              <h3 className="font-bold mb-4">{'Category'}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setCategory('REPOS')}
@@ -227,8 +224,8 @@ export default function UploadPage() {
                       : 'border-gray-700 hover:border-gray-600'
                   )}
                 >
-                  <div className="text-lg font-bold mb-1">{t('flaccid')}</div>
-                  <div className="text-sm text-gray-400">{t('flaccidDesc')}</div>
+                  <div className="text-lg font-bold mb-1">{'Flaccid'}</div>
+                  <div className="text-sm text-gray-400">{'Resting state'}</div>
                 </button>
                 <button
                   onClick={() => setCategory('ERECTION')}
@@ -239,8 +236,8 @@ export default function UploadPage() {
                       : 'border-gray-700 hover:border-gray-600'
                   )}
                 >
-                  <div className="text-lg font-bold mb-1">{t('erect')}</div>
-                  <div className="text-sm text-gray-400">{t('erectDesc')}</div>
+                  <div className="text-lg font-bold mb-1">{'Erect'}</div>
+                  <div className="text-sm text-gray-400">{'Full erection'}</div>
                 </button>
               </div>
             </Card>
@@ -249,15 +246,15 @@ export default function UploadPage() {
             <Card variant="bordered" className="p-6 mb-6">
               <h3 className="font-bold mb-4 flex items-center gap-2">
                 <Ruler className="w-5 h-5" />
-                {t('declaredLength')} ({t('optional')})
+                {'Declared Length'} ({'Optional'})
               </h3>
               <Input
                 type="number"
                 value={declaredLength}
                 onChange={(e) => setDeclaredLength(e.target.value)}
-                placeholder={t('lengthPlaceholder')}
+                placeholder={'Length in centimeters'}
                 rightElement={<span className="text-gray-400">cm</span>}
-                helperText={t('verificationLater')}
+                helperText={'Verification available later'}
               />
             </Card>
 
@@ -265,28 +262,28 @@ export default function UploadPage() {
             <Card variant="bordered" className="p-6 mb-6">
               <h3 className="font-bold mb-4 flex items-center gap-2">
                 <Info className="w-5 h-5" />
-                {t('rulesToFollow')}
+                {'Rules to Follow'}
               </h3>
               <ul className="space-y-2 text-sm text-gray-400 mb-4">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  {t('rule1')}
+                  {'Photo must be clear and well-lit'}
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  {t('rule2')}
+                  {'No face or identifying features'}
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  {t('rule3')}
+                  {'Must be your own photo'}
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  {t('rule4')}
+                  {'Respect community guidelines'}
                 </li>
                 <li className="flex items-start gap-2">
                   <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  {t('ruleWarning')}
+                  {'Photos breaking rules will be rejected'}
                 </li>
               </ul>
 
@@ -298,7 +295,7 @@ export default function UploadPage() {
                   className="w-5 h-5 rounded border-gray-600 bg-gray-800 text-purple-500 focus:ring-purple-500"
                 />
                 <span className="text-sm">
-                  {t('acceptRulesLabel')}
+                  {'I have read and accept the rules'}
                 </span>
               </label>
             </Card>
@@ -312,22 +309,22 @@ export default function UploadPage() {
               disabled={!file || !acceptedRules}
               leftIcon={<Upload className="w-5 h-5" />}
             >
-              {t('submit')}
+              {'Submit Photo'}
             </Button>
 
             <p className="text-center text-sm text-gray-500 mt-4">
-              {t('moderationInfo')}
+              {'Your photo will be reviewed by moderators before appearing publicly'}
             </p>
           </>
         ) : (
           <Card variant="bordered" className="text-center py-12">
             <AlertTriangle className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">{t('limitReached')}</h3>
+            <h3 className="text-xl font-bold mb-2">{'Limit Reached'}</h3>
             <p className="text-gray-400 mb-6">
-              {t('limitReachedDesc')}
+              {'You have reached your maximum number of photos. Delete existing photos or upgrade your account to upload more.'}
             </p>
             <Button variant="outline" onClick={() => router.push('/profile/photos')}>
-              {t('managePhotos')}
+              {'Manage Photos'}
             </Button>
           </Card>
         )}

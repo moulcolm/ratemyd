@@ -2,15 +2,12 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
 import { ArrowRight, Trophy, BarChart3, Shield, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 export default function HomePage() {
-  const t = useTranslations('home');
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -24,11 +21,11 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              <span className="gradient-text">{t('hero.title1')}</span> {t('hero.and')}{' '}
-              <span className="gradient-text">{t('hero.title2')}</span>
+              <span className="gradient-text">Rate</span> and{' '}
+              <span className="gradient-text">Compare</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
-              {t('hero.subtitle')}
+              Join the community and discover where you stand
             </p>
           </motion.div>
 
@@ -40,12 +37,12 @@ export default function HomePage() {
           >
             <Link href="/register">
               <Button size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                {t('hero.cta')}
+                Get Started
               </Button>
             </Link>
             <Link href="/leaderboard">
               <Button variant="outline" size="lg">
-                {t('hero.viewLeaderboard')}
+                View Leaderboard
               </Button>
             </Link>
           </motion.div>
@@ -56,7 +53,7 @@ export default function HomePage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-6 text-sm text-gray-500 dark:text-gray-500"
           >
-            {t('hero.ageRestriction')}
+            18+ only. By continuing, you confirm you are of legal age.
           </motion.p>
         </div>
       </section>
@@ -71,10 +68,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-              {t('features.title')}
+              How It Works
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-              {t('features.subtitle')}
+              A simple and fair system for rating and comparing
             </p>
           </motion.div>
 
@@ -82,18 +79,18 @@ export default function HomePage() {
             {[
               {
                 icon: BarChart3,
-                title: t('features.vote.title'),
-                description: t('features.vote.description'),
+                title: 'Vote & Compare',
+                description: 'Compare photos side by side and vote for your preference',
               },
               {
                 icon: Trophy,
-                title: t('features.elo.title'),
-                description: t('features.elo.description'),
+                title: 'ELO Rankings',
+                description: 'Fair ranking system based on head-to-head comparisons',
               },
               {
                 icon: Shield,
-                title: t('features.moderation.title'),
-                description: t('features.moderation.description'),
+                title: 'Moderated Content',
+                description: 'All photos are reviewed to ensure quality and guidelines',
               },
             ].map((feature, index) => (
               <motion.div
@@ -125,10 +122,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-              {t('categories.title')}
+              Categories
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-              {t('categories.subtitle')}
+              Separate rankings for fair comparisons
             </p>
           </motion.div>
 
@@ -139,12 +136,12 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-500/10 dark:to-purple-500/10 rounded-2xl p-8 border border-blue-200 dark:border-blue-500/30 shadow-sm"
             >
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.flaccid.title')}</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Flaccid</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {t('categories.flaccid.description')}
+                Resting state measurements and ratings
               </p>
               <ul className="space-y-3">
-                {[t('categories.features.dedicated'), t('categories.features.separateElo'), t('categories.features.fairComparisons')].map(
+                {['Dedicated leaderboard', 'Separate ELO rating', 'Fair comparisons within category'].map(
                   (item) => (
                     <li key={item} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -161,12 +158,12 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-500/10 dark:to-purple-500/10 rounded-2xl p-8 border border-pink-200 dark:border-pink-500/30 shadow-sm"
             >
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.erect.title')}</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Erect</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {t('categories.erect.description')}
+                Full erection measurements and ratings
               </p>
               <ul className="space-y-3">
-                {[t('categories.features.dedicated'), t('categories.features.separateElo'), t('categories.features.fairComparisons')].map(
+                {['Dedicated leaderboard', 'Separate ELO rating', 'Fair comparisons within category'].map(
                   (item) => (
                     <li key={item} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                       <CheckCircle className="w-5 h-5 text-pink-600 dark:text-pink-400" />
@@ -185,9 +182,9 @@ export default function HomePage() {
             className="mt-8 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-purple-500/10 dark:to-pink-500/10 rounded-2xl p-8 border border-amber-200 dark:border-purple-500/30 text-center shadow-sm"
           >
             <Sparkles className="w-10 h-10 text-yellow-600 dark:text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t('categories.grower.title')}</h3>
+            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Grower Category</h3>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {t('categories.grower.description')}
+              Upload both states to compete in the grower category and see your transformation ratio
             </p>
           </motion.div>
         </div>
@@ -203,48 +200,48 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-              {t('pricing.title')}
+              Simple Pricing
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-              {t('pricing.subtitle')}
+              Choose the plan that fits your needs
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: t('pricing.free.name'),
+                name: 'Free',
                 price: '0€',
-                features: [t('pricing.free.feature1'), t('pricing.free.feature2'), t('pricing.free.feature3')],
-                cta: t('pricing.free.cta'),
+                features: ['3 photo uploads', 'Basic rankings', 'Community voting'],
+                cta: 'Get Started',
                 popular: false,
               },
               {
-                name: t('pricing.premium.name'),
+                name: 'Premium',
                 price: '4.99€',
-                period: t('pricing.perMonth'),
+                period: '/month',
                 features: [
-                  t('pricing.premium.feature1'),
-                  t('pricing.premium.feature2'),
-                  t('pricing.premium.feature3'),
-                  t('pricing.premium.feature4'),
-                  t('pricing.premium.feature5'),
+                  '10 photo uploads',
+                  'Unlimited voting',
+                  'Advanced statistics',
+                  'Priority moderation',
+                  'No ads',
                 ],
-                cta: t('pricing.premium.cta'),
+                cta: 'Go Premium',
                 popular: true,
               },
               {
-                name: t('pricing.vip.name'),
+                name: 'VIP',
                 price: '9.99€',
-                period: t('pricing.perMonth'),
+                period: '/month',
                 features: [
-                  t('pricing.vip.feature1'),
-                  t('pricing.vip.feature2'),
-                  t('pricing.vip.feature3'),
-                  t('pricing.vip.feature4'),
-                  t('pricing.vip.feature5'),
+                  'Unlimited uploads',
+                  'Profile badge',
+                  'Early access features',
+                  'VIP support',
+                  'Exclusive leaderboards',
                 ],
-                cta: t('pricing.vip.cta'),
+                cta: 'Go VIP',
                 popular: false,
               },
             ].map((plan, index) => (
@@ -262,7 +259,7 @@ export default function HomePage() {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow-sm">
-                    {t('pricing.popular')}
+                    {'Popular'}
                   </div>
                 )}
                 <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{plan.name}</h3>
@@ -303,14 +300,14 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-              {t('cta.title')}
+              Ready to Join?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto">
-              {t('cta.subtitle')}
+              Create your account and start comparing today
             </p>
             <Link href="/register">
               <Button size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                {t('cta.button')}
+                Create Account
               </Button>
             </Link>
           </motion.div>
