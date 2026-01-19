@@ -45,9 +45,12 @@ export async function GET(req: NextRequest) {
           take: 1,
           select: {
             id: true,
+            imageUrl: true,
             thumbnailUrl: true,
             isVerified: true,
             totalMatches: true,
+            declaredLength: true,
+            category: true,
           },
         },
       },
@@ -73,11 +76,17 @@ export async function GET(req: NextRequest) {
       eloErection: u.eloErection,
       isVerified: u.photos.some((p) => p.isVerified),
       totalMatches: u.photos.reduce((sum, p) => sum + p.totalMatches, 0),
+      totalVotes: u.photos[0]?.totalMatches || 0,
+      wins: u.totalWins,
       winRate: u.totalWins + u.totalLosses > 0
         ? Math.round((u.totalWins / (u.totalWins + u.totalLosses)) * 100)
         : 0,
       photoId: u.photos[0]?.id || '',
+      imageUrl: u.photos[0]?.imageUrl || null,
       thumbnailUrl: u.photos[0]?.thumbnailUrl || null,
+      declaredLength: u.photos[0]?.declaredLength || null,
+      verifiedLength: u.photos[0]?.isVerified ? u.photos[0]?.declaredLength : null,
+      category: u.photos[0]?.category || 'REPOS',
     }));
 
     return NextResponse.json({

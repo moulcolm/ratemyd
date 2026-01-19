@@ -52,6 +52,7 @@ export async function GET(req: NextRequest) {
           where: { status: 'APPROVED' },
           select: {
             id: true,
+            imageUrl: true,
             thumbnailUrl: true,
             category: true,
             isVerified: true,
@@ -82,13 +83,21 @@ export async function GET(req: NextRequest) {
       growerScore: u.growerScore,
       eloRepos: u.eloRepos,
       eloErection: u.eloErection,
-      
+
       isVerified: u.photos.some((p) => p.isVerified),
+      totalVotes: u.reposPhoto?.elo || 0,
+      wins: u.totalWins,
       winRate: u.totalWins + u.totalLosses > 0
         ? Math.round((u.totalWins / (u.totalWins + u.totalLosses)) * 100)
         : 0,
       reposThumbnail: u.reposPhoto?.thumbnailUrl || null,
+      reposImage: u.reposPhoto?.imageUrl || null,
       erectionThumbnail: u.erectionPhoto?.thumbnailUrl || null,
+      erectionImage: u.erectionPhoto?.imageUrl || null,
+      photoId: u.erectionPhoto?.id || u.reposPhoto?.id || '',
+      imageUrl: u.erectionPhoto?.imageUrl || u.reposPhoto?.imageUrl || null,
+      thumbnailUrl: u.erectionPhoto?.thumbnailUrl || u.reposPhoto?.thumbnailUrl || null,
+      category: u.erectionPhoto ? 'ERECTION' : 'REPOS',
     }));
 
     return NextResponse.json({
