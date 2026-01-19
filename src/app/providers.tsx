@@ -1,9 +1,8 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastProvider } from '@/components/ui/Toast';
-import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -18,11 +17,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
       })
   );
 
+  // Force dark mode
+  useEffect(() => {
+    document.documentElement.className = 'dark';
+    localStorage.setItem('theme', 'dark');
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <ToastProvider>{children}</ToastProvider>
-      </ThemeProvider>
+      <ToastProvider>{children}</ToastProvider>
     </QueryClientProvider>
   );
 }

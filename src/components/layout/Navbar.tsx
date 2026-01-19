@@ -17,7 +17,6 @@ import {
   Shield,
 } from 'lucide-react';
 import { Button, Badge } from '@/components/ui';
-import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
@@ -66,10 +65,8 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Auth / Profile / Theme */}
+          {/* Auth / Profile */}
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
-
             {status === 'loading' ? (
               <div className="w-24 h-9 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse" />
             ) : session?.user ? (
@@ -146,7 +143,6 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
-            <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
