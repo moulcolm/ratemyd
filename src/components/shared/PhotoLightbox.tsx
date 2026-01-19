@@ -107,16 +107,12 @@ export function PhotoLightbox({
 
                 {/* Image container */}
                 <div className="relative max-w-[90vw] max-h-[85vh] w-full h-full flex items-center justify-center">
-                  <div className="relative w-full h-full max-w-3xl max-h-[80vh]">
-                    <Image
-                      src={currentPhoto.url}
-                      alt={currentPhoto.label || 'Photo'}
-                      fill
-                      className="object-contain"
-                      sizes="90vw"
-                      priority
-                    />
-                  </div>
+                  <img
+                    src={currentPhoto.url}
+                    alt={currentPhoto.label || 'Photo'}
+                    className="max-w-full max-h-[80vh] object-contain"
+                    style={{ width: 'auto', height: 'auto' }}
+                  />
                 </div>
 
                 {/* Label and pagination */}
