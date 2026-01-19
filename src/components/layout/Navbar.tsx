@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu,
@@ -18,7 +17,6 @@ import {
   Shield,
 } from 'lucide-react';
 import { Button, Badge } from '@/components/ui';
-import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { cn } from '@/lib/utils';
 
@@ -26,23 +24,22 @@ export function Navbar() {
   const { data: session, status, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const t = useTranslations('nav');
 
   const navLinks = [
-    { href: '/compare', label: t('compare'), icon: BarChart3 },
-    { href: '/leaderboard', label: t('leaderboard'), icon: Trophy },
+    { href: '/compare', label: 'Compare', icon: BarChart3 },
+    { href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
   ];
 
   const isAdmin = (session?.user as { isAdmin?: boolean })?.isAdmin;
 
   const profileLinks = [
-    { href: '/profile', label: t('profile'), icon: User },
+    { href: '/profile', label: 'Profile', icon: User },
     { href: '/profile/photos', label: 'My Photos', icon: Upload },
     { href: '/profile/stats', label: 'Statistics', icon: BarChart3 },
     { href: '/profile/settings', label: 'Settings', icon: Settings },
   ];
 
-  const adminLink = { href: '/admin', label: t('admin'), icon: Shield };
+  const adminLink = { href: '/admin', label: 'Admin', icon: Shield };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 shadow-sm">
@@ -69,10 +66,9 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Auth / Profile / Language / Theme */}
+          {/* Auth / Profile / Theme */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <LanguageSwitcher />
 
             {status === 'loading' ? (
               <div className="w-24 h-9 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse" />
@@ -128,7 +124,7 @@ export function Navbar() {
                         className="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors w-full"
                       >
                         <LogOut className="w-4 h-4" />
-                        {t('logout')}
+                        Logout
                       </button>
                     </motion.div>
                   )}
@@ -138,11 +134,11 @@ export function Navbar() {
               <div className="flex items-center gap-3">
                 <Link href="/login">
                   <Button variant="ghost" size="sm">
-                    {t('login')}
+                    Login
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm">{t('register')}</Button>
+                  <Button size="sm">Sign Up</Button>
                 </Link>
               </div>
             )}
@@ -151,7 +147,6 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
-            <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -213,7 +208,7 @@ export function Navbar() {
                     className="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors w-full"
                   >
                     <LogOut className="w-5 h-5" />
-                    {t('logout')}
+                    Logout
                   </button>
                 </>
               ) : (
@@ -222,11 +217,11 @@ export function Navbar() {
                   <div className="flex gap-2 px-4">
                     <Link href="/login" className="flex-1">
                       <Button variant="outline" className="w-full">
-                        {t('login')}
+                        Login
                       </Button>
                     </Link>
                     <Link href="/register" className="flex-1">
-                      <Button className="w-full">{t('register')}</Button>
+                      <Button className="w-full">Sign Up</Button>
                     </Link>
                   </div>
                 </>
