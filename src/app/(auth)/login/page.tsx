@@ -4,16 +4,12 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
 import { Mail, Lock, ArrowLeft, LogIn } from 'lucide-react';
 import { Button, Input, Card } from '@/components/ui';
 import { useToast } from '@/components/ui/Toast';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function LoginPage() {
-  const t = useTranslations('auth.login');
-  const tErrors = useTranslations('auth.errors');
-  const tCommon = useTranslations('common');
   const router = useRouter();
   const searchParams = useSearchParams();
   const { addToast } = useToast();
@@ -47,19 +43,19 @@ export default function LoginPage() {
       if (!response.ok) {
         addToast({
           type: 'error',
-          title: t('loginError'),
-          message: data.error || tErrors('invalidCredentials'),
+          title: 'Login Error',
+          message: data.error || 'Invalid credentials',
         });
       } else {
         // Update session cache
         queryClient.setQueryData(['session'], { user: data.user });
-        
+
         addToast({
           type: 'success',
-          title: t('loginSuccess'),
-          message: t('welcome'),
+          title: 'Login Successful',
+          message: 'Welcome back!',
         });
-        
+
         router.push(callbackUrl);
         router.refresh();
       }
@@ -67,8 +63,8 @@ export default function LoginPage() {
       console.error('Login error:', error);
       addToast({
         type: 'error',
-        title: tCommon('error'),
-        message: t('errorOccurred'),
+        title: 'Error',
+        message: 'An error occurred',
       });
     } finally {
       setIsLoading(false);
@@ -87,22 +83,22 @@ export default function LoginPage() {
           className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          {t('backToHome')}
+          Back to Home
         </Link>
 
         <Card variant="bordered" padding="lg">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold gradient-text mb-2">{t('title')}</h1>
+            <h1 className="text-3xl font-bold gradient-text mb-2">Login</h1>
             <p className="text-gray-400">
-              {t('subtitle')}
+              Sign in to your account
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
-              label={t('email')}
+              label="Email"
               type="email"
-              placeholder={t('emailPlaceholder')}
+              placeholder="you@example.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               error={errors.email}
@@ -111,9 +107,9 @@ export default function LoginPage() {
             />
 
             <Input
-              label={t('password')}
+              label="Password"
               type="password"
-              placeholder={t('passwordPlaceholder')}
+              placeholder="Enter your password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               error={errors.password}
@@ -128,15 +124,15 @@ export default function LoginPage() {
               isLoading={isLoading}
               leftIcon={<LogIn className="w-5 h-5" />}
             >
-              {t('submit')}
+              Login
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-gray-400">
-              {t('noAccount')}{' '}
+              Don't have an account?{' '}
               <Link href="/register" className="text-purple-400 hover:text-purple-300">
-                {t('signUp')}
+                Sign Up
               </Link>
             </p>
           </div>
