@@ -55,10 +55,12 @@ export async function GET(req: NextRequest) {
           take: 1,
           select: {
             id: true,
+            imageUrl: true,
             thumbnailUrl: true,
             category: true,
             elo: true,
             totalMatches: true,
+            wins: true,
             declaredLength: true,
           },
         },
@@ -72,14 +74,17 @@ export async function GET(req: NextRequest) {
       id: u.id,
       username: u.username,
       elo: category === 'REPOS' ? u.eloRepos : category === 'ERECTION' ? u.eloErection : u.eloGlobal,
-      
+
       isVerified: true,
-      totalMatches: u.photos[0]?.totalMatches || 0,
-      declaredLength: u.photos[0]?.declaredLength || null,
-      winRate: u.totalWins + u.totalLosses > 0
-        ? Math.round((u.totalWins / (u.totalWins + u.totalLosses)) * 100)
+      totalVotes: u.photos[0]?.totalMatches || 0,
+      wins: u.photos[0]?.wins || 0,
+      verifiedLength: u.photos[0]?.declaredLength || null,
+      category: u.photos[0]?.category || 'REPOS',
+      winRate: u.photos[0]?.totalMatches > 0
+        ? Math.round((u.photos[0]?.wins / u.photos[0]?.totalMatches) * 100)
         : 0,
       photoId: u.photos[0]?.id || '',
+      imageUrl: u.photos[0]?.imageUrl || null,
       thumbnailUrl: u.photos[0]?.thumbnailUrl || null,
     }));
 
