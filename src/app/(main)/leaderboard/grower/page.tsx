@@ -10,23 +10,30 @@ import {
   Medal,
   TrendingUp,
   CheckCircle,
+  ChevronLeft,
+  ChevronRight,
   Flame,
 } from 'lucide-react';
 import { Card, Badge } from '@/components/ui';
 import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EloDisplay } from '@/components/shared/EloDisplay';
 import { PhotoLightbox } from '@/components/shared/PhotoLightbox';
 import { cn } from '@/lib/utils';
 
-interface GrowerEntry {
+interface LeaderboardEntry {
   rank: number;
-  username: string;
-  eloRepos: number;
-  eloErection: number;
-  growerScore: number;
+  photoId: string;
+  imageUrl: string;
+  thumbnailUrl: string;
+  elo: number;
+  totalVotes: number;
+  wins: number;
+  winRate: number;
   isVerified: boolean;
-  reposThumbnail: string | null;
-  erectionThumbnail: string | null;
+  declaredLength: number | null;
+  verifiedLength: number | null;
+  category: string;
 }
 
 function getRankIcon(rank: number) {
@@ -45,8 +52,9 @@ function getRankBg(rank: number) {
 
 export default function GrowerLeaderboardPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxPhotos, setLightboxPhotos] = useState<{ url: string; label?: string }[]>([]);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const categories = [
     { id: 'global', label: 'Global', href: '/leaderboard', icon: Trophy },
@@ -56,7 +64,7 @@ export default function GrowerLeaderboardPage() {
     { id: 'verified', label: 'Verified', href: '/leaderboard/verified', icon: CheckCircle },
   ];
 
-  const { data, isLoading } = useQuery<{ data: { leaderboard: GrowerEntry[] } }>({
+  const { data, isLoading } = useQuery<{ data: { leaderboard: LeaderboardEntry[] } }>({
     queryKey: ['leaderboard', 'grower'],
     queryFn: async () => {
       const res = await fetch('/api/leaderboard/grower?limit=50');
@@ -66,18 +74,24 @@ export default function GrowerLeaderboardPage() {
 
   const leaderboard = Array.isArray(data?.data?.leaderboard) ? data.data.leaderboard : [];
 
-  const openLightbox = (entry: GrowerEntry, type: 'repos' | 'erection') => {
-    const photos: { url: string; label?: string }[] = [];
-    if (entry.reposThumbnail) {
-      photos.push({ url: entry.reposThumbnail, label: `${entry.username} - Flaccid (ELO ${entry.eloRepos})` });
-    }
-    if (entry.erectionThumbnail) {
-      photos.push({ url: entry.erectionThumbnail, label: `${entry.username} - Erect (ELO ${entry.eloErection})` });
-    }
-    setLightboxPhotos(photos);
-    setSelectedPhotoIndex(type === 'repos' ? 0 : (entry.reposThumbnail ? 1 : 0));
+  const photos = leaderboard
+    .filter((entry) => entry.imageUrl)
+    .map((entry) => ({
+      url: entry.imageUrl,
+      label: `Rank #${entry.rank} - ELO ${entry.elo}`,
+    }));
+
+  const openLightbox = (index: number) => {
+    setSelectedPhotoIndex(index);
     setLightboxOpen(true);
   };
+
+  // Pagination logic
+  const restOfLeaderboard = leaderboard.slice(3);
+  const totalPages = Math.ceil(restOfLeaderboard.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedEntries = restOfLeaderboard.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -85,7 +99,7 @@ export default function GrowerLeaderboardPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Grower Leaderboard</h1>
-          <p className="text-gray-400">Top growers by ELO progression</p>
+          <p className="text-gray-400">Top growers ranked by growth percentage</p>
         </div>
 
         {/* Category tabs */}
@@ -107,17 +121,6 @@ export default function GrowerLeaderboardPage() {
           ))}
         </div>
 
-        {/* Info box */}
-        <Card variant="bordered" className="mb-6 p-4">
-          <div className="flex items-start gap-3">
-            <TrendingUp className="w-5 h-5 text-purple-400 mt-0.5" />
-            <div>
-              <h4 className="font-medium mb-1">Grower Leaderboard</h4>
-              <p className="text-sm text-gray-400">Ranked by ELO growth from flaccid to erect</p>
-            </div>
-          </div>
-        </Card>
-
         {/* Leaderboard */}
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -127,13 +130,56 @@ export default function GrowerLeaderboardPage() {
           <Card variant="bordered" className="text-center py-12">
             <TrendingUp className="w-12 h-12 text-gray-600 mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-2">No Results</h3>
-            <p className="text-gray-400">No growers in the leaderboard yet</p>
+            <p className="text-gray-400">No photos in this leaderboard yet</p>
           </Card>
         ) : (
           <div className="space-y-3">
-            {leaderboard.map((entry) => (
+            {/* Top 3 podium */}
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {leaderboard.slice(0, 3).map((entry, index) => (
+                <div
+                  key={entry.photoId}
+                  className={cn(
+                    'relative rounded-xl overflow-hidden border-2 p-4 text-center',
+                    index === 0 && 'col-start-2 row-start-1 border-yellow-500 bg-yellow-500/10',
+                    index === 1 && 'col-start-1 row-start-1 border-gray-400 bg-gray-400/10 mt-8',
+                    index === 2 && 'col-start-3 row-start-1 border-amber-600 bg-amber-600/10 mt-8'
+                  )}
+                >
+                  <div className="mb-2">{getRankIcon(entry.rank)}</div>
+                  <button
+                    onClick={() => openLightbox(index)}
+                    className="relative w-20 h-20 mx-auto rounded-lg overflow-hidden mb-3 cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
+                  >
+                    <Image
+                      src={entry.thumbnailUrl || entry.imageUrl}
+                      alt={`Rank ${entry.rank}`}
+                      fill
+                      className="object-cover"
+                    />
+                    {entry.isVerified && (
+                      <div className="absolute top-1 right-1">
+                        <VerifiedBadge size="sm" />
+                      </div>
+                    )}
+                  </button>
+                  <EloDisplay elo={entry.elo} size="lg" />
+                  <div className="text-sm text-gray-400 mt-1">
+                    {entry.winRate.toFixed(0)}% wins
+                  </div>
+                  {entry.verifiedLength && (
+                    <Badge variant="premium" className="mt-2">
+                      {entry.verifiedLength} cm
+                    </Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Rest of leaderboard with pagination */}
+            {paginatedEntries.map((entry, idx) => (
               <div
-                key={entry.username}
+                key={entry.photoId}
                 className={cn(
                   'flex items-center gap-4 p-4 rounded-xl border transition-all hover:scale-[1.01]',
                   getRankBg(entry.rank)
@@ -143,59 +189,83 @@ export default function GrowerLeaderboardPage() {
                   {getRankIcon(entry.rank)}
                 </div>
 
-                <div className="flex gap-2">
-                  {entry.reposThumbnail && (
-                    <button
-                      onClick={() => openLightbox(entry, 'repos')}
-                      className="relative w-12 h-12 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
-                    >
-                      <Image
-                        src={entry.reposThumbnail}
-                        alt="Flaccid"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center py-0.5">
-                        Flaccid
-                      </div>
-                    </button>
+                <button
+                  onClick={() => openLightbox(3 + startIndex + idx)}
+                  className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
+                >
+                  <Image
+                    src={entry.thumbnailUrl || entry.imageUrl}
+                    alt={`Rank ${entry.rank}`}
+                    fill
+                    className="object-cover"
+                  />
+                  {entry.isVerified && (
+                    <div className="absolute top-1 right-1">
+                      <VerifiedBadge size="sm" />
+                    </div>
                   )}
-                  {entry.erectionThumbnail && (
-                    <button
-                      onClick={() => openLightbox(entry, 'erection')}
-                      className="relative w-12 h-12 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
-                    >
-                      <Image
-                        src={entry.erectionThumbnail}
-                        alt="Erect"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center py-0.5">
-                        Erect
-                      </div>
-                    </button>
-                  )}
-                </div>
+                </button>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">{entry.username}</span>
-                    {entry.isVerified && <VerifiedBadge size="sm" />}
+                    <EloDisplay elo={entry.elo} />
                   </div>
                   <div className="text-sm text-gray-400 mt-1">
-                    Flaccid: {entry.eloRepos} → Erect: {entry.eloErection}
+                    {entry.wins}/{entry.totalVotes} wins ({entry.winRate.toFixed(0)}%)
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-xl font-bold text-green-400">
-                    +{entry.growerScore.toFixed(0)}%
-                  </div>
-                  <div className="text-xs text-gray-500">Growth</div>
+                  {entry.verifiedLength ? (
+                    <div className="text-green-400 font-medium">
+                      {entry.verifiedLength} cm ✓
+                    </div>
+                  ) : entry.declaredLength ? (
+                    <div className="text-gray-400">
+                      {entry.declaredLength} cm
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ))}
+
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={cn(
+                        'w-10 h-10 rounded-lg font-medium transition-colors',
+                        currentPage === page
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                      )}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -203,7 +273,7 @@ export default function GrowerLeaderboardPage() {
         <PhotoLightbox
           isOpen={lightboxOpen}
           onClose={() => setLightboxOpen(false)}
-          photos={lightboxPhotos}
+          photos={photos}
           currentIndex={selectedPhotoIndex}
           onNavigate={setSelectedPhotoIndex}
         />

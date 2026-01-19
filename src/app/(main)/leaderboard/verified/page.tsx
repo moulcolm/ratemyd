@@ -10,6 +10,8 @@ import {
   Medal,
   TrendingUp,
   CheckCircle,
+  ChevronLeft,
+  ChevronRight,
   Flame,
 } from 'lucide-react';
 import { Card, Badge } from '@/components/ui';
@@ -49,6 +51,8 @@ function getRankBg(rank: number) {
 export default function VerifiedLeaderboardPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const categories = [
     { id: 'global', label: 'Global', href: '/leaderboard', icon: Trophy },
@@ -81,6 +85,13 @@ export default function VerifiedLeaderboardPage() {
     setSelectedPhotoIndex(index);
     setLightboxOpen(true);
   };
+
+  // Pagination logic
+  const restOfLeaderboard = leaderboard.slice(3);
+  const totalPages = Math.ceil(restOfLeaderboard.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedEntries = restOfLeaderboard.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -134,7 +145,48 @@ export default function VerifiedLeaderboardPage() {
           </Card>
         ) : (
           <div className="space-y-3">
-            {leaderboard.map((entry, index) => (
+            {/* Top 3 podium */}
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {leaderboard.slice(0, 3).map((entry, index) => (
+                <div
+                  key={entry.photoId}
+                  className={cn(
+                    'relative rounded-xl overflow-hidden border-2 p-4 text-center',
+                    index === 0 && 'col-start-2 row-start-1 border-yellow-500 bg-yellow-500/10',
+                    index === 1 && 'col-start-1 row-start-1 border-gray-400 bg-gray-400/10 mt-8',
+                    index === 2 && 'col-start-3 row-start-1 border-amber-600 bg-amber-600/10 mt-8'
+                  )}
+                >
+                  <div className="mb-2">{getRankIcon(entry.rank)}</div>
+                  <button
+                    onClick={() => openLightbox(index)}
+                    className="relative w-20 h-20 mx-auto rounded-lg overflow-hidden mb-3 cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
+                  >
+                    <Image
+                      src={entry.thumbnailUrl || entry.imageUrl}
+                      alt={`Rank ${entry.rank}`}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute top-1 right-1">
+                      <VerifiedBadge size="sm" />
+                    </div>
+                  </button>
+                  <EloDisplay elo={entry.elo} size="lg" />
+                  <div className="text-sm text-gray-400 mt-1">
+                    {entry.winRate.toFixed(0)}% wins
+                  </div>
+                  {entry.verifiedLength && (
+                    <Badge variant="premium" className="mt-2">
+                      {entry.verifiedLength} cm
+                    </Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Rest of leaderboard with pagination */}
+            {paginatedEntries.map((entry, idx) => (
               <div
                 key={entry.photoId}
                 className={cn(
@@ -147,7 +199,7 @@ export default function VerifiedLeaderboardPage() {
                 </div>
 
                 <button
-                  onClick={() => openLightbox(index)}
+                  onClick={() => openLightbox(3 + startIndex + idx)}
                   className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
                 >
                   <Image
@@ -184,6 +236,44 @@ export default function VerifiedLeaderboardPage() {
                 </div>
               </div>
             ))}
+
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={cn(
+                        'w-10 h-10 rounded-lg font-medium transition-colors',
+                        currentPage === page
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                      )}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         )}
 
