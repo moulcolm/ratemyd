@@ -166,43 +166,49 @@ export default function ComparePage() {
   const pair = pairData?.data;
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12"
+        >
           <div>
-            <h1 className="text-3xl font-bold mb-2">{'Compare Photos'}</h1>
-            <p className="text-gray-400">
+            <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+              {'Compare Photos'}
+            </h1>
+            <p className="text-lg text-gray-300">
               {'Vote for your favorite in head-to-head comparisons'}
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             {/* Remaining votes */}
             {remaining && (
-              <div className="text-sm text-gray-400">
+              <div className="px-4 py-2 bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm border border-gray-700/50 rounded-xl text-sm">
                 {remaining.isUnlimited ? (
-                  <span className="text-green-400">{'Unlimited votes'}</span>
+                  <span className="text-green-400 font-semibold">{'∞ Unlimited votes'}</span>
                 ) : (
-                  <span>
-                    <span className="text-white font-bold">{remaining.remaining}</span>
-                    /{remaining.limit} {'votes remaining'}
+                  <span className="text-gray-300">
+                    <span className="text-white font-bold text-lg">{remaining.remaining}</span>
+                    <span className="text-gray-400">/{remaining.limit}</span> {'votes left'}
                   </span>
                 )}
               </div>
             )}
 
             {/* Category selector */}
-            <div className="flex items-center gap-2 bg-gray-800 rounded-lg p-1">
+            <div className="flex items-center gap-2 bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-1.5">
               {(['MIXED', 'REPOS', 'ERECTION'] as const).map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setCategory(cat)}
                   className={cn(
-                    'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                    'px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200',
                     category === cat
-                      ? 'bg-purple-500 text-white'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/30'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                   )}
                 >
                   {cat === 'MIXED' ? 'Mixed' : cat === 'REPOS' ? 'Flaccid' : 'Erect'}
@@ -216,11 +222,12 @@ export default function ComparePage() {
               size="sm"
               onClick={() => setVerifiedOnly(!verifiedOnly)}
               leftIcon={<Filter className="w-4 h-4" />}
+              className={verifiedOnly ? 'shadow-lg shadow-purple-500/30' : ''}
             >
-              {'Verified Only'}
+              {'Verified'}
             </Button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Main content */}
         {isPairLoading ? (
@@ -243,27 +250,36 @@ export default function ComparePage() {
         ) : pair ? (
           <>
             {/* Category badge */}
-            <div className="flex justify-center mb-6">
-              <Badge variant={pair.category === 'REPOS' ? 'primary' : 'premium'}>
-                {'Category'}: {pair.category === 'REPOS' ? 'Flaccid' : 'Erect'}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex justify-center mb-8"
+            >
+              <Badge variant={pair.category === 'REPOS' ? 'primary' : 'premium'} className="text-base px-6 py-2">
+                <span className="font-semibold">
+                  {pair.category === 'REPOS' ? '🌙 Flaccid' : '🔥 Erect'}
+                </span>
               </Badge>
-            </div>
+            </motion.div>
 
             {/* Photo comparison */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="grid md:grid-cols-2 gap-8 mb-10">
               {/* Left photo */}
               <motion.div
-                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                whileHover={{ scale: 1.02, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleVote('left')}
                 className={cn(
-                  'relative cursor-pointer rounded-2xl overflow-hidden border-4 transition-all',
+                  'relative cursor-pointer rounded-2xl overflow-hidden border-4 transition-all duration-300 group',
                   selectedSide === 'left'
-                    ? 'border-green-500 ring-4 ring-green-500/30'
-                    : 'border-transparent hover:border-purple-500/50'
+                    ? 'border-green-500 ring-8 ring-green-500/30 shadow-2xl shadow-green-500/50'
+                    : 'border-transparent hover:border-purple-500/70 hover:shadow-2xl hover:shadow-purple-500/30'
                 )}
               >
-                <div className="aspect-[3/4] relative bg-gray-900">
+                <div className="aspect-[3/4] relative bg-gradient-to-br from-gray-900 to-gray-800">
                   <Image
                     src={pair.leftPhoto.imageUrl}
                     alt={'Left photo'}
@@ -302,17 +318,20 @@ export default function ComparePage() {
 
               {/* Right photo */}
               <motion.div
-                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.02, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleVote('right')}
                 className={cn(
-                  'relative cursor-pointer rounded-2xl overflow-hidden border-4 transition-all',
+                  'relative cursor-pointer rounded-2xl overflow-hidden border-4 transition-all duration-300 group',
                   selectedSide === 'right'
-                    ? 'border-green-500 ring-4 ring-green-500/30'
-                    : 'border-transparent hover:border-purple-500/50'
+                    ? 'border-green-500 ring-8 ring-green-500/30 shadow-2xl shadow-green-500/50'
+                    : 'border-transparent hover:border-purple-500/70 hover:shadow-2xl hover:shadow-purple-500/30'
                 )}
               >
-                <div className="aspect-[3/4] relative bg-gray-900">
+                <div className="aspect-[3/4] relative bg-gradient-to-br from-gray-900 to-gray-800">
                   <Image
                     src={pair.rightPhoto.imageUrl}
                     alt={'Right photo'}
