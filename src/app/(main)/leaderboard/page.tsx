@@ -20,6 +20,8 @@ import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { EloDisplay } from '@/components/shared/EloDisplay';
 import { PhotoLightbox } from '@/components/shared/PhotoLightbox';
+import { AdBanner, AdNative } from '@/components/ads';
+import { AD_ZONES, AD_RULES } from '@/lib/ads-config';
 import { cn } from '@/lib/utils';
 
 interface LeaderboardEntry {
@@ -99,7 +101,24 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-950 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+      {/* Header banner */}
+      <div className="flex justify-center mb-8">
+        <AdBanner
+          zoneId={AD_ZONES.BANNER_728x90_HEADER}
+          size="728x90"
+          className="hidden md:flex"
+        />
+        <AdBanner
+          zoneId={AD_ZONES.BANNER_300x100_MOBILE}
+          size="300x100"
+          className="md:hidden"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        <div className="flex gap-8">
+          {/* Main content */}
+          <div className="flex-1 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
@@ -186,6 +205,7 @@ export default function LeaderboardPage() {
 
             {/* Rest of leaderboard with pagination */}
             {paginatedEntries.map((entry, idx) => (
+              <>
               <div
                 key={entry.photoId}
                 className={cn(
@@ -238,6 +258,17 @@ export default function LeaderboardPage() {
                   ) : null}
                 </div>
               </div>
+
+              {/* Native ad every N rows */}
+              {(idx + 1) % AD_RULES.LEADERBOARD_AD_EVERY_N_ROWS === 0 && (
+                <div key={`ad-${idx}`} className="p-4">
+                  <AdNative
+                    zoneId={AD_ZONES.NATIVE_LEADERBOARD}
+                    className="w-full"
+                  />
+                </div>
+              )}
+              </>
             ))}
 
             {/* Pagination controls */}
@@ -288,6 +319,18 @@ export default function LeaderboardPage() {
           currentIndex={selectedPhotoIndex}
           onNavigate={setSelectedPhotoIndex}
         />
+          </div>
+
+          {/* Sidebar with ad */}
+          <div className="hidden lg:block w-[300px] flex-shrink-0">
+            <div className="sticky top-24">
+              <AdBanner
+                zoneId={AD_ZONES.BANNER_300x250_SIDEBAR}
+                size="300x250"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -18,6 +18,9 @@ import { Button, Card, Badge } from '@/components/ui';
 import { useToast } from '@/components/ui/Toast';
 import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { AdBanner, AdInterstitial } from '@/components/ads';
+import { useAds } from '@/hooks/useAds';
+import { AD_ZONES, AD_RULES } from '@/lib/ads-config';
 import { cn } from '@/lib/utils';
 
 interface Photo {
@@ -41,9 +44,16 @@ interface RemainingVotes {
 }
 
 export default function ComparePage() {
-  
-  
-  
+  const {
+    showInterstitial,
+    trackVote,
+    closeInterstitial,
+    voteCount,
+  } = useAds({
+    votesBeforeInterstitial: AD_RULES.VOTES_BEFORE_INTERSTITIAL,
+    showInterstitialOnce: AD_RULES.SHOW_INTERSTITIAL_ONCE_PER_SESSION,
+  });
+
   const queryClient = useQueryClient();
   const { addToast } = useToast();
   const [category, setCategory] = useState<'REPOS' | 'ERECTION' | 'MIXED'>('MIXED');
@@ -100,6 +110,7 @@ export default function ComparePage() {
       return res.json();
     },
     onSuccess: () => {
+      trackVote(); // Track for ad display
       refetchRemaining();
       setTimeout(() => {
         setSelectedSide(null);
@@ -165,9 +176,24 @@ export default function ComparePage() {
   const remaining = remainingData?.data;
   const pair = pairData?.data;
 
+  // Show banner ad every N votes
+  const shouldShowInlineBanner = voteCount > 0 && voteCount % AD_RULES.COMPARE_AD_EVERY_N_VOTES === 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+      {/* Interstitial Ad */}
+      {showInterstitial && (
+        <AdInterstitial
+          zoneId={AD_ZONES.INTERSTITIAL}
+          onClose={closeInterstitial}
+          autoCloseSeconds={5}
+        />
+      )}
+
+      <div className="max-w-7xl mx-auto">
+        <div className="flex gap-8">
+          {/* Main content */}
+          <div className="flex-1">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -261,6 +287,22 @@ export default function ComparePage() {
                 </span>
               </Badge>
             </motion.div>
+
+            {/* Inline banner ad (shows every N votes) */}
+            {shouldShowInlineBanner && (
+              <div className="flex justify-center mb-6">
+                <AdBanner
+                  zoneId={AD_ZONES.BANNER_728x90_HEADER}
+                  size="728x90"
+                  className="hidden md:flex"
+                />
+                <AdBanner
+                  zoneId={AD_ZONES.BANNER_300x100_MOBILE}
+                  size="300x100"
+                  className="md:hidden"
+                />
+              </div>
+            )}
 
             {/* Photo comparison */}
             <div className="grid md:grid-cols-2 gap-8 mb-10">
@@ -400,6 +442,29 @@ export default function ComparePage() {
             </p>
           </>
         ) : null}
+          </div>
+
+          {/* Sidebar with ad */}
+          <div className="hidden lg:block w-[300px] flex-shrink-0">
+            <div className="sticky top-24">
+              <AdBanner
+                zoneId={AD_ZONES.BANNER_300x250_SIDEBAR}
+                size="300x250"
+              />
+
+              {/* Session stats card */}
+              <div className="mt-6 bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
+                <h3 className="font-medium mb-3 text-white">Your session</h3>
+                <div className="space-y-2 text-sm text-gray-400">
+                  <div className="flex justify-between">
+                    <span>Votes this session</span>
+                    <span className="text-white font-medium">{voteCount}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
