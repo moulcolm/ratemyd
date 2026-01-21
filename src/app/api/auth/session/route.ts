@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 
+// SECURITY: No fallback secret in production
+const secretKey = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+if (!secretKey && process.env.NODE_ENV === 'production') {
+  throw new Error('AUTH_SECRET or NEXTAUTH_SECRET must be configured in production');
+}
 const secret = new TextEncoder().encode(
-  process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || 'fallback-secret-key'
+  secretKey || 'dev-only-secret-do-not-use-in-production'
 );
 
 export async function GET(req: NextRequest) {

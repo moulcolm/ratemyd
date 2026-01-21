@@ -3,6 +3,19 @@ import { Redis } from '@upstash/redis';
 let redis: Redis | null = null;
 let redisAvailable: boolean | null = null;
 
+// In-memory fallback rate limiting when Redis is unavailable
+const inMemoryStore = new Map<string, { count: number; resetAt: number }>();
+
+// Cleanup old entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of inMemoryStore.entries()) {
+    if (value.resetAt < now) {
+      inMemoryStore.delete(key);
+    }
+  }
+}, 5 * 60 * 1000);
+
 function getRedis(): Redis | null {
   if (redisAvailable === false) {
     return null;
@@ -48,19 +61,59 @@ export interface RateLimitResult {
   resetIn: number;
 }
 
+// Fallback in-memory rate limiting
+function checkInMemoryRateLimit(
+  identifier: string,
+  action: string,
+  config: RateLimitConfig
+): RateLimitResult {
+  const key = `${action}:${identifier}`;
+  const now = Date.now();
+  const entry = inMemoryStore.get(key);
+
+  // Use stricter limits when Redis is down (50% of normal)
+  const maxRequests = Math.ceil(config.maxRequests / 2);
+
+  if (!entry || entry.resetAt < now) {
+    // New window
+    inMemoryStore.set(key, { count: 1, resetAt: now + config.windowMs });
+    return {
+      allowed: true,
+      remaining: maxRequests - 1,
+      resetIn: Math.ceil(config.windowMs / 1000),
+    };
+  }
+
+  if (entry.count >= maxRequests) {
+    return {
+      allowed: false,
+      remaining: 0,
+      resetIn: Math.ceil((entry.resetAt - now) / 1000),
+    };
+  }
+
+  entry.count++;
+  return {
+    allowed: true,
+    remaining: maxRequests - entry.count,
+    resetIn: Math.ceil((entry.resetAt - now) / 1000),
+  };
+}
+
 export async function checkRateLimit(
   identifier: string,
   action: keyof typeof RATE_LIMITS = 'default'
 ): Promise<RateLimitResult> {
+  const config = RATE_LIMITS[action] || RATE_LIMITS.default;
+
   try {
     const redisClient = getRedis();
 
-    // If Redis is not available, allow all requests (dev mode)
+    // If Redis is not available, use in-memory fallback
     if (!redisClient) {
-      return { allowed: true, remaining: 999, resetIn: 0 };
+      return checkInMemoryRateLimit(identifier, action, config);
     }
 
-    const config = RATE_LIMITS[action] || RATE_LIMITS.default;
     const key = `ratelimit:${action}:${identifier}`;
     const now = Date.now();
     const windowStart = now - config.windowMs;
@@ -72,7 +125,9 @@ export async function checkRateLimit(
     const count = await redisClient.zcard(key);
 
     if (count >= config.maxRequests) {
-      const oldestRequest = await redisClient.zrange(key, 0, 0, { withScores: true }) as Array<{ score: number; member: string }>;
+      const oldestRequest = (await redisClient.zrange(key, 0, 0, {
+        withScores: true,
+      })) as Array<{ score: number; member: string }>;
       const resetIn =
         oldestRequest.length > 0
           ? Math.ceil((Number(oldestRequest[0].score) + config.windowMs - now) / 1000)
@@ -91,9 +146,9 @@ export async function checkRateLimit(
       resetIn: Math.ceil(config.windowMs / 1000),
     };
   } catch (error) {
-    // If Redis fails, allow the request (fail open)
-    console.error('Rate limit check failed:', error);
-    return { allowed: true, remaining: 999, resetIn: 0 };
+    // If Redis fails, use in-memory fallback instead of allowing all requests
+    console.error('Rate limit check failed, using in-memory fallback:', error);
+    return checkInMemoryRateLimit(identifier, action, config);
   }
 }
 

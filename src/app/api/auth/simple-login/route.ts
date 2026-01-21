@@ -4,8 +4,13 @@ import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 
+// SECURITY: No fallback secret in production
+const secretKey = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+if (!secretKey && process.env.NODE_ENV === 'production') {
+  throw new Error('AUTH_SECRET or NEXTAUTH_SECRET must be configured in production');
+}
 const secret = new TextEncoder().encode(
-  process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || 'fallback-secret-key'
+  secretKey || 'dev-only-secret-do-not-use-in-production'
 );
 
 export async function POST(req: NextRequest) {
@@ -51,7 +56,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create JWT token
+    // Create JWT token - 7 days expiration for better security
     const token = await new SignJWT({
       id: user.id,
       email: user.email,
@@ -60,20 +65,18 @@ export async function POST(req: NextRequest) {
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('30d')
+      .setExpirationTime('7d')
       .sign(secret);
 
-    // Set cookie
+    // Set cookie with secure settings
     const cookieStore = await cookies();
     cookieStore.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
     });
-
-    console.log('[SimpleLogin] Login successful for:', user.email);
 
     return NextResponse.json({
       success: true,
@@ -86,11 +89,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('[SimpleLogin] Login error:', error);
+    // SECURITY: Don't expose error details to client
     return NextResponse.json(
-      {
-        error: 'Login failed',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
+      { error: 'Une erreur est survenue' },
       { status: 500 }
     );
   }
