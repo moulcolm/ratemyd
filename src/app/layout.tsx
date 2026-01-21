@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: 'RateMyD - Anonymous Ranking',
   description: 'Anonymous ranking and comparison platform with ELO system',
   keywords: ['ranking', 'comparison', 'anonymous', 'ELO'],
+  other: {
+    '6a97888e-site-verification': 'a4df3b4fdd5b13f0ca1fb8e6df622058',
+  },
 };
 
 export default function RootLayout({
